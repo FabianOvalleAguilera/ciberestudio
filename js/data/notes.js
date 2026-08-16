@@ -211,5 +211,39 @@ export const defaultNotes = [
       ["Windows Time Tampering", "Event ID 4616 & 4618", "Logs system time changes (timestomping) and monitored security condition anomalies in Windows Security log."],
       ["Process Execution Scoping", "Event ID 4688", "Logs new process creation with command-line arguments (e.g. powershell.exe -ExecutionPolicy Bypass)."]
     ]
+  },
+  {
+    id: "note-web-attack-signatures",
+    examId: "csa",
+    category: "Web Security & Detection",
+    title: "Web Attack Signatures & Encoded Regex Master Table",
+    description: "Decoding URL hex encodings and regex detection rules frequently tested in SOC exams.",
+    type: "table",
+    headers: ["Attack Type", "Signature Regex / Payload Pattern", "Hex Encodings Decoded", "Defensive Control"],
+    rows: [
+      ["XSS (Cross-Site Scripting)", "/((%3C)|<).*((%69)|i).*((%6D)|m).*((%67)|g)[^\\n]+((%3E)|>)/i", "%3C = < | %69 = i | %6D = m | %67 = g | %3E = > (Detects <img> tag injections)", "WAF, Output Encoding, Content Security Policy (CSP)"],
+      ["SQL Injection (Tautology)", "/\\w*((%27)|('))((%6F)|o|(%4F))((%72)|r|(%52))/ix", "%27 = ' | %6F/%4F = o/O | %72/%52 = r/R (Detects ' OR authentication bypass)", "Parameterized Queries (Prepared Statements), UrlScan (IIS)"],
+      ["Directory / Path Traversal", "/(.|(%|%25)2E)(.|(%|%25)2E)(\\/|(%|%25)2F|\\\\|(%|%25)5C)/i", "%2E = . | %2F = / | %5C = \\ | %252E = double-encoded dot (Detects ../ and ..\\ traversal)", "Strict Path Normalization, Least-Privilege Web Root Permissions"],
+      ["Parameter / Price Tampering", "GET /buy.aspx?item=12&price=10 (Client modifies price/role)", "Tampering with query parameters or POST form fields directly in browser/proxy", "Server-side Price & Role Validation, HMAC token signing"]
+    ]
+  },
+  {
+    id: "note-paths-and-commands",
+    examId: "csa",
+    category: "System Paths & CLI Commands",
+    title: "Critical Operating System Log Paths & SOC CLI Commands",
+    description: "Direct reference for default log locations across Linux, Windows IIS, Cisco routers, and SIEM appliances.",
+    type: "table",
+    headers: ["Platform / System", "Path / Command", "Description & Forensic Utility"],
+    rows: [
+      ["Microsoft IIS 7.0+", "%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>", "Default directory for W3C web server access and error logs."],
+      ["Linux User Logins", "/var/log/wtmp", "Binary database of all logins, logouts, reboots, and runlevels (read via `last`)."],
+      ["Linux Kernel & iptables", "/var/log/kern.log", "Kernel logging destination for iptables rules tagged with `-j LOG`."],
+      ["Linux iptables Logging", "iptables -A INPUT -j LOG", "Appends rule to log all matching inbound packet headers to kernel log."],
+      ["AlienVault OSSIM SIEM", "/etc/ossim/server/reputation.data", "Local database of known malicious IP reputations and threat intelligence indicators."],
+      ["Cisco IOS Router Logs", "show logging | include <ACL_number>", "Pipes router log buffer output through an include filter (e.g. ACL 210 matches)."],
+      ["Incident Report Automation", "MagicTree", "Tree-based data management and automated report generation tool for incident handlers."],
+      ["Incident Remediation", "CrowdStrike Falcon Orchestrator", "Security automation and orchestration platform for recovering from endpoint/app compromises."]
+    ]
   }
 ];

@@ -323,5 +323,60 @@ export const defaultMindmaps = [
         ]
       }
     ]
+  },
+  {
+    id: "map-web-app-ir",
+    examId: "csa",
+    title: "Web Application Intrusion & Tampering Playbook",
+    description: "End-to-end incident handling workflow for web attacks (SQLi, XSS, Path Traversal, Parameter Tampering).",
+    steps: [
+      {
+        number: "1",
+        title: "Alert Trigger & Regex Match",
+        role: "NIDS / WAF / SIEM",
+        badge: "Detection",
+        summary: "NIDS flags suspicious hex-encoded URI requests (%3Cimg, ' OR 1=1, %2E%2E%2F).",
+        details: [
+          "Identify targeted server and client source IP.",
+          "Extract decoded HTTP query strings and POST payloads."
+        ]
+      },
+      {
+        number: "2",
+        title: "Web Server Log Deep Dive",
+        role: "Tier 1 / Tier 2 Analyst",
+        badge: "Triage",
+        summary: "Correlate NIDS alerts with IIS / Apache access logs.",
+        details: [
+          "Inspect IIS logs at `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVCN`.",
+          "Check HTTP status codes: 200 OK (potential exploit success) vs 403/404/500.",
+          "Verify User-Agent header to identify automated bot scanners."
+        ]
+      },
+      {
+        number: "3",
+        title: "Forensic Evidence & Chain of Custody",
+        role: "Digital Forensic Analyst",
+        badge: "DFIR",
+        summary: "Preserve web application and backend database evidence.",
+        details: [
+          "Generate cryptographic hashes (SHA-256) of web access logs.",
+          "Create and sign Chain of Custody forms immediately.",
+          "Analyze backend database query logs for unauthorized data exfiltration."
+        ]
+      },
+      {
+        number: "4",
+        title: "Eradication & Hardening",
+        role: "AppSec / Systems Engineer",
+        badge: "Remediation",
+        summary: "Close the vulnerability and block active attacker infrastructure.",
+        details: [
+          "Deploy UrlScan / WAF filtering rules to block payload signatures.",
+          "Enforce server-side parameter and price validation.",
+          "Sanitize inputs using parameterized queries and output encoding."
+        ]
+      }
+    ]
   }
 ];

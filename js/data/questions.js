@@ -2500,5 +2500,569 @@ export const initialQuestions = [
     correctAnswer: 1,
     explanation: "In PostgreSQL configuration (`postgresql.conf`), `log_collector` (boolean: `on`) enables the background process that captures stderr/csv log output and writes it to log files for centralized SIEM ingestion.",
     difficulty: "Medium"
+  },
+
+  // =========================================================================
+  // CERTIFIED SOC ANALYST (CSA) REAL EXAM QUESTION BANK (csa-q156 to csa-q190)
+  // =========================================================================
+  {
+    id: "csa-q156",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "Jane, a security analyst, while analyzing IDS logs, detected an event matching Regex `/((%3C)|<)((%69)|i|(%49))((%6D)|m|(%4D))((%67)|g|(%47))[^\n]+((%3E)|>)/i`.\n\nWhat does this event log indicate?",
+    options: [
+      "Directory Traversal Attack",
+      "Parameter Tampering Attack",
+      "XSS Attack",
+      "SQL Injection Attack"
+    ],
+    correctAnswer: 2,
+    explanation: "The regular expression matches an HTML `<img>` tag (with URL-encoded variations of `<`, `i`, `m`, `g`, `>`), which is a classic payload injection vector used in Cross-Site Scripting (XSS) attacks (e.g., `<img src=x onerror=alert(1)>`).",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q157",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Harley is working as a SOC analyst with Powell Tech. Powell Inc. is using Internet Information Services (IIS) version 7.0 to host their website.\n\nWhere will Harley find the web server logs, if he wants to investigate them for any anomalies?",
+    options: [
+      "%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVCN",
+      "%SystemDrive%\\LogFiles\\inetpub\\logs\\W3SVCN",
+      "%SystemDrive%\\LogFiles\\logs\\W3SVCN",
+      "%SystemDrive%\\inetpub\\LogFiles\\logs\\W3SVCN"
+    ],
+    correctAnswer: 0,
+    explanation: "In Microsoft IIS 7.0 and later versions, the default directory path for W3C web server log files is `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>` (for example, `C:\\inetpub\\logs\\LogFiles\\W3SVC1`).",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q158",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "In which of the following incident handling and response stages, the root cause of the incident must be found from the forensic results?",
+    options: [
+      "Evidence Gathering",
+      "Evidence Handling",
+      "Eradication",
+      "Systems Recovery"
+    ],
+    correctAnswer: 0,
+    explanation: "According to EC-Council Incident Handling and Response (ECIH/CSA) methodologies, during the Evidence Gathering and analysis stage, digital forensic artifacts are examined to reconstruct timelines and identify the root cause of the breach.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q159",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Which of the following data sources can be used to detect traffic associated with Bad Bot User-Agents?",
+    options: [
+      "Windows Event Log",
+      "Web Server Logs",
+      "Router Logs",
+      "Switch Logs"
+    ],
+    correctAnswer: 1,
+    explanation: "Web Server Logs (such as Apache, Nginx, or IIS in W3C/Combined format) capture HTTP request headers including the client `User-Agent`, enabling detection of automated scrapers, scanning tools, and malicious bots.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q160",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Emmanuel is working as a SOC analyst in Tobey Tech. The manager recently recruited an Incident Response Team (IRT). Emmanuel just escalated a critical incident to the IRT.\n\nWhat is the FIRST step that the IRT will execute on the incident escalated by Emmanuel?",
+    options: [
+      "Incident Analysis and Validation",
+      "Incident Recording",
+      "Incident Classification",
+      "Incident Prioritization"
+    ],
+    correctAnswer: 0,
+    explanation: "Once an incident is escalated by Tier 1/SOC to the Incident Response Team (IRT), the IRT's immediate first action is Incident Analysis and Validation to confirm whether the alert is a verified true positive security incident.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q161",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "In which phase of Lockheed Martin's Cyber Kill Chain Methodology does the adversary create a deliverable malicious payload using an exploit and a backdoor?",
+    options: [
+      "Reconnaissance",
+      "Delivery",
+      "Weaponization",
+      "Exploitation"
+    ],
+    correctAnswer: 2,
+    explanation: "Weaponization is the phase in the Cyber Kill Chain where the threat actor couples an exploit with a malicious payload or backdoor to generate a weaponized file (e.g., infected PDF or macro-enabled document).",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q162",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "Which of the following tools can be used to filter and block incoming web requests associated with SQL Injection attacks on Microsoft IIS servers?",
+    options: [
+      "Nmap",
+      "UrlScan",
+      "ZAP proxy",
+      "Hydra"
+    ],
+    correctAnswer: 1,
+    explanation: "UrlScan is a security filter add-on for Microsoft IIS that screens incoming HTTP requests and blocks malicious patterns, unusual verbs, and SQL Injection payloads before they reach the web application.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q163",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "Which type of Cyber Threat Intelligence (CTI) helps security operations managers, SOC analysts, and incident responders understand how adversaries are expected to attack the organization, including their technical capabilities, goals, and attack vectors (TTPs)?",
+    options: [
+      "Analytical Threat Intelligence",
+      "Operational Threat Intelligence",
+      "Strategic Threat Intelligence",
+      "Tactical Threat Intelligence"
+    ],
+    correctAnswer: 3,
+    explanation: "Tactical Threat Intelligence focuses on adversary Tactics, Techniques, and Procedures (TTPs), tools, and attack vectors, aiding SOC teams in writing detection rules, configuring SIEMs, and hardening firewalls.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q164",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "Banter is a threat analyst in Christine Group of Industries. As part of his role, he is currently formatting, normalizing, and structuring raw collected data into standardized schemas.\n\nHe is at which stage of the Cyber Threat Intelligence (CTI) Life Cycle?",
+    options: [
+      "Dissemination and Integration",
+      "Processing and Exploitation",
+      "Collection",
+      "Analysis and Production"
+    ],
+    correctAnswer: 1,
+    explanation: "The Processing and Exploitation phase transforms raw collected data (logs, PCAPs, raw feeds) into structured, readable formats (e.g. converting IOCs into STIX/JSON) ready for human and automated analysis.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q165",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "John, a SOC analyst, while monitoring and analyzing Apache web server logs, identified an event log matching Regex `/(.|(%|%25)2E)(.|(%|%25)2E)(\/|(%|%25)2F|\\\\|(%|%25)5C)/i`.\n\nWhat does this event log indicate?",
+    options: [
+      "XSS Attack",
+      "SQL injection Attack",
+      "Directory Traversal Attack",
+      "Parameter Tampering Attack"
+    ],
+    correctAnswer: 2,
+    explanation: "This regex detects dot-dot-slash patterns (`../` or `..\\`), including standard URL-encoded (`%2E`, `%2F`, `%5C`) and double-encoded (`%252E`, `%252F`) variations used in Directory / Path Traversal attacks.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q166",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "Properly applied Cyber Threat Intelligence helps the SOC team in discovering and mapping adversary TTPs.\n\nWhat does TTPs stand for?",
+    options: [
+      "Tactics, Techniques, and Procedures",
+      "Tactics, Threats, and Procedures",
+      "Targets, Threats, and Process",
+      "Tactics, Targets, and Process"
+    ],
+    correctAnswer: 0,
+    explanation: "TTPs stands for Tactics (the adversary's objective), Techniques (the method used to achieve it), and Procedures (the specific, step-by-step implementation of the technique).",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q167",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "David is a SOC analyst in Karen Tech. One day an attack is initiated by intruders against internal assets, but David was not able to find any suspicious events or alerts in the SIEM.\n\nThis type of incident is categorized as:",
+    options: [
+      "True Positive Incident",
+      "False Positive Incident",
+      "True Negative Incident",
+      "False Negative Incident"
+    ],
+    correctAnswer: 3,
+    explanation: "A False Negative occurs when a genuine attack takes place, but the security monitoring controls / SIEM fail to detect the threat and generate no alerts.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q168",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "An organization deploys a SIEM system where the server hardware and software reside on-premise in the organization's own datacenter, and all operations, rule creation, and daily monitoring are conducted entirely by internal SOC staff.\n\nWhat kind of SIEM deployment architecture is this?",
+    options: [
+      "Cloud, MSSP Managed",
+      "Self-hosted, Jointly Managed",
+      "Self-hosted, Self-Managed",
+      "Self-hosted, MSSP Managed"
+    ],
+    correctAnswer: 2,
+    explanation: "A Self-hosted, Self-Managed SIEM model means the organization owns and hosts the physical/virtual infrastructure on-premises and operates all management and monitoring in-house.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q169",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "In which log collection mechanism does the source device or client application actively transmit log records over the network to the central collector without waiting for a request?",
+    options: [
+      "rule-based",
+      "pull-based",
+      "push-based",
+      "signature-based"
+    ],
+    correctAnswer: 2,
+    explanation: "In push-based log collection (such as Syslog, Windows Event Forwarding, or agent-based forwarders), source systems initiate the connection and stream logs to the collector as events occur.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q170",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Chloe, a SOC analyst with Jake Tech, is investigating Linux system logs. She is examining the binary log file located at `/var/log/wtmp`.\n\nWhat type of information is Chloe analyzing?",
+    options: [
+      "Error log",
+      "System boot log",
+      "General message and system-related stuff",
+      "Login records"
+    ],
+    correctAnswer: 3,
+    explanation: "In Linux, `/var/log/wtmp` maintains a historical database of all successful user logins, logouts, system reboots, and shutdown events (analyzed using the `last` command).",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q171",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "Where will you find the reputation IP database file if you want to monitor traffic from known bad IP reputations using AlienVault OSSIM SIEM?",
+    options: [
+      "/etc/ossim/reputation",
+      "/etc/ossim/siem/server/reputation/data",
+      "/etc/siem/ossim/server/reputation.data",
+      "/etc/ossim/server/reputation.data"
+    ],
+    correctAnswer: 3,
+    explanation: "In AlienVault OSSIM / USM SIEM, the IP reputation database containing known malicious IP addresses and indicators is located at `/etc/ossim/server/reputation.data`.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q172",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "According to the digital forensics investigation process, what is the critical step carried out immediately after collecting evidence?",
+    options: [
+      "Create a Chain of Custody Document",
+      "Send it to the nearby police station",
+      "Set a Forensic lab",
+      "Call Organizational Disciplinary Team"
+    ],
+    correctAnswer: 0,
+    explanation: "Immediately upon collecting evidence, the investigator must create and maintain a Chain of Custody document, recording chronological tracking of custody, control, transfer, analysis, and disposition.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q173",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Which of the following commands is used to append a rule that enables logging for inbound packets in Linux iptables?",
+    options: [
+      "$ iptables -B INPUT -j LOG",
+      "$ iptables -A OUTPUT -j LOG",
+      "$ iptables -A INPUT -j LOG",
+      "$ iptables -B OUTPUT -j LOG"
+    ],
+    correctAnswer: 2,
+    explanation: "The command `iptables -A INPUT -j LOG` appends (`-A`) a rule to the `INPUT` chain to jump (`-j`) to the `LOG` target, writing matching inbound packet headers to kernel logs.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q174",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Peter, a SOC analyst, is analyzing Cisco router logs and wants to filter the output to display only log messages generated by Access Control List (ACL) numbered 210.\n\nWhat filter should Peter add to the `show logging` command?",
+    options: [
+      "show logging | access 210",
+      "show logging | forward 210",
+      "show logging | include 210",
+      "show logging | route 210"
+    ],
+    correctAnswer: 2,
+    explanation: "In Cisco IOS CLI, the pipe filter `| include <string>` works like grep, filtering the output of `show logging` to show only lines containing '210'.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q175",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "What do HTTP status codes in the 1XX class represent?",
+    options: [
+      "Informational message",
+      "Client error",
+      "Success",
+      "Redirection"
+    ],
+    correctAnswer: 0,
+    explanation: "HTTP 1XX status codes (such as 100 Continue, 101 Switching Protocols) represent informational interim responses while request processing continues.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q176",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Which of the following is a report writing and tree-based data management tool that helps incident handlers organize findings and generate structured incident reports?",
+    options: [
+      "threat_note",
+      "MagicTree",
+      "IntelMQ",
+      "Malstrom"
+    ],
+    correctAnswer: 1,
+    explanation: "MagicTree is a tree-structured data management and reporting application designed for penetration testers and incident handlers to collect command outputs and generate automated reports.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q177",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Ray is a SOC analyst in a company affected by a high-volume DoS/DDoS attack. To contain the incident, Ray and his team allocate additional network bandwidth to perimeter connections and increase server capacity.\n\nWhat DDoS containment strategy are Ray and his team executing?",
+    options: [
+      "Blocking the Attacks",
+      "Diverting the Traffic",
+      "Degrading the services",
+      "Absorbing the Attack"
+    ],
+    correctAnswer: 3,
+    explanation: "Absorbing the Attack involves provisioning extra bandwidth headroom and scaling compute/server instances to absorb attack volume without taking services offline.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q178",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "Sam, a security analyst, while analyzing IIS web server logs, detected an event matching regex `/\\w*((%27)|('))((%6F)|o|(%4F))((%72)|r|(%52))/ix`.\n\nWhat does this event log indicate?",
+    options: [
+      "SQL Injection Attack",
+      "Parameter Tampering Attack",
+      "XSS Attack",
+      "Directory Traversal Attack"
+    ],
+    correctAnswer: 0,
+    explanation: "This regular expression matches the classic SQL injection tautology `' OR` (single quote `%27` or `'` followed by `o`/`O`/`%6F` and `r`/`R`/`%52`), used by attackers to bypass authentication in SQL queries.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q179",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "A user's workstation has been compromised by destructive, rapidly spreading malware.\n\nWhat is the primary recommended step to contain the malware from spreading across the corporate network?",
+    options: [
+      "Complaint to police in a formal way regarding the incident",
+      "Turn off the infected machine / isolate from network",
+      "Leave it to the network administrators to handle",
+      "Call the legal department in the organization and inform about the incident"
+    ],
+    correctAnswer: 1,
+    explanation: "Immediate containment requires network disconnection or powering off the infected endpoint to prevent worm/ransomware propagation across enterprise subnets.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q180",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Which log storage method arranges event logs in the form of a circular buffer, overwriting the oldest entries when maximum storage capacity is reached?",
+    options: [
+      "FIFO",
+      "LIFO",
+      "non-wrapping",
+      "wrapping"
+    ],
+    correctAnswer: 3,
+    explanation: "In log retention terminology (such as Windows Event Log configurations), 'wrapping' (overwrite events as needed) arranges logs as a circular buffer where new events overwrite the oldest records once max capacity is reached.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q181",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "According to a standard Risk Assessment Matrix, what will be the resulting risk level when the probability of an attack is 'Very High' and the business impact is 'Major'?",
+    options: [
+      "High",
+      "Extreme",
+      "Low",
+      "Medium"
+    ],
+    correctAnswer: 1,
+    explanation: "In standard 5x5 enterprise risk matrices, the intersection of 'Very High' probability and 'Major / Critical' impact results in the highest risk classification, termed 'Extreme'.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q182",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "A SOC analyst monitoring IDS logs observes HTTP GET requests where query parameters such as `?role=user` or `?account_type=standard` are modified to `?role=admin`.\n\nWhat attack does this event log indicate?",
+    options: [
+      "Directory Traversal Attack",
+      "XSS Attack",
+      "SQL Injection Attack",
+      "Parameter Tampering Attack"
+    ],
+    correctAnswer: 3,
+    explanation: "Parameter Tampering involves manipulating URL parameters, form fields, or HTTP headers to bypass access controls, escalate privileges, or modify transaction logic.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q183",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "Which type of Cyber Threat Intelligence (CTI) is designed to help executive leadership and CISOs understand adversary intent and make informed strategic security decisions in alignment with business risk?",
+    options: [
+      "Tactical Threat Intelligence",
+      "Strategic Threat Intelligence",
+      "Functional Threat Intelligence",
+      "Operational Threat Intelligence"
+    ],
+    correctAnswer: 1,
+    explanation: "Strategic Threat Intelligence delivers high-level overviews of threat landscapes, geopolitical motives, and business risk trends to executive decision-makers and CISOs.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q184",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "An attacker exploits client-side logic validation by modifying the URL from `http://www.buyonline.com/product.aspx?profile=12&debit=100` to `http://www.buyonline.com/product.aspx?profile=12&debit=10` to purchase a $100 item for $10.\n\nIdentify the attack depicted in this scenario.",
+    options: [
+      "Denial-of-Service Attack",
+      "SQL Injection Attack",
+      "Parameter Tampering Attack",
+      "Session Fixation Attack"
+    ],
+    correctAnswer: 2,
+    explanation: "Altering query string parameters in the URL (changing `debit=100` to `debit=10`) to manipulate transaction values is a Parameter Tampering / Price Tampering attack.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q185",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "An organization wants to implement a SIEM architecture. The internal team handles on-premise log collection, but SIEM management, analytics, detection tuning, and 24/7 alert monitoring are outsourced to an MSSP.\n\nWhich SIEM deployment architecture will the organization adopt?",
+    options: [
+      "Cloud, MSSP Managed",
+      "Self-hosted, Jointly Managed",
+      "Self-hosted, MSSP Managed",
+      "Self-hosted, Self-Managed"
+    ],
+    correctAnswer: 2,
+    explanation: "In a Self-hosted, MSSP Managed model, the log collection hardware/software is hosted on-premise within the customer's datacenter, while the SIEM configuration and monitoring are operated by an external MSSP.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q186",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Which process refers to silently discarding malicious packets at the routing level (directing traffic to a null interface) without informing the source that the data was dropped?",
+    options: [
+      "Load Balancing",
+      "Rate Limiting",
+      "Black Hole Filtering",
+      "Drop Requests"
+    ],
+    correctAnswer: 2,
+    explanation: "Black Hole Filtering (or Null Routing) routes unwanted or attack traffic into a null interface (Null0) without generating ICMP unreachable replies, mitigating DDoS congestion.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q187",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Which phase of the incident handling and response process focuses specifically on limiting the scope, blast radius, and propagation of an active security incident?",
+    options: [
+      "Containment",
+      "Data Collection",
+      "Eradication",
+      "Identification"
+    ],
+    correctAnswer: 0,
+    explanation: "Containment focuses on stopping active spread, isolating affected subnets/hosts, revoking compromised sessions, and limiting the blast radius before eradication begins.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q188",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "Which of the following tools is an incident orchestration and automated remediation platform used to recover from web application and endpoint security incidents?",
+    options: [
+      "CrowdStrike Falcon Orchestrator",
+      "Symantec Secure Web Gateway",
+      "Smoothwall SWG",
+      "Proxy Workbench"
+    ],
+    correctAnswer: 0,
+    explanation: "CrowdStrike Falcon Orchestrator is an incident automation platform designed to execute predefined response workflows and restore systems from compromised application/endpoint states.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q189",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Which field in Windows Security and System Event Logs defines the operational category of the event, such as 'Audit Success', 'Audit Failure', 'Correlation Hint', or 'WDI Context'?",
+    options: [
+      "Keywords",
+      "Task Category",
+      "Level",
+      "Source"
+    ],
+    correctAnswer: 0,
+    explanation: "In Windows Event Logs, the 'Keywords' field contains bitmask tags such as 'Audit Success' or 'Audit Failure' used for filtering and classification.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q190",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Which command is used to view real-time iptables packet filtering logs on Ubuntu and Debian Linux distributions?",
+    options: [
+      "$ tailf /var/log/sys/kern.log",
+      "$ tailf /var/log/kern.log",
+      "# tailf /var/log/messages",
+      "# tailf /var/log/sys/messages"
+    ],
+    correctAnswer: 1,
+    explanation: "On Debian and Ubuntu systems, kernel logs generated by iptables rules with `-j LOG` are recorded in `/var/log/kern.log` (viewed in real time with `tailf /var/log/kern.log` or `tail -f`).",
+    difficulty: "Easy"
   }
 ];
