@@ -28,23 +28,76 @@ export const StorageManager = {
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM)) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_EXAM, 'csa');
     }
-    // Actualizar o sincronizar preguntas predeterminadas
-    const existingQ = localStorage.getItem(STORAGE_KEYS.QUESTIONS);
-    if (!existingQ || JSON.parse(existingQ).length < initialQuestions.length) {
+    // Sincronizar banco de preguntas (añadir nuevas preguntas que no existan)
+    try {
+      const existingQ = JSON.parse(localStorage.getItem(STORAGE_KEYS.QUESTIONS)) || [];
+      const existingIds = new Set(existingQ.map(q => q.id));
+      let updatedQ = [...existingQ];
+      initialQuestions.forEach(q => {
+        if (!existingIds.has(q.id)) {
+          updatedQ.push(q);
+        }
+      });
+      localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(updatedQ));
+    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(initialQuestions));
     }
-    // Apuntes predeterminados
-    if (!localStorage.getItem(STORAGE_KEYS.NOTES)) {
+
+    // Sincronizar apuntes / notes
+    try {
+      const existingN = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
+      const existingNoteIds = new Set(existingN.map(n => n.id));
+      let updatedN = [...existingN];
+      defaultNotes.forEach(n => {
+        if (!existingNoteIds.has(n.id)) {
+          updatedN.push(n);
+        } else {
+          // Actualizar notas existentes por si se enriquecieron
+          const idx = updatedN.findIndex(item => item.id === n.id);
+          if (idx >= 0) updatedN[idx] = n;
+        }
+      });
+      localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(updatedN));
+    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(defaultNotes));
     }
-    // Mapas
-    if (!localStorage.getItem(STORAGE_KEYS.MINDMAPS)) {
+
+    // Sincronizar mapas mentales
+    try {
+      const existingM = JSON.parse(localStorage.getItem(STORAGE_KEYS.MINDMAPS)) || [];
+      const existingMapIds = new Set(existingM.map(m => m.id));
+      let updatedM = [...existingM];
+      defaultMindmaps.forEach(m => {
+        if (!existingMapIds.has(m.id)) {
+          updatedM.push(m);
+        } else {
+          const idx = updatedM.findIndex(item => item.id === m.id);
+          if (idx >= 0) updatedM[idx] = m;
+        }
+      });
+      localStorage.setItem(STORAGE_KEYS.MINDMAPS, JSON.stringify(updatedM));
+    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.MINDMAPS, JSON.stringify(defaultMindmaps));
     }
-    // Flashcards
-    if (!localStorage.getItem(STORAGE_KEYS.FLASHCARDS)) {
+
+    // Sincronizar flashcards
+    try {
+      const existingF = JSON.parse(localStorage.getItem(STORAGE_KEYS.FLASHCARDS)) || [];
+      const existingFcIds = new Set(existingF.map(f => f.id));
+      let updatedF = [...existingF];
+      defaultFlashcards.forEach(f => {
+        if (!existingFcIds.has(f.id)) {
+          updatedF.push(f);
+        } else {
+          const idx = updatedF.findIndex(item => item.id === f.id);
+          if (idx >= 0) updatedF[idx] = f;
+        }
+      });
+      localStorage.setItem(STORAGE_KEYS.FLASHCARDS, JSON.stringify(updatedF));
+    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.FLASHCARDS, JSON.stringify(defaultFlashcards));
     }
+
     // Stats iniciales
     if (!localStorage.getItem(STORAGE_KEYS.STATS)) {
       localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify({}));

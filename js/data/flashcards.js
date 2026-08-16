@@ -79,5 +79,101 @@ export const defaultFlashcards = [
     front: "Syslog: Default Port and Severity 0",
     back: "• Default Port: UDP 514 (or TCP 514 / TLS 6514).\n• Severity 0: Emergency / Panic (System is completely unusable).",
     module: 3
+  },
+  {
+    id: "fc-11",
+    examId: "csa",
+    category: "Malware Analysis",
+    front: "Static Analysis vs Dynamic Analysis (Embedded Scripts)",
+    back: "• Static Analysis: Inspecting and de-obfuscating code (base64, strings, functions, regex) WITHOUT executing it (Safe for live investigations).\n• Dynamic Analysis: Executing malware in an isolated sandbox to observe real-time behavior (risk of evasion/detonation).",
+    module: 2
+  },
+  {
+    id: "fc-12",
+    examId: "csa",
+    category: "Windows Logs",
+    front: "Windows Event ID 4616 & 4618 (Time Tampering)",
+    back: "• Event ID 4616: 'System time was changed' (critical indicator of timestomping or defense evasion).\n• Event ID 4618: Monitored security-relevant event patterns and audit condition monitoring.",
+    module: 3
+  },
+  {
+    id: "fc-13",
+    examId: "csa",
+    category: "Log Architecture",
+    front: "Syslog Relay (Role in Distributed Logging)",
+    back: "• An intermediate proxy/forwarder deployed in remote offices.\n• Receives local logs, buffers them during network outages, and forwards them efficiently over WAN to the central Syslog Server/Collector.",
+    module: 3
+  },
+  {
+    id: "fc-14",
+    examId: "csa",
+    category: "Log Parsing",
+    front: "Grok Filters in SIEM & Log Pipelines",
+    back: "• Pattern-matching syntax based on regular expressions.\n• Used to parse and convert raw, unstructured or semi-structured log strings into standardized, queryable fields (IP, user, timestamp, method).",
+    module: 3
+  },
+  {
+    id: "fc-15",
+    examId: "csa",
+    category: "Cloud Security",
+    front: "CASB vs CSPM vs CWPP (Cloud SOC Architecture)",
+    back: "• CASB: Cloud Access Security Broker - Enforces data loss prevention (DLP), user access policies, and SaaS governance.\n• CSPM: Cloud Security Posture Management - Audits misconfigurations and compliance in cloud infra.\n• CWPP: Cloud Workload Protection - Secures running VMs, containers, and serverless compute.",
+    module: 1
+  },
+  {
+    id: "fc-16",
+    examId: "csa",
+    category: "Incident Response",
+    front: "Containment vs Eradication vs Recovery vs Post-Incident",
+    back: "• Containment: Stopping active spread (VLAN isolation, account disable, session revoke).\n• Eradication: Eliminating root causes (emergency patching CVEs, filtering rules, removing malware/persistence).\n• Recovery: Restoring systems to clean production operations.\n• Post-Incident: Post-mortem, financial impact calculation, lessons learned.",
+    module: 6
+  },
+  {
+    id: "fc-17",
+    examId: "csa",
+    category: "SOC Management",
+    front: "SOC CMM (Capability Maturity Model) Level 1 to 3",
+    back: "• Level 1 (Initial/Ad-hoc): Disorganized, reactive, manual.\n• Level 2 (Managed): Basic metrics and unit-level procedures.\n• Level 3 (Defined): Standardized, documented, repeatable incident response processes and playbooks across the enterprise.",
+    module: 1
+  },
+  {
+    id: "fc-18",
+    examId: "csa",
+    category: "Threat Intelligence",
+    front: "CTI Lifecycle: Requirement Analysis Phase",
+    back: "• The initial Direction and Planning stage.\n• Defines specific intelligence questions (e.g. identifying DGA C2 patterns), critical telemetry data sources, and operational detection priorities.",
+    module: 5
+  },
+  {
+    id: "fc-19",
+    examId: "csa",
+    category: "Database Logging",
+    front: "PostgreSQL: `log_collector` Parameter",
+    back: "• Setting `log_collector = on` in `postgresql.conf` enables the background process that captures stderr/csv log output and writes it to log files for centralized SIEM ingestion and audit trail compliance.",
+    module: 3
+  },
+  {
+    id: "fc-20",
+    examId: "csa",
+    category: "SOC Technology",
+    front: "XDR + XSOAR Architecture Integration",
+    back: "• XDR (Extended Detection & Response): Provides high-fidelity cross-domain detection across endpoints, network, email, and cloud.\n• XSOAR (Security Orchestration & Automation): Executes automated playbooks to remediate and contain incidents in real time.",
+    module: 4
+  },
+  {
+    id: "fc-21",
+    examId: "csa",
+    category: "Windows Logs",
+    front: "Event ID 4688 (Process Creation with Command Line)",
+    back: "• Logs execution of new processes (e.g. `powershell.exe`).\n• With Command Line Auditing enabled, exposes arguments like `-ExecutionPolicy Bypass`, `-NoProfile`, and parent processes (`winrm.exe`).",
+    module: 3
+  },
+  {
+    id: "fc-22",
+    examId: "csa",
+    category: "SIEM & AI",
+    front: "Dynamic Rule Optimization in AI SIEM",
+    back: "• Uses machine learning to dynamically adapt alert thresholds based on historical baseline behavior, effectively suppressing redundant alerts and eliminating false-positive alert fatigue.",
+    module: 4
   }
 ];

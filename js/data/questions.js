@@ -1856,5 +1856,649 @@ export const initialQuestions = [
     correctAnswer: 1,
     explanation: "Edmond Locard's Exchange Principle asserts that whenever an intruder enters an environment, they bring something in and leave something behind.",
     difficulty: "Easy"
+  },
+
+  // =========================================================================
+  // ADVANCED REAL-WORLD SOC SCENARIO QUESTIONS (csa-q116 to csa-q155)
+  // =========================================================================
+  {
+    id: "csa-q116",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "The SOC team found a suspicious document file on a user's workstation. Upon initial inspection, the document appears benign, but deeper analysis reveals an embedded PowerShell script. The team suspects the script is designed to download and execute a malicious payload. They need to understand the script's functionality without triggering it.\n\nWhich malware analysis technique is recommended to understand the PowerShell script's functionality without executing it?",
+    options: [
+      "Static analysis",
+      "Dynamic analysis",
+      "Automated behavioral analysis",
+      "Network traffic analysis"
+    ],
+    correctAnswer: 0,
+    explanation: "Static analysis is the correct approach when the requirement is to understand what the script is intended to do without executing it. For PowerShell embedded in documents, static analysis includes extracting the script content, de-obfuscating it (base64 decoding, string reconstruction, analyzing encoded commands), and reviewing functions, URLs/IPs, file paths, registry keys, and command-line arguments without risking system impact.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q117",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "A SOC analyst receives an alert indicating that the system time on a critical Windows server was changed at 3:00 AM. There are no scheduled maintenance tasks at this time. Unauthorized time changes can be used to evade security controls, such as altering timestamps to obscure malicious activity. The analyst must identify the relevant event codes that log system time modifications and related suspicious behavior.\n\nWhich of the following Windows Security Event Codes should the analyst review to investigate potential tampering?",
+    options: [
+      "4608 and 4609",
+      "4625 and 4634",
+      "4616 and 4618",
+      "4616 and 4624"
+    ],
+    correctAnswer: 2,
+    explanation: "Event ID 4616 is the primary Windows Security log event for 'system time was changed'. It includes the previous time, new time, and account/process responsible. Event ID 4618 indicates monitored security-relevant conditions and helps reveal related suspicious behavior around auditing or security event patterns.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q118",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "The SOC team at CyberSecure Corp is conducting a security review to identify anomalous log entries from firewall logs. The team needs to extract patterns such as email addresses, IP addresses, and URLs to detect unauthorized access attempts, phishing activities, and suspicious external communications. The SOC analyst applies various regular expressions (regex) patterns to filter and analyze logs efficiently.\n\nWhich regex pattern should the SOC analyst use to extract all hexadecimal color codes found in the logs?",
+    options: [
+      "(0[1-9]|1[0-2])/(0[1-9]|(1[0-2])/[0-9]|3[01])\\d{4}",
+      "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})",
+      "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+      "\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b"
+    ],
+    correctAnswer: 1,
+    explanation: "Hex color codes in common usage are represented as either 3 hex characters (shorthand) or 6 hex characters (full), composed of digits 0-9 and letters A-F (case-insensitive). Option ([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}) directly matches both formats.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q119",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "A major financial institution has strict policies preventing unauthorized data transfers. As a SOC analyst, during routine log analysis you detect an anomaly: an employee workstation initiates large file transfers outside business hours, involving highly sensitive customer financial records. You discover remote access from an unfamiliar IP address and an unauthorized USB device connection on the workstation.\n\nGiven the likelihood of data exfiltration, what should be your first step in responding?",
+    options: [
+      "Isolate the employee’s workstation and revoke remote access",
+      "Conduct a full forensic analysis first",
+      "Disable the corporate VPN entirely",
+      "Inform the employee’s department and wait for evidence"
+    ],
+    correctAnswer: 0,
+    explanation: "The first priority during active exfiltration is immediate containment (isolating the endpoint and revoking remote access sessions/credentials) to stop ongoing data loss and prevent lateral movement before conducting in-depth forensic investigation.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q120",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Secuzin Corp. is a large enterprise performing millions of financial transactions daily, making it critical to analyze security logs efficiently, detect suspicious activities, and respond to incidents in real time. Its SOC is responsible for managing security logs from various network devices, including firewalls, intrusion detection systems (IDS), authentication servers, and cloud services. To fulfill compliance and regulatory requirements that mandate long-term archival of logs, you need to provide a log storage solution that is scalable to handle increasing log volumes, provides encryption for data security, and is seamlessly accessible.\n\nWhich storage solution should you choose to meet these long-term log storage requirements?",
+    options: [
+      "Distributed storage system",
+      "Hybrid storage system",
+      "Local storage",
+      "Cloud storage"
+    ],
+    correctAnswer: 3,
+    explanation: "Cloud storage best meets long-term log archival requirements when priorities are elastic scalability, encryption at rest/in transit, durability, and lifecycle management (hot to cold/glacier tiers) for audits and forensic queries.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q121",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A security team is configuring a newly deployed SIEM system. With limited resources, they must prioritize monitoring scenarios that provide the greatest security benefit. The team understands an effective SIEM relies on well-defined use cases tailored to the organization’s environment.\n\nWhich factor should guide their selection of use cases?",
+    options: [
+      "Select use cases based on the availability and quality of data from existing data sources",
+      "Prioritize use cases that address zero-day attacks",
+      "Implement as many use cases as the SIEM supports to cover all threats",
+      "Focus on use cases required to meet industry compliance standards"
+    ],
+    correctAnswer: 0,
+    explanation: "SIEM detections cannot function without reliable telemetry. Selecting use cases based on existing, high-quality, normalized data sources ensures rapid time-to-value, low false positives, and actionable alerts rather than untested, noisy rules.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q122",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "The team receives an alert about a ransomware incident affecting the organization’s email infrastructure. Forensic analysis identifies the ransomware exploited CVE-2024-0123 in an unpatched mail server. The incident response team is deploying an emergency patch (KB5025941), updating mail filtering rules to block malicious payloads, and implementing additional network segmentation to limit lateral movement.\n\nWhich phase of the Incident Response process is the SOC currently executing?",
+    options: [
+      "Evidence gathering and forensic analysis",
+      "Eradication",
+      "Containment",
+      "Recovery"
+    ],
+    correctAnswer: 1,
+    explanation: "Eradication focuses on eliminating the root cause of the compromise, closing exploited vulnerabilities (emergency patching), removing threat pathways (updating filtering rules), and purging malware artifacts to prevent reinfection.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q123",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "A mid-sized financial institution’s SOC is overwhelmed by thousands of daily alerts, many based on Indicators of Compromise (IoCs) such as suspicious IPs, hashes, and domains. These alerts lack context about whether they truly pose a threat. Analysts waste time on low-priority incidents while severe threats may be missed. The team lacks tools and intelligence to correlate IoCs with real-world threats, making prioritization difficult and causing alert fatigue.\n\nWhich poses the greatest challenge in this environment?",
+    options: [
+      "Malware-centric and CTI are not equivalent",
+      "Information overload",
+      "Budget and enterprise skill",
+      "Distinguishing IoC from CTI"
+    ],
+    correctAnswer: 3,
+    explanation: "The fundamental challenge is treating raw, low-context indicators (IoCs) as actionable Cyber Threat Intelligence (CTI). CTI adds threat actor motivation, campaigns, confidence scoring, and context needed to prioritize alerts effectively.",
+    difficulty: "Hard"
+  },
+  {
+    id: "csa-q124",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "Following a high-priority security incident, you initiate an internal investigation after reports confirm a serious data breach in which sensitive customer data was stolen from a critical web server. During your investigation of server logs, you discover repeated requests attempting to access files and directories outside of the web server’s root directory using URL path manipulation (e.g. `../` sequences).\n\nWhich type of web application attack caused this incident?",
+    options: [
+      "Cross-Site Scripting (XSS) Attacks",
+      "Directory Traversal",
+      "SQL Injection Attack",
+      "Session Attacks: Cookie Poisoning"
+    ],
+    correctAnswer: 1,
+    explanation: "Directory Traversal (or Path Traversal) abuses dot-dot-slash (`../`) sequences and encoded variants to escape the web root directory and read unauthorized system files, passwords, or configuration files.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q125",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A financial institution's SIEM is generating a high number of false positives, causing alert fatigue among SOC analysts. To reduce this burden and improve threat detection accuracy, the organization integrates AI capabilities into the SIEM. After implementation, the SOC team observes a significant decrease in redundant alerts, along with faster detection of genuine threats.\n\nWhich AI capability contributed to this improvement?",
+    options: [
+      "Dynamic rule optimization",
+      "Rule validation and testing",
+      "Automated rule generation",
+      "Data integration enhancement"
+    ],
+    correctAnswer: 0,
+    explanation: "Dynamic rule optimization uses machine learning to adaptively adjust detection thresholds, suppress repetitive benign noise, and score alerts based on environmental context and historical baselines.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q126",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "ABC is a multinational company with multiple offices across the globe, and you are working as an L2 SOC analyst. You are implementing a centralized logging solution to enhance security monitoring. You must ensure that log messages from routers, firewalls, and servers across multiple remote offices are efficiently collected and forwarded to a central syslog server. To streamline this process, an intermediate component is deployed to receive log messages from different devices and forward them to the main syslog server.\n\nWhich component in the syslog infrastructure performs this function?",
+    options: [
+      "Syslog Database",
+      "Syslog Collector",
+      "Syslog Listener",
+      "Syslog Relay"
+    ],
+    correctAnswer: 3,
+    explanation: "A Syslog Relay acts as an intermediate proxy/forwarder that receives syslog packets from local network segments and forwards them upstream to the central syslog server/collector, optimizing bandwidth and buffering across WAN links.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q127",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "At 9:15 AM EST, Marcus Wong, a financial operations analyst, contacts the SOC after noticing Excel spreadsheets automatically encrypting with unusual file extensions (e.g., .locked or .crypt). The Tier 1 analyst logs the incident as ticket #INC-89271 in the SIEM and escalates it to a Tier 2 SOC analyst for investigation.\n\nWhich phase of the Incident Response process is currently taking place?",
+    options: [
+      "Containment",
+      "Incident triage",
+      "Incident recording and assignment",
+      "Notification"
+    ],
+    correctAnswer: 2,
+    explanation: "Documenting reported symptoms, generating a tracked ticket (#INC-89271), establishing initial severity, and assigning ownership to Tier 2 represents the Incident Recording and Assignment phase.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q128",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "An organization with a complex IT infrastructure is planning to implement a SIEM solution to improve its threat detection and response capabilities. Due to the scale and complexity of its systems, the organization opts for a phased deployment approach to ensure a smooth implementation and reduce potential risks.\n\nWhich of the following should be the first phase in their SIEM deployment strategy?",
+    options: [
+      "Automate incident response processes",
+      "Implement User and Entity Behavior Analytics (UEBA)",
+      "Set up the log management component before deploying the SIEM component",
+      "Configure security analytics to identify potential threats"
+    ],
+    correctAnswer: 2,
+    explanation: "The essential first phase of any SIEM deployment is establishing log management (ingestion, parsers, normalization, storage, time sync) before layering analytics, UEBA, or automated response.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q129",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A financial institution suspects an insider threat due to unauthorized access attempts on restricted databases. However, SIEM alerts lack sufficient information to differentiate between legitimate and malicious access. The SOC manager recommends integrating contextual data to improve detection.\n\nWhich contextual data source should be integrated in this scenario?",
+    options: [
+      "User context from HR systems",
+      "Location and physical context from CPS sensors",
+      "Threat context from external threat intelligence feeds",
+      "Vulnerability context"
+    ],
+    correctAnswer: 0,
+    explanation: "HR identity context (job title, department, employment status, active/terminated state) provides the vital business context to determine whether database access attempts align with authorized job responsibilities.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q130",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "You are working in a Cybersecurity Operations Center for PayOnline. Your team monitors logs across firewalls, authentication servers, and endpoint detection tools. The team currently relies on manual log reviews of raw, unstructured text logs. To enable efficient querying, dashboards, and automated alert rules, the team decides to implement an automated log parsing solution that maps text into structured fields.\n\nWhich log parsing technique should you implement?",
+    options: [
+      "Delimited parsing",
+      "Key-value extraction",
+      "Grok filters",
+      "Semantic parsing"
+    ],
+    correctAnswer: 2,
+    explanation: "Grok filters use regular expression patterns to match, extract, and convert raw unstructured or semi-structured log strings into standardized structured fields (e.g. IP, timestamp, user, action).",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q131",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "A hospital's SOC team has detected multiple malware incidents that disrupted access to patient records. The SOC analysts have been tasked with eradicating current infections and preventing future attacks by addressing the underlying vulnerabilities that allowed the malware to breach defenses.\n\nWhich eradication step would best address these root causes?",
+    options: [
+      "Fixing devices",
+      "Using antivirus tools for quarantine",
+      "Updating the malware database with vendor signatures",
+      "Implementing blacklist techniques for file execution"
+    ],
+    correctAnswer: 0,
+    explanation: "'Fixing devices' entails remediating the underlying root causes: applying security patches, repairing insecure configurations, closing open attack surfaces, and restoring systems to hardened baselines.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q132",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "At GlobalTech, the SOC team detects a suspicious ransomware outbreak affecting multiple endpoints. After successfully isolating the infected systems from the network, the Digital Forensics team begins their investigation. They deploy a forensics workstation to acquire RAM dumps, extract Windows Event Logs, and collect network PCAP files from the compromised hosts.\n\nWhich phase of the Incident Response lifecycle is currently underway?",
+    options: [
+      "Recovery",
+      "Evidence gathering and forensic analysis",
+      "Containment",
+      "Eradication"
+    ],
+    correctAnswer: 1,
+    explanation: "Acquiring live volatile memory (RAM dumps), disk event logs, and packet captures (PCAP) represents the Evidence Gathering and Forensic Analysis phase, immediately following endpoint containment.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q133",
+    examId: "csa",
+    moduleId: 2,
+    moduleName: "Module 2: Cyber Threats, IoCs & Attack Methodologies",
+    question: "In a large corporation, the HR department receives an urgent email from someone impersonating a high-level executive, requesting immediate transfer of sensitive employee data. The email includes an official-looking document and a phone number for verification. The HR manager calls the number, 'confirms' the request with the fraudster, and transfers the data.\n\nWhat type of attack did the HR department face?",
+    options: [
+      "Credential theft",
+      "Web-based intrusion",
+      "Social engineering attack",
+      "Application exploit"
+    ],
+    correctAnswer: 2,
+    explanation: "This is a Social Engineering attack (specifically executive impersonation / Business Email Compromise) exploiting psychological urgency, authority pretexting, and rogue verification channels.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q134",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "Lisa Carter, a SOC analyst at a financial services firm, is performing a risk assessment following suspicious alerts detected by the SIEM. She evaluates three key factors: the likelihood of an attack succeeding based on current threat intelligence, the impact on critical business operations if the breach occurs, and the value of the assets targeted.\n\nUsing the standard risk assessment approach, which scenario represents the highest risk to the organization?",
+    options: [
+      "High Likelihood, High Impact, High Asset Value",
+      "Low Likelihood, High Impact, Low Asset Value",
+      "Low Likelihood, Low Impact, High Asset Value",
+      "High Likelihood, Low Impact, High Asset Value"
+    ],
+    correctAnswer: 0,
+    explanation: "Risk is fundamentally a calculation of Likelihood x Impact (multiplied or amplified by Asset Value/Criticality). When all three factors are High, the aggregate risk score reaches the maximum level.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q135",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "Daniel Clark is a cybersecurity specialist in the Cloud SOC for a government agency. His team needs a security solution that can enforce access policies to prevent unauthorized access to cloud-based applications, monitor and restrict data sharing within SaaS, PaaS, and IaaS environments, ensure compliance with government regulations for data security and privacy, and apply security controls to prevent sensitive data exposure in the cloud.\n\nWhich Cloud SOC technology is his team using?",
+    options: [
+      "Cloud Access Security Broker (CASB)",
+      "Cloud Security Posture Management (CSPM)",
+      "Cloud Workload Protection Platform (CWPP)",
+      "Cloud-native anomaly detection"
+    ],
+    correctAnswer: 0,
+    explanation: "A Cloud Access Security Broker (CASB) sits between cloud users and cloud applications to enforce data loss prevention (DLP), access control policies, encryption, and compliance across SaaS/PaaS/IaaS.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q136",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "At 10:30 AM, during routine monitoring, Tier 1 SOC analyst Jennifer detects unusual network traffic and confirms an active LockBit ransomware infection targeting systems in the finance department. She escalates to the SOC lead, Sarah, who activates the Incident Response Team (IRT) and instructs the network team to isolate the finance department’s VLAN to prevent further spread across the network.\n\nWhich phase of the Incident Response process is currently being implemented?",
+    options: [
+      "Evidence gathering and forensic analysis",
+      "Eradication",
+      "Notification",
+      "Containment"
+    ],
+    correctAnswer: 3,
+    explanation: "Segmenting or isolating the finance VLAN to block lateral movement and contain the ransomware blast radius is a definitive Containment action.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q137",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "Mark Reynolds, a SOC analyst at a healthcare organization, is monitoring the SIEM system when he detects a series of unusual login attempts targeting critical patient data servers. After investigating, the SOC determines that the threat has a 'Likely' chance of occurring and could cause 'Significant' damage, including operational disruptions and HIPAA penalties.\n\nUsing a standard Risk Matrix, how would this risk be categorized in terms of overall severity?",
+    options: [
+      "Medium",
+      "Low",
+      "High",
+      "Very High"
+    ],
+    correctAnswer: 2,
+    explanation: "In a standard risk evaluation matrix, pairing a 'Likely' probability with 'Significant' impact categorizes the overall risk severity as 'High'.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q138",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "Bob is a SOC analyst in a multinational corporation that relies on a centralized file-sharing server for storing confidential project documents. One morning, he notices that critical financial records were altered without authorization outside business hours.\n\nWhich log should he check to determine who accessed the files and when the modifications occurred?",
+    options: [
+      "Security logs",
+      "Authentication logs",
+      "Firewall logs",
+      "Network logs"
+    ],
+    correctAnswer: 0,
+    explanation: "Windows Security Logs (specifically Object Access auditing events like Event ID 4663) capture granular file read, write, modify, and delete actions alongside user identity and timestamps.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q139",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "During routine monitoring, the SIEM detects an unusual spike in outbound data transfer from a critical database server. The typical outbound traffic for this server is around 5 MB/hour, but in the past 10 minutes, it has sent over 500 MB to an external IP address. No predefined signatures match this activity, but the SIEM raises an alert due to deviations from the server’s normal behavior profile.\n\nWhich detection method is responsible for this alert?",
+    options: [
+      "Heuristic-based detection",
+      "Signature-based detection",
+      "Rule-based detection",
+      "Anomaly-based detection"
+    ],
+    correctAnswer: 3,
+    explanation: "Anomaly-based detection models normal baseline behavior over time and triggers alerts when statistical deviations or behavioral outliers (such as 500 MB vs 5 MB baseline) occur.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q140",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "TechSolutions discovered a potential data leak after sensitive customer data was found on a public code repository. The CISO demands a comprehensive investigation into the extent of the data breach, timeline of events, and root cause.\n\nWhich SOC role is critical in gathering and analyzing digital evidence for this in-depth investigation?",
+    options: [
+      "SOC Manager",
+      "Subject Matter Expert",
+      "Threat Intelligence Analyst",
+      "Forensic Analyst"
+    ],
+    correctAnswer: 3,
+    explanation: "The Forensic Analyst specializes in digital evidence acquisition, chain of custody preservation, timeline reconstruction, artifact carving, and root-cause analysis.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q141",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A large financial institution receives thousands of security logs daily from firewalls, IDS systems, and user authentication platforms. The SOC uses an AI-driven SIEM system with Natural Language Processing (NLP) capabilities to streamline threat detection.\n\nWhich option best illustrates the advantage of NLP in SIEM?",
+    options: [
+      "Eliminates the need for data normalization and correlation in SIEM systems",
+      "Allows security analysts to write SIEM rules using complex programming languages",
+      "Simplifies infrastructure management by reducing hardware dependencies",
+      "Enables analysis of text-based data from logs and communications to detect threats"
+    ],
+    correctAnswer: 3,
+    explanation: "Natural Language Processing (NLP) enables automated inspection, entity extraction, sentiment, and intent analysis from human-readable textual sources like email bodies, ticket descriptions, and unstructured log messages.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q142",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A large financial institution has identified a sophisticated phishing campaign targeting employees. The organization uses SIEM, EDR, XDR, and XSOAR. You are asked to recommend an integration strategy to improve real-time threat correlation across multiple telemetry domains and streamline automated incident response workflows.\n\nWhich integration would meet these goals?",
+    options: [
+      "Integrate XDR with SIEM",
+      "Integrate XDR with XSOAR",
+      "Integrate EDR with SIEM",
+      "Integrate EDR with XSOAR"
+    ],
+    correctAnswer: 1,
+    explanation: "XDR provides cross-layered detection and high-fidelity correlation (endpoints, network, email, cloud), while XSOAR orchestrates automated response playbooks (account lock, session revoke, host isolation) in real time.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q143",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "One week after a ransomware attack disrupted operations, Sarah, a SOC analyst, leads a review meeting with the IT team, security engineers, and business unit representatives. The group reviews the incident timeline, calculates a business impact of $157,000, and identifies seven critical improvements to enhance detection and response processes.\n\nWhich Incident Response phase is this?",
+    options: [
+      "Recovery",
+      "Post-Incident Activities",
+      "Eradication",
+      "Containment"
+    ],
+    correctAnswer: 1,
+    explanation: "Conducting post-mortems, calculating financial and operational impact, documenting lessons learned, and updating playbooks after service restoration is the Post-Incident Activities phase.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q144",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "A SOC analyst detects multiple instances of powershell.exe being launched with the -ExecutionPolicy Bypass and -NoProfile arguments on a domain controller. The parent process is winrm.exe, and the activity occurs during non-business hours.\n\nWhat should be the analyst’s primary focus?",
+    options: [
+      "Look for Event ID 4625 to check for failed authentication attempts before execution",
+      "Investigate Event ID 7045 to determine if a malicious service was created",
+      "Search for Event ID 4688 to find similar PowerShell executions within the last 24 hours",
+      "Review Event ID 5145 to see if unauthorized network shares were accessed"
+    ],
+    correctAnswer: 2,
+    explanation: "Event ID 4688 (Process Creation with Command Line Auditing enabled) is the primary artifact to scope the execution pattern, identifying identical PowerShell invocations, parent processes, and affected hosts across the domain.",
+    difficulty: "Hard"
+  },
+  {
+    id: "csa-q145",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A rapidly growing e-commerce company wants to implement a SIEM solution to improve its security posture and comply with PCI DSS requirements. They need a solution that offers both the necessary technological features and the expertise to manage the system effectively, with continuous compliance support and data security assistance.\n\nWhich SIEM solution is appropriate for this company?",
+    options: [
+      "Cloud-based SIEM",
+      "In-house SIEM",
+      "Managed SIEM",
+      "Security analytics"
+    ],
+    correctAnswer: 2,
+    explanation: "A Managed SIEM (via an MSSP or managed detection provider) provides both the technology platform and 24/7 dedicated engineering expertise, detection tuning, and continuous compliance audit support.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q146",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "An attacker attempts to gain unauthorized access to a secure network by repeatedly guessing login credentials. The SIEM is configured to generate an alert after detecting 10 consecutive failed login attempts within a short timeframe. However, the attacker successfully logs in on the 9th attempt, bypassing the alert threshold. The security team only discovers the incident later.\n\nWhat type of alert classification does this represent?",
+    options: [
+      "False negative",
+      "False positive",
+      "True negative",
+      "True positive"
+    ],
+    correctAnswer: 0,
+    explanation: "A False Negative occurs when a genuine security incident or malicious activity takes place, but the detection system/SIEM fails to generate an alert.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q147",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "A SOC analyst notices a sharp increase in CPU utilization on a critical backend database server. Forensic analysis reveals an unrecognized scheduled task executing a PowerShell script that attempts to connect to an unknown external IP address.\n\nWhat should you do to confirm whether this is an active attack?",
+    options: [
+      "Analyze the network logs to identify external connections",
+      "Check file integrity and detect recent unauthorized changes",
+      "Analyze the system logs for unauthorized changes",
+      "Review user access logs for unauthorized activity"
+    ],
+    correctAnswer: 0,
+    explanation: "Analyzing network logs (firewall, proxy, EDR network telemetry, NetFlow) confirms active C2 beaconing, external data exfiltration, connection frequency, and payload transfer in real time.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q148",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "A large financial organization has experienced an increase in sophisticated cyber threats, including zero-day attacks and APTs. The CISO is exploring AI-driven solutions that can automatically analyze large datasets, detect anomalies, and adapt to evolving threats in real time without predefined signatures and with minimal human oversight.\n\nWhich key AI technology should the organization focus on?",
+    options: [
+      "Static IP blocking",
+      "Machine learning (ML)",
+      "Natural language processing (NLP)",
+      "Heuristic-based signature detection"
+    ],
+    correctAnswer: 1,
+    explanation: "Machine Learning (ML) builds dynamic statistical models of baseline behavior to uncover novel zero-days, anomalous telemetry, and stealthy APT tactics without relying on static signature files.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q149",
+    examId: "csa",
+    moduleId: 6,
+    moduleName: "Module 6: Incident Response (IR)",
+    question: "The SOC team is investigating a phishing attack that targeted multiple employees. During the Containment Phase, they need to determine how users interacted with the malicious email: whether they opened it, clicked links, downloaded attachments, or entered credentials.\n\nWhich specific activity helps the SOC team understand user interactions with the phishing email?",
+    options: [
+      "Monitoring and containment validation",
+      "Malware infection check",
+      "User action verification",
+      "Blocking command-and-control (C2) and email traffic"
+    ],
+    correctAnswer: 2,
+    explanation: "User action verification examines email security logs, URL click-time protection, and authentication logs to determine which specific users clicked the link, downloaded attachments, or submitted credentials.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q150",
+    examId: "csa",
+    moduleId: 4,
+    moduleName: "Module 4: Incident Detection with SIEM",
+    question: "You are part of a team of SOC analysts in a multinational organization that processes large volumes of security logs from various sources, including firewalls, IDS, and authentication servers. Your team is having difficulty detecting incidents because logs from different systems are analyzed in isolation.\n\nWhat approach should you implement to automatically match related log events across disparate systems based on predefined rules?",
+    options: [
+      "Log normalization",
+      "Log collection",
+      "Log correlation",
+      "Log transformation"
+    ],
+    correctAnswer: 2,
+    explanation: "Log correlation links related events from disparate data sources (firewalls, EDR, authentication, DNS) across a timeline using shared attributes (IP, user, session) to identify multi-stage attacks.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q151",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "A SOC analyst monitoring authentication logs detects a sudden spike in failed login attempts targeting multiple servers during non-business hours originating from a single external IP address. Some attempts use valid employee usernames.\n\nGiven this suspicious activity, what is the appropriate next step in the threat-hunting process to assess the situation further?",
+    options: [
+      "Rapid response",
+      "Continuous improvement",
+      "Establish a baseline",
+      "Investigate and analyze"
+    ],
+    correctAnswer: 3,
+    explanation: "Once an anomaly is identified, the threat hunting workflow transitions into 'Investigate and Analyze' to verify if any attempts succeeded, identify targeted accounts, and determine the attack blast radius.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q152",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "A financial services company decides to adopt the SOC Capability Maturity Model (CMM) to transition from Level 1 (Ad-hoc / Initial) to Level 3 (Defined / Repeatable).\n\nBased on the SOC CMM, what should be the first priority in transitioning from Level 1 to Level 3?",
+    options: [
+      "Outsourcing SOC operations to an MSSP",
+      "Deploying advanced deception technologies",
+      "Establishing well-defined and repeatable incident response processes",
+      "Implementing AI-driven automation for real-time detection and response"
+    ],
+    correctAnswer: 2,
+    explanation: "Transitioning from Level 1 to Level 3 requires moving from ad-hoc responses to documented, standardized, and repeatable incident response procedures and playbooks.",
+    difficulty: "Medium"
+  },
+  {
+    id: "csa-q153",
+    examId: "csa",
+    moduleId: 5,
+    moduleName: "Module 5: Enhanced Detection with Threat Intelligence",
+    question: "A security analyst in a Threat Intelligence team observes a high volume of DNS requests to domains matching Domain Generation Algorithm (DGA) patterns, indicating possible malware C2 communication. The team begins defining intelligence requirements, identifying critical data sources, refining detection criteria, and improving monitoring strategies.\n\nWhich stage of the Cyber Threat Intelligence (CTI) process does this align with?",
+    options: [
+      "Automated tool",
+      "Requirement analysis",
+      "Filtering CTI",
+      "Intelligence buy-in"
+    ],
+    correctAnswer: 1,
+    explanation: "Requirement Analysis (the Planning and Direction phase of the CTI lifecycle) defines the specific intelligence questions, necessary data sources, and operational detection objectives needed to address a threat.",
+    difficulty: "Hard"
+  },
+  {
+    id: "csa-q154",
+    examId: "csa",
+    moduleId: 1,
+    moduleName: "Module 1: Security Operations & Management",
+    question: "The SOC team is tasked with enhancing the security of an organization's network infrastructure. The organization's public-facing web servers need to be isolated from the internal private network containing sensitive employee data to create a buffer zone that limits lateral movement if compromised.\n\nWhich network architecture component would you recommend implementing to establish this isolated region?",
+    options: [
+      "Demilitarized Zone (DMZ)",
+      "Intrusion Detection System (IDS)",
+      "Firewall",
+      "Honeypot"
+    ],
+    correctAnswer: 0,
+    explanation: "A Demilitarized Zone (DMZ) is a perimeter network segment that exposes external-facing services to untrusted networks while strictly isolating them from internal private subnets.",
+    difficulty: "Easy"
+  },
+  {
+    id: "csa-q155",
+    examId: "csa",
+    moduleId: 3,
+    moduleName: "Module 3: Incidents, Events & Logging",
+    question: "You are working as a SOC analyst for a cloud-based service provider that relies on PostgreSQL databases. During a security review, you discover that logs are not being generated for failed authentication attempts, slow queries, or database errors. To ensure PostgreSQL captures and stores logs for centralized monitoring and SIEM forwarding, which configuration parameter must be enabled?",
+    options: [
+      "logging-collector",
+      "log_collector",
+      "loggingcollector",
+      "logging-collector (with space)"
+    ],
+    correctAnswer: 1,
+    explanation: "In PostgreSQL configuration (`postgresql.conf`), `log_collector` (boolean: `on`) enables the background process that captures stderr/csv log output and writes it to log files for centralized SIEM ingestion.",
+    difficulty: "Medium"
   }
 ];

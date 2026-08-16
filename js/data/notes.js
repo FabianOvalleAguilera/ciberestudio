@@ -141,5 +141,75 @@ export const defaultNotes = [
         desc: "Connects who attacked (Adversary), using what weapon (Capability), through where (Infrastructure), targeting whom (Victim)."
       }
     ]
+  },
+  {
+    id: "note-ir-deep",
+    examId: "csa",
+    category: "Incident Response",
+    title: "Granular SOC Incident Response Actions Matrix",
+    description: "Operational classification of SOC actions across every stage of an active incident.",
+    type: "table",
+    headers: ["IR Phase", "Primary Goal", "Key SOC Actions & Artifacts", "Real-world Exam Scenario"],
+    rows: [
+      ["Recording & Assignment", "Formal logging & ownership", "Ticket generation (#INC-xxx), assigning to Tier 2/IRT, setting initial severity.", "Logging an encrypted spreadsheet ticket and escalating to Tier 2."],
+      ["Triage & Identification", "Verify and determine scope", "User action verification (who clicked/opened), hash lookup, event log review.", "Checking mail filter trace and sign-in logs to identify compromised users."],
+      ["Containment", "Stop the bleeding / limit spread", "VLAN isolation, network disconnection, credential revocation, blocking C2 IPs/domains.", "Isolating the Finance VLAN upon confirming LockBit ransomware."],
+      ["Evidence Gathering & DFIR", "Preserve volatile evidence", "RAM dump acquisition (Volatility), forensic disk imaging, PCAP network captures.", "Deploying forensic workstation to dump RAM and collect event logs."],
+      ["Eradication", "Eliminate root cause & threats", "Emergency CVE patching, mail filtering rules, removing persistence (services/tasks), fixing devices.", "Applying emergency patch KB5025941 for CVE-2024-0123 on mail server."],
+      ["Recovery", "Restore trusted operations", "Rebuilding systems from clean golden images, restoring backups, validating telemetry.", "Bringing patched mail server back online with enhanced monitoring."],
+      ["Post-Incident Activities", "Learn and harden defenses", "Post-mortem timeline review, calculating business/financial impact, updating playbooks.", "Holding review meeting 1 week later, calculating $157k impact, fixing gaps."]
+    ]
+  },
+  {
+    id: "note-cloud-soc",
+    examId: "csa",
+    category: "Cloud SOC & Advanced Tech",
+    title: "Cloud Security, AI & Automation Frameworks",
+    description: "Architecture breakdown of CASB, CSPM, CWPP, XDR, XSOAR, and AI-driven SIEM optimizations.",
+    type: "cards",
+    items: [
+      {
+        title: "CASB (Cloud Access Security Broker)",
+        code: "Policy Enforcement Point (SaaS / IaaS / PaaS)",
+        desc: "Governs cloud application access, enforces Data Loss Prevention (DLP), blocks unauthorized file sharing, and ensures regulatory compliance."
+      },
+      {
+        title: "CSPM vs CWPP",
+        code: "CSPM = Posture / Config | CWPP = Workload Runtime",
+        desc: "CSPM audits misconfigurations and compliance drift across cloud infrastructure. CWPP protects compute instances, containers, and serverless runtime."
+      },
+      {
+        title: "XDR + XSOAR Synergy",
+        code: "XDR (Detection) + XSOAR (Automated Orchestration)",
+        desc: "XDR correlates telemetry across endpoint, network, cloud, and email. XSOAR runs automated playbooks for immediate containment and response."
+      },
+      {
+        title: "AI SIEM: Dynamic Rule Optimization",
+        code: "Machine Learning Adaptive Baselines",
+        desc: "Automatically tunes static thresholds and suppresses repetitive benign noise, drastically reducing analyst alert fatigue and false positives."
+      },
+      {
+        title: "NLP in SOC Operations",
+        code: "Natural Language Processing for Textual Telemetry",
+        desc: "Extracts entities, evaluates intent, and detects threats in human-readable communications, phishing email bodies, and unstructured tickets."
+      }
+    ]
+  },
+  {
+    id: "note-logging-deep",
+    examId: "csa",
+    category: "Log Architecture & Auditing",
+    title: "Enterprise Log Architecture & Service Configuration",
+    description: "Essential configuration parameters, regex patterns, and logging roles for SOC monitoring.",
+    type: "table",
+    headers: ["Component / Technology", "Configuration / Syntax", "Function & SOC Relevance"],
+    rows: [
+      ["Syslog Relay", "Intermediate forwarder", "Collects logs from branch routers/servers and forwards upstream to central Syslog Server over WAN."],
+      ["PostgreSQL Auditing", "log_collector = on", "Enables writing stderr/CSV logs to files in postgresql.conf for SIEM log shipping and compliance."],
+      ["Grok Log Parsing", "%{IP:client} %{WORD:method}", "Pattern matching using regex to convert raw unstructured text logs into normalized structured fields."],
+      ["Hex Color Code Regex", "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})", "Regex pattern to extract 3-digit shorthand or 6-digit full hexadecimal codes from logs."],
+      ["Windows Time Tampering", "Event ID 4616 & 4618", "Logs system time changes (timestomping) and monitored security condition anomalies in Windows Security log."],
+      ["Process Execution Scoping", "Event ID 4688", "Logs new process creation with command-line arguments (e.g. powershell.exe -ExecutionPolicy Bypass)."]
+    ]
   }
 ];

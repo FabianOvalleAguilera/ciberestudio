@@ -191,5 +191,137 @@ export const defaultMindmaps = [
         details: ["Refine PIRs and optimize collection feeds for future iterations."]
       }
     ]
+  },
+  {
+    id: "map-ransomware-ir",
+    examId: "csa",
+    title: "Live Ransomware Incident Response Playbook",
+    description: "Step-by-step containment, forensic preservation, eradication, and lessons learned workflow.",
+    steps: [
+      {
+        number: "1",
+        title: "Detection & Escalation",
+        role: "Tier 1 SOC Analyst",
+        badge: "Triage",
+        summary: "Alert triggers from unusual network spikes, locked file extensions (.locked, .crypt), or high CPU utilization.",
+        details: [
+          "Create incident ticket (#INC-xxx) and set high/critical severity.",
+          "Escalate immediately to Tier 2 and activate the Incident Response Team (IRT)."
+        ]
+      },
+      {
+        number: "2",
+        title: "Rapid Network Containment",
+        role: "Network / Tier 2 IRT",
+        badge: "Containment",
+        summary: "Cut off lateral movement paths before encryption spreads across the organization.",
+        details: [
+          "Isolate affected VLANs or endpoints via EDR network isolation.",
+          "Block outbound C2 IP addresses and suspicious domains on perimeter firewalls.",
+          "Revoke active remote access sessions and disable compromised accounts."
+        ]
+      },
+      {
+        number: "3",
+        title: "Volatile Evidence Acquisition",
+        role: "Forensic Analyst",
+        badge: "DFIR",
+        summary: "Capture volatile evidence in memory before rebooting or powering off hosts.",
+        details: [
+          "Acquire live RAM dumps (using WinPmem / FTK Imager / Volatility).",
+          "Collect active network connection sockets, process trees (Event ID 4688), and PCAPs.",
+          "Preserve Security Event Logs (4624, 4625, 4616, 7045)."
+        ]
+      },
+      {
+        number: "4",
+        title: "Eradication & Remediation",
+        role: "Security Engineers / SysAdmins",
+        badge: "Eradication",
+        summary: "Address the root cause vulnerability that allowed initial entry.",
+        details: [
+          "Deploy emergency patches (e.g. KB hotfixes for exploited server CVEs).",
+          "Update email filtering rules and WAF signatures to block malicious payloads.",
+          "Remove malicious scheduled tasks, registry run keys, and unauthorized services."
+        ]
+      },
+      {
+        number: "5",
+        title: "Recovery & Return-to-Service",
+        role: "Operations & SOC",
+        badge: "Recovery",
+        summary: "Restore business operations safely from verified, immutable backups.",
+        details: [
+          "Restore data from clean, offline backup sets.",
+          "Validate server integrity and verify monitoring telemetry is active.",
+          "Re-enable network access under enhanced logging surveillance."
+        ]
+      },
+      {
+        number: "6",
+        title: "Post-Incident Review (Lessons Learned)",
+        role: "CISO / SOC Lead / Stakeholders",
+        badge: "Post-Mortem",
+        summary: "Evaluate financial and operational impact to prevent future recurrence.",
+        details: [
+          "Calculate downtime and financial loss (e.g. business impact report).",
+          "Identify defensive gaps and update incident playbooks.",
+          "Author new detection rules (Sigma/YARA) for threat behavior patterns."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-dga-hunting",
+    examId: "csa",
+    title: "Proactive Threat Hunting: DGA & C2 Beaconing",
+    description: "Hunting workflow for stealthy Domain Generation Algorithms and command-and-control communication.",
+    steps: [
+      {
+        number: "1",
+        title: "Hypothesis & Anomaly Discovery",
+        role: "Threat Hunter",
+        badge: "Hypothesis",
+        summary: "Identify suspicious high-entropy DNS queries or periodic beaconing bursts to external IPs.",
+        details: [
+          "Observation: Multiple failed NXDOMAIN responses with pseudo-random domain strings.",
+          "Hypothesis: Active malware using Domain Generation Algorithms (DGA) for C2 fallback."
+        ]
+      },
+      {
+        number: "2",
+        title: "Requirement Analysis (CTI Planning)",
+        role: "Threat Intelligence Analyst",
+        badge: "CTI Direction",
+        summary: "Define intelligence requirements and required data sources.",
+        details: [
+          "Identify necessary telemetry: Passive DNS logs, proxy logs, EDR network sockets.",
+          "Specify query thresholds, time windows, and reputation scoring metrics."
+        ]
+      },
+      {
+        number: "3",
+        title: "Data Correlation & Process Attribution",
+        role: "Tier 3 Analyst",
+        badge: "Investigation",
+        summary: "Link network connections to parent processes on the originating endpoint.",
+        details: [
+          "Query Event ID 4688 / Sysmon Event ID 1 to locate the initiating process.",
+          "Inspect command line flags (e.g. `powershell.exe -ExecutionPolicy Bypass -NoProfile`).",
+          "Extract embedded scripts or payloads via static code analysis (base64 decoding)."
+        ]
+      },
+      {
+        number: "4",
+        title: "Containment & Rule Authoring",
+        role: "SOC Engineering",
+        badge: "Detection Ops",
+        summary: "Mitigate active risk and convert findings into permanent detection rules.",
+        details: [
+          "Blacklist malicious domain patterns at the DNS resolver level.",
+          "Author custom SIEM correlation rules and Sigma rules to detect similar executions automatically."
+        ]
+      }
+    ]
   }
 ];
