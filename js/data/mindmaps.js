@@ -378,5 +378,60 @@ export const defaultMindmaps = [
         ]
       }
     ]
+  },
+  {
+    id: "map-identity-compromise-soar",
+    examId: "csa",
+    title: "Compromised Account & Impossible Travel Playbook",
+    description: "Automated SOAR and analyst workflow for credential theft, impossible travel, and privilege escalation.",
+    steps: [
+      {
+        number: "1",
+        title: "Alert Trigger & Impossible Travel Flag",
+        role: "Microsoft Sentinel / SIEM",
+        badge: "Detection",
+        summary: "SIEM correlates concurrent logins from two distant geographic locations or non-business hours.",
+        details: [
+          "Evaluate user risk score and anomalous IP reputation.",
+          "Flag Event ID 4624 (Logon Type 3 / Type 10) and Entra ID Sign-in logs."
+        ]
+      },
+      {
+        number: "2",
+        title: "Automated SOAR Deprovisioning",
+        role: "SOAR Playbook (Logic Apps)",
+        badge: "Automated",
+        summary: "Instant machine-speed containment to stop dwell time and data exfiltration.",
+        details: [
+          "Execute 'Deprovisioning Users' Playbook.",
+          "Revoke active OAuth refresh tokens and terminate web sessions.",
+          "Disable Active Directory / Cloud account temporarily and force password reset."
+        ]
+      },
+      {
+        number: "3",
+        title: "Blast Radius & Lateral Movement Triage",
+        role: "Tier 2 SOC Analyst",
+        badge: "Investigation",
+        summary: "Investigate whether the compromised account accessed restricted files or hopped to other servers.",
+        details: [
+          "Check Event ID 4624 Type 3 logons across multiple servers (Pass-the-Hash check).",
+          "Inspect NetBIOS helper and SMB file share access (Event ID 5145).",
+          "Review cloud audit logs (AWS CloudTrail / Microsoft Graph) for unauthorized API calls."
+        ]
+      },
+      {
+        number: "4",
+        title: "Remediation & Account Hardening",
+        role: "Identity Team & SOC Lead",
+        badge: "Recovery",
+        summary: "Restore legitimate user access under strengthened authentication controls.",
+        details: [
+          "Enforce FIDO2 / Phishing-Resistant Multi-Factor Authentication (MFA).",
+          "Apply stricter Conditional Access policies (device compliance + trusted IP).",
+          "Document incident root cause and update threat hunting baselines."
+        ]
+      }
+    ]
   }
 ];

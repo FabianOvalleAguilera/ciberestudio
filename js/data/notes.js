@@ -245,5 +245,52 @@ export const defaultNotes = [
       ["Incident Report Automation", "MagicTree", "Tree-based data management and automated report generation tool for incident handlers."],
       ["Incident Remediation", "CrowdStrike Falcon Orchestrator", "Security automation and orchestration platform for recovering from endpoint/app compromises."]
     ]
+  },
+  {
+    id: "note-mitre-d3fend-matrix",
+    examId: "csa",
+    category: "Defensive Frameworks",
+    title: "MITRE D3FEND: Defensive Technique Ontology",
+    description: "Systematic mapping of defensive techniques to adversary tactics defined in MITRE ATT&CK.",
+    type: "table",
+    headers: ["D3FEND Tactic", "Defensive Technique", "Offensive Threat Neutralized", "SOC Implementation"],
+    rows: [
+      ["Model", "System Baseline Profiling", "Anomalous execution & APT footholds", "Host Integrity Monitoring (diffing before/after snapshots)."],
+      ["Harden", "Credential Encryption & MFA", "Credential Stuffing / Brute-Force", "FIDO2, conditional access, and password rotation."],
+      ["Isolate", "Process & Network Isolation", "Lateral Movement & Worm propagation", "VLAN segmentation, EDR host isolation, container sandboxing."],
+      ["Deceive", "Decoy Environment / Honeypots", "Network Reconnaissance & Discovery", "Deploying honey-tokens and fake service listeners."],
+      ["Detect", "Dynamic Rule Optimization & Behavioral ML", "Signature evasion & Zero-days", "Machine learning baselines to tune alert thresholds."],
+      ["Evict", "User Deprovisioning & Session Invalidation", "Account takeover / Impossible travel", "SOAR playbooks revoking tokens and resetting AD passwords."]
+    ]
+  },
+  {
+    id: "note-cloud-threat-ops",
+    examId: "csa",
+    category: "Cloud SOC & SOAR",
+    title: "AWS Cloud Threat Monitoring & Sentinel SOAR Guide",
+    description: "Core cloud threat detection services and automated SOAR response workflows.",
+    type: "cards",
+    items: [
+      {
+        title: "Amazon GuardDuty",
+        code: "ML Threat Detection Engine",
+        desc: "Ingests CloudTrail, VPC Flow Logs, and DNS query logs to detect account compromise, Bitcoin mining, unauthorized API calls, and C2 communication."
+      },
+      {
+        title: "Amazon Macie vs AWS Config",
+        code: "Macie = S3 DLP | Config = Compliance",
+        desc: "Macie scans S3 buckets for exposed PII/PHI. AWS Config monitors configuration drift and compliance against governance rules."
+      },
+      {
+        title: "Microsoft Sentinel: TAXII Connector",
+        code: "Automated Threat Intel Sharing",
+        desc: "Ingests machine-readable STIX indicator feeds (IPs, domains, hashes) over standard HTTPS TAXII servers directly into Sentinel analytics."
+      },
+      {
+        title: "Sentinel Playbooks (Azure Logic Apps)",
+        code: "Automated SOAR Execution",
+        desc: "Executes automated workflows: isolate compromised endpoint, deprovision user account, block malicious IP on firewall, and alert incident commander."
+      }
+    ]
   }
 ];

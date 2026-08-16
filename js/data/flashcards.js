@@ -271,5 +271,101 @@ export const defaultFlashcards = [
     front: "Windows Event Log: 'Wrapping' & 'Keywords' Field",
     back: "• Wrapping: Circular buffer retention policy where new incoming events overwrite oldest records.\n• Keywords Field: Bitmask metadata tagging the event (e.g. `Audit Success`, `Audit Failure`, `Correlation Hint`).",
     module: 3
+  },
+  {
+    id: "fc-35",
+    examId: "csa",
+    category: "Defensive Frameworks",
+    front: "MITRE D3FEND vs MITRE ATT&CK",
+    back: "• ATT&CK: Knowledge base of adversary Tactics, Techniques, and Procedures (Offensive ontology).\n• D3FEND: Knowledge graph of defensive techniques (credential hardening, process isolation, model baselining) mapped systematically to adversary tactics.",
+    module: 2
+  },
+  {
+    id: "fc-36",
+    examId: "csa",
+    category: "Cloud SOAR",
+    front: "Microsoft Sentinel: Playbooks",
+    back: "• Automated orchestration workflows built on Azure Logic Apps.\n• Executes automated response tasks: IP/domain blocking, account deprovisioning, alert enrichment, and ticket escalation at machine speed.",
+    module: 4
+  },
+  {
+    id: "fc-37",
+    examId: "csa",
+    category: "Threat Hunting",
+    front: "Unstructured vs Structured vs Entity-Driven Hunting",
+    back: "• Unstructured Hunting: Initiated by weak signals/anomalies (e.g. encrypted periodic traffic to unfamiliar IP without IoCs) where the analyst freely explores telemetry.\n• Structured Hunting: Driven by a formal hypothesis mapped to MITRE ATT&CK techniques.\n• Entity-Driven: Focused on high-value targets (VIP users, critical servers).",
+    module: 5
+  },
+  {
+    id: "fc-38",
+    examId: "csa",
+    category: "Web Reconnaissance",
+    front: "HTTP TRACE and OPTIONS Methods (Security Risks)",
+    back: "• OPTIONS: Reveals supported HTTP methods (PUT, DELETE) to help attackers identify exploitable functionality.\n• TRACE: Echoes back the full HTTP request including headers/cookies, enabling Cross-Site Tracing (XST) and session token theft.",
+    module: 2
+  },
+  {
+    id: "fc-39",
+    examId: "csa",
+    category: "Endpoint Auditing",
+    front: "Host Integrity Monitoring (Snapshot Comparison)",
+    back: "• Captures system state snapshots before and after suspected infection.\n• Diffs file system hashes, registry autorun keys, services, and scheduled tasks to uncover stealthy persistence and tampering.",
+    module: 3
+  },
+  {
+    id: "fc-40",
+    examId: "csa",
+    category: "Windows Logs",
+    front: "Windows Setup Event Log (`Setup.evtx`)",
+    back: "• Dedicated Windows log channel for software installation, package servicing, and application setup events.\n• Primary artifact to determine exactly when and how unauthorized software was installed.",
+    module: 3
+  },
+  {
+    id: "fc-41",
+    examId: "csa",
+    category: "Cloud SOC (AWS)",
+    front: "Amazon GuardDuty vs Macie vs Config vs Security Hub",
+    back: "• GuardDuty: Intelligent threat detection analyzing CloudTrail, VPC Flow Logs, and DNS queries via ML.\n• Macie: Sensitive data discovery and DLP in S3 buckets.\n• AWS Config: Configuration compliance and drift auditing.\n• Security Hub: Centralized finding aggregator and compliance dashboard.",
+    module: 1
+  },
+  {
+    id: "fc-42",
+    examId: "csa",
+    category: "SOAR Playbooks",
+    front: "Deprovisioning Users SOAR Playbook (Identity Containment)",
+    back: "• Automated workflow triggered upon detecting compromised accounts or impossible travel.\n• Disables account, revokes active session tokens, resets credentials, and invalidates refresh tokens immediately.",
+    module: 4
+  },
+  {
+    id: "fc-43",
+    examId: "csa",
+    category: "Windows Lateral Movement",
+    front: "Event ID 4624 Logon Type 3 + NetBIOS Burst",
+    back: "• Rapid succession of Logon Type 3 (Network Logon) across multiple endpoints indicates adversary Lateral Movement via SMB, Pass-the-Hash, or remote administration tools.",
+    module: 3
+  },
+  {
+    id: "fc-44",
+    examId: "csa",
+    category: "APT Lifecycle",
+    front: "APT Lifecycle: Persistence vs Cleanup Phases",
+    back: "• Persistence: Maintaining ongoing footholds via scheduled tasks, registry run keys, or backdoors.\n• Cleanup: Anti-forensic phase where attackers overwrite event logs, timestomp files, and wipe forensic traces to evade attribution.",
+    module: 2
+  },
+  {
+    id: "fc-45",
+    examId: "csa",
+    category: "Web Server Logs",
+    front: "Common Log Format (CLF) vs Extended Log Format (ELF)",
+    back: "• CLF: `RemoteHost Ident AuthUser [Date] \"Request\" Status Bytes`\n• ELF (Combined): Adds `Referer` and `User-Agent` fields to CLF, which are essential for identifying web scanning tools and bot attacks.",
+    module: 3
+  },
+  {
+    id: "fc-46",
+    examId: "csa",
+    category: "Threat Intelligence Transport",
+    front: "TAXII Protocol (Role in SIEM Integration)",
+    back: "• Trusted Automated eXchange of Intelligence Information.\n• Application-layer protocol over HTTPS that standardizes real-time ingestion and sharing of STIX threat feeds into SIEMs like Microsoft Sentinel.",
+    module: 5
   }
 ];
