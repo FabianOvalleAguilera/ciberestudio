@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOC Analyst Study Hub | EC-Council CSA & Certification Center</title>
+  <meta name="description" content="Interactive study platform for SOC analysts and cybersecurity certifications (EC-Council CSA, CySA+, BTL1).">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- App Header / Topbar -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">SOC ANALYST STUDY HUB</div>
+        <div class="brand-subtitle">Certification & Readiness Command Center</div>
+      </div>
+    </div>
+
+    <!-- Exam Switcher -->
+    <div class="exam-selector-box">
+      <label for="global-exam-select">Exam:</label>
+      <select id="global-exam-select" class="exam-select">
+        <!-- Dynamically injected -->
+      </select>
+    </div>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button id="open-add-q-modal" class="btn btn-secondary btn-sm" title="Add a custom question">
+        ➕ Add Question
+      </button>
+      <button id="open-new-exam-modal" class="btn btn-secondary btn-sm" title="Create new certification">
+        🎓 New Certification
+      </button>
+      <button id="open-import-export-modal" class="btn btn-primary btn-sm" title="Export or import JSON backup">
+        💾 Backup / JSON
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="app-nav">
+    <button class="nav-tab active" data-tab="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      Dashboard
+    </button>
+    <button class="nav-tab" data-tab="quiz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+      Quiz & Mock Exam
+    </button>
+    <button class="nav-tab" data-tab="notes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      Cheat Sheets & Notes
+    </button>
+    <button class="nav-tab" data-tab="mindmaps">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+      SOC Workflows & Mindmaps
+    </button>
+    <button class="nav-tab" data-tab="flashcards">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M7 15h0M2 9.5h20"></path></svg>
+      3D Flashcards
+    </button>
+  </nav>
+
+  <!-- Main App Content Container -->
+  <main class="main-container">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: DASHBOARD                          -->
+    <!-- ========================================== -->
+    <section id="view-dashboard" class="tab-view active">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span id="dash-hero-code" class="badge badge-cyan" style="margin-bottom: 0.5rem;">Exam Code: 312-39</span>
+          <h2 id="dash-hero-title">EC-Council CSA - Certified SOC Analyst</h2>
+          <p id="dash-hero-desc">SOC operations, log architecture, SIEM correlation, cyber threat intelligence, and incident response.</p>
+          <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button id="dash-launch-quiz" class="btn btn-primary">⚡ Start Express Quiz</button>
+            <button id="dash-launch-notes" class="btn btn-secondary">📑 View Cheat Sheets</button>
+            <button id="dash-launch-maps" class="btn btn-secondary">🗺️ Explore Workflows</button>
+            <button id="dash-launch-cards" class="btn btn-secondary">🎴 Review Flashcards</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid-4" style="margin-bottom: 1.5rem;">
+        <div class="card stat-card">
+          <div class="stat-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </div>
+          <div>
+            <div id="dash-stat-total-q" class="stat-val">115</div>
+            <div class="stat-label">Questions in Bank</div>
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-icon emerald">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <div>
+            <div id="dash-stat-avg-score" class="stat-val">0%</div>
+            <div class="stat-label">Average Score</div>
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <div>
+            <div id="dash-stat-quizzes-taken" class="stat-val">0</div>
+            <div class="stat-label">Quizzes Completed</div>
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-icon amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </div>
+          <div>
+            <div id="dash-stat-missed-count" class="stat-val">0</div>
+            <div class="stat-label">Questions to Review</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard 2-column detailed breakdown -->
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            📊 Overall Exam Readiness
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+            Readiness calculated in real-time based on your quiz and mock exam scores.
+          </p>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+            <span>Syllabus Mastery</span>
+            <span id="dash-readiness-text" style="color: var(--accent-cyan);">0% Readiness</span>
+          </div>
+          <div class="progress-bar-bg" style="height: 10px;">
+            <div id="dash-readiness-fill" class="progress-bar-fill cyan" style="width: 0%;"></div>
+          </div>
+          <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+            <div style="font-size: 0.85rem; color: #fff; font-weight: 600; margin-bottom: 0.25rem;">💡 Study Tip:</div>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+              Focus on Windows Event IDs (4624, 4625, 1102, 7045), Syslog severities (0-7), and NIST SP 800-61 IR phases.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">
+            📚 Modules & Domains Breakdown
+          </h3>
+          <div id="dash-module-breakdown">
+            <!-- Dynamically injected -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: QUIZ & MOCK EXAM                   -->
+    <!-- ========================================== -->
+    <section id="view-quiz" class="tab-view">
+      <!-- Setup Panel -->
+      <div id="quiz-setup-section">
+        <div style="margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 800;">Exam Simulator & Practice Modes</h2>
+          <p style="color: var(--text-muted);">Choose a study mode to test your knowledge:</p>
+        </div>
+
+        <div class="quiz-config-panel">
+          <!-- Mode 1: Express -->
+          <div class="quiz-mode-card">
+            <div>
+              <span class="badge badge-cyan">Fast & Interactive</span>
+              <h3>⚡ Express Quiz</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">
+                10 randomized questions with immediate answer feedback and technical explanations.
+              </p>
+            </div>
+            <button id="start-express-quiz" class="btn btn-primary" style="margin-top: 1.25rem; width: 100%;">
+              Start Express (10 Questions)
+            </button>
+          </div>
+
+          <!-- Mode 2: By Module -->
+          <div class="quiz-mode-card">
+            <div>
+              <span class="badge badge-purple">Domain Targeted</span>
+              <h3>🎯 Module Practice</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+                Focus exclusively on a single certification module.
+              </p>
+              <select id="quiz-module-select" class="form-select" style="margin-bottom: 0.75rem;">
+                <!-- Dynamic -->
+              </select>
+            </div>
+            <button id="start-module-quiz" class="btn btn-purple" style="width: 100%;">
+              Practice Module
+            </button>
+          </div>
+
+          <!-- Mode 3: Missed Questions -->
+          <div class="quiz-mode-card">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge badge-rose">Reinforcement</span>
+                <span id="missed-count-badge" class="badge badge-amber">0 Available</span>
+              </div>
+              <h3>🔄 Review Mistakes</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">
+                Targeted practice re-testing only the questions you previously missed.
+              </p>
+            </div>
+            <button id="start-missed-quiz" class="btn btn-danger" style="margin-top: 1.25rem; width: 100%;">
+              Review Missed Questions
+            </button>
+          </div>
+
+          <!-- Mode 4: Full Mock Exam -->
+          <div class="quiz-mode-card">
+            <div>
+              <span class="badge badge-emerald">Real Simulation</span>
+              <h3>⏱️ Timed Mock Exam</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">
+                Full 3-hour timed exam simulation with comprehensive score breakdown at the end.
+              </p>
+            </div>
+            <button id="start-mock-quiz" class="btn btn-emerald" style="margin-top: 1.25rem; width: 100%;">
+              Start Timed Mock Exam
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Quiz View -->
+      <div id="quiz-active-section" style="display: none;" class="quiz-active-area">
+        <div class="quiz-top-info">
+          <div>
+            <span id="quiz-module-badge" class="badge badge-purple" style="margin-bottom: 0.25rem;">Module 1</span>
+            <div id="quiz-progress-text" style="font-size: 0.85rem; color: var(--text-muted);">Question 1 of 10</div>
+          </div>
+          <div class="quiz-timer">
+            ⏱️ <span id="quiz-timer-display">00:00</span>
+          </div>
+          <div>
+            <span id="quiz-difficulty-badge" class="badge badge-emerald">Easy</span>
+            <button id="quiz-exit-btn" class="btn btn-secondary btn-sm" style="margin-left: 0.5rem;">Exit</button>
+          </div>
+        </div>
+
+        <div class="progress-bar-bg" style="margin-bottom: 1.5rem; height: 6px;">
+          <div id="quiz-progress-bar" class="progress-bar-fill cyan" style="width: 10%;"></div>
+        </div>
+
+        <div class="question-card">
+          <div id="quiz-question-text" class="question-text">
+            <!-- Question text injected -->
+          </div>
+
+          <div id="quiz-options-container" class="options-list">
+            <!-- Options injected -->
+          </div>
+
+          <!-- Explanation box -->
+          <div id="quiz-explanation-box" class="explanation-box" style="display: none;">
+            <!-- Explanation injected -->
+          </div>
+        </div>
+
+        <div class="quiz-footer-actions">
+          <button id="quiz-prev-btn" class="btn btn-secondary">⬅️ Previous</button>
+          <button id="quiz-next-btn" class="btn btn-primary">Next ➡️</button>
+          <button id="quiz-finish-btn" class="btn btn-emerald" style="display: none;">🏁 Finish Quiz</button>
+        </div>
+      </div>
+
+      <!-- Quiz Results View -->
+      <div id="quiz-results-section" style="display: none;">
+        <div class="card results-card">
+          <div id="results-score-circle" class="results-score-circle">
+            <!-- Score percentage -->
+          </div>
+          <h2 id="results-title" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem;">Exam Completed!</h2>
+          <p id="results-desc" style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem auto;">
+            Evaluation complete.
+          </p>
+          <div style="display: flex; justify-content: center; gap: 1rem;">
+            <button id="quiz-retry-btn" class="btn btn-primary">🔄 Return to Quiz Menu</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 3: CHEAT SHEETS & NOTES               -->
+    <!-- ========================================== -->
+    <section id="view-notes" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800;">Technical Cheat Sheets & Notes</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Quick reference tables, SIEM queries, and critical Event IDs.</p>
+        </div>
+        <div style="width: 320px;">
+          <input type="text" id="notes-search-input" class="form-input" placeholder="🔍 Search ID, command, concept...">
+        </div>
+      </div>
+
+      <div class="notes-container">
+        <!-- Sidebar Categories -->
+        <aside class="notes-sidebar" id="notes-categories-list">
+          <!-- Dynamically injected -->
+        </aside>
+
+        <!-- Main Notes Content -->
+        <div id="notes-display-area">
+          <!-- Dynamically injected -->
+        </div>
+      </div>
+
+      <!-- Personal Notepad Editor -->
+      <div class="personal-notes-editor">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 1.15rem; font-weight: 700;">📝 Personal Study Notepad</h3>
+          <span id="notes-save-status" style="font-size: 0.8rem; color: var(--accent-emerald);">✅ Auto-saved locally</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
+          Take custom notes and mnemonics for this certification. Automatically stored in local storage.
+        </p>
+        <textarea id="personal-notes-textarea" class="notes-textarea" placeholder="Write your personal notes, commands, and reminders here..."></textarea>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: SOC WORKFLOWS & MINDMAPS           -->
+    <!-- ========================================== -->
+    <section id="view-mindmaps" class="tab-view">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800;">SOC Workflows & Concept Diagrams</h2>
+        <p style="color: var(--text-muted);">Step-by-step visual workflows of critical cyber defense lifecycles.</p>
+      </div>
+
+      <div class="mindmap-selector" id="mindmap-tabs-container">
+        <!-- Tabs injected dynamically -->
+      </div>
+
+      <div class="card" style="margin-bottom: 1.5rem;">
+        <h3 id="mindmap-title" style="font-size: 1.3rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.35rem;"></h3>
+        <p id="mindmap-desc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;"></p>
+        
+        <div id="mindmap-flow-container" class="flowchart-container">
+          <!-- Flow steps injected -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 5: 3D FLASHCARDS                      -->
+    <!-- ========================================== -->
+    <section id="view-flashcards" class="tab-view">
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800;">3D Active Recall Flashcards</h2>
+        <p style="color: var(--text-muted);">Click the card or press Flip to reveal the definition.</p>
+      </div>
+
+      <div id="flashcards-container-area">
+        <div class="flashcards-wrapper">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span id="fc-category-badge" class="badge badge-purple">General</span>
+            <span id="fc-counter-text" style="font-size: 0.85rem; color: var(--text-muted);">Card 1 of 10</span>
+          </div>
+
+          <div class="progress-bar-bg" style="margin-bottom: 1.25rem; height: 6px;">
+            <div id="fc-progress-fill" class="progress-bar-fill emerald" style="width: 0%;"></div>
+          </div>
+
+          <!-- 3D Flashcard Element -->
+          <div id="active-flashcard-3d" class="flashcard-3d">
+            <!-- Front Face -->
+            <div class="flashcard-face flashcard-front">
+              <span class="flashcard-hint">❓ Question / Key Concept</span>
+              <div id="fc-front-text" style="font-size: 1.3rem; font-weight: 700; line-height: 1.5; color: #fff;">
+                Loading flashcard...
+              </div>
+              <span class="flashcard-hint" style="color: var(--accent-cyan);">👉 Click to flip</span>
+            </div>
+
+            <!-- Back Face -->
+            <div class="flashcard-face flashcard-back">
+              <span class="flashcard-hint" style="color: var(--accent-emerald);">💡 Answer / Definition</span>
+              <div id="fc-back-text" style="font-size: 1.05rem; font-weight: 500; line-height: 1.6; color: var(--text-main); white-space: pre-line;">
+                Answer
+              </div>
+              <span class="flashcard-hint" style="color: var(--accent-purple);">🔄 Click to flip again</span>
+            </div>
+          </div>
+
+          <!-- Flashcard Navigation Controls -->
+          <div class="flashcard-controls">
+            <button id="fc-prev-btn" class="btn btn-secondary">⬅️ Previous</button>
+            <button id="fc-flip-btn" class="btn btn-primary">🔄 Flip Card</button>
+            <button id="fc-master-btn" class="btn btn-secondary btn-sm">⭐ Mark as Mastered</button>
+            <button id="fc-next-btn" class="btn btn-secondary">Next ➡️</button>
+            <button id="fc-shuffle-btn" class="btn btn-secondary" title="Shuffle flashcards">🔀</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL 1: REGISTER NEW CERTIFICATION        -->
+  <!-- ========================================== -->
+  <div id="modal-new-exam" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 700;">🎓 Register New Certification</h3>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="form-new-exam">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Certification Name *</label>
+            <input type="text" id="new-exam-name" class="form-input" placeholder="e.g. CompTIA Security+" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Exam Code *</label>
+            <input type="text" id="new-exam-code" class="form-input" placeholder="e.g. SY0-701" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Full Title</label>
+          <input type="text" id="new-exam-title" class="form-input" placeholder="e.g. Security+ Certification">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" id="new-exam-desc" class="form-input" placeholder="Brief overview of the certification scope...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Passing Score (%)</label>
+          <input type="number" id="new-exam-score" class="form-input" value="70" min="50" max="100">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Modules / Domains (One per line)</label>
+          <textarea id="new-exam-modules" class="form-textarea" rows="4" placeholder="Module 1: General Security Concepts&#10;Module 2: Threats, Vulnerabilities & Mitigations&#10;Module 3: Security Architecture"></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Certification</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 2: ADD CUSTOM QUESTION               -->
+  <!-- ========================================== -->
+  <div id="modal-add-question" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 700;">➕ Add Question to Bank</h3>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="form-add-question">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Module / Domain</label>
+            <select id="add-q-module" class="form-select" required>
+              <!-- Dynamic -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Difficulty</label>
+            <select id="add-q-diff" class="form-select">
+              <option value="Easy">Easy</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Question Text *</label>
+          <textarea id="add-q-text" class="form-textarea" rows="3" placeholder="Enter scenario or question text..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Option A *</label>
+          <input type="text" id="add-q-opt-a" class="form-input" placeholder="Option A" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Option B *</label>
+          <input type="text" id="add-q-opt-b" class="form-input" placeholder="Option B" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Option C *</label>
+          <input type="text" id="add-q-opt-c" class="form-input" placeholder="Option C" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Option D *</label>
+          <input type="text" id="add-q-opt-d" class="form-input" placeholder="Option D" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Correct Option *</label>
+          <select id="add-q-correct" class="form-select">
+            <option value="0">Option A</option>
+            <option value="1">Option B</option>
+            <option value="2">Option C</option>
+            <option value="3">Option D</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Technical Explanation</label>
+          <textarea id="add-q-explanation" class="form-textarea" rows="2" placeholder="Explain why the correct answer is right..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Question</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL 3: JSON BACKUP / IMPORT & EXPORT     -->
+  <!-- ========================================== -->
+  <div id="modal-import-export" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 700;">💾 JSON Backup & Bulk Import</h3>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+          Export all your questions, notes, and study progress as a JSON file or import question packs from other devices.
+        </p>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <button id="btn-export-backup" class="btn btn-emerald">
+            📥 Download Full Backup (.JSON)
+          </button>
+          <button id="btn-import-backup" class="btn btn-purple">
+            📤 Import JSON File
+          </button>
+          <input type="file" id="import-file-input" accept=".json" style="display: none;">
+        </div>
+
+        <div style="background: var(--bg-tertiary); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <strong style="font-size: 0.9rem; color: #fff;">📋 Bulk Question JSON Schema:</strong>
+            <button id="btn-copy-template" class="btn btn-secondary btn-sm">Copy Template</button>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+            Format questions with this JSON schema and import them directly:
+          </p>
+          <pre style="background: #05080f; padding: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); overflow-x: auto;">
+{
+  "questions": [
+    {
+      "id": "csa-custom-1",
+      "examId": "csa",
+      "moduleId": 3,
+      "moduleName": "Module 3: Incidents, Events & Logging",
+      "question": "Which Event ID records failed logon attempts?",
+      "options": ["4624", "4625", "4720", "7045"],
+      "correctAnswer": 1,
+      "explanation": "Event ID 4625 indicates an authentication failure.",
+      "difficulty": "Easy"
+    }
+  ]
+}</pre>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary close-modal-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
