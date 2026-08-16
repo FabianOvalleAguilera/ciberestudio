@@ -8,7 +8,7 @@ $listener.Prefixes.Add($prefix)
 $listener.Start()
 
 Write-Host "=================================================" -ForegroundColor Cyan
-Write-Host "  🚀 SOC Study Hub servidor iniciado en:" -ForegroundColor Green
+Write-Host "  🚀 CiberEstudio servidor iniciado en:" -ForegroundColor Green
 Write-Host "  $prefix" -ForegroundColor Yellow
 Write-Host "  Presiona Ctrl+C para detener." -ForegroundColor Gray
 Write-Host "=================================================" -ForegroundColor Cyan
