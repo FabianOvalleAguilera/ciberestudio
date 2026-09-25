@@ -2,10 +2,28 @@
 export const defaultExams = [
   {
     id: "csa",
-    name: "EC-Council CSA",
+    name: "EC-Council CSA (v1 Bank)",
     code: "312-39",
-    title: "Certified SOC Analyst",
+    title: "Certified SOC Analyst - Base Bank",
     description: "SOC operations, log architecture, SIEM correlation, cyber threat intelligence, and incident response.",
+    passingScore: 70,
+    totalQuestionsRealExam: 100,
+    durationMinutes: 180,
+    modules: [
+      { id: 1, name: "Module 1: Security Operations & Management", shortName: "SOC Ops" },
+      { id: 2, name: "Module 2: Cyber Threats, IoCs & Attack Methodologies", shortName: "Threats & IoCs" },
+      { id: 3, name: "Module 3: Incidents, Events & Logging", shortName: "Logs & Events" },
+      { id: 4, name: "Module 4: Incident Detection with SIEM", shortName: "SIEM & Detection" },
+      { id: 5, name: "Module 5: Enhanced Detection with Threat Intelligence", shortName: "Threat Intel (CTI)" },
+      { id: 6, name: "Module 6: Incident Response (IR)", shortName: "Incident Response" }
+    ]
+  },
+  {
+    id: "csa-v2",
+    name: "EC-Council CSA v2 (2026 Exam)",
+    code: "312-39 v2",
+    title: "Certified SOC Analyst - 200 Qs Full Bank",
+    description: "Banco oficial completo de 200 preguntas de examen 312-39 (DumpsPlanet 2026) con explicaciones técnicas avanzadas, análisis de logs SIEM, CTI y respuesta a incidentes.",
     passingScore: 70,
     totalQuestionsRealExam: 100,
     durationMinutes: 180,

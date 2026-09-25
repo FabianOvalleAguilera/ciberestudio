@@ -20,13 +20,29 @@ const STORAGE_KEYS = {
 
 export const StorageManager = {
   init() {
-    // Inicializar exámenes si no existen
-    if (!localStorage.getItem(STORAGE_KEYS.EXAMS)) {
+    // Sincronizar exámenes por defecto (añadir o actualizar nuevos como csa-v2)
+    try {
+      const existingExams = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXAMS)) || [];
+      const existingExamIds = new Set(existingExams.map(e => e.id));
+      let updatedExams = [...existingExams];
+      defaultExams.forEach(defEx => {
+        if (!existingExamIds.has(defEx.id)) {
+          updatedExams.push(defEx);
+        } else {
+          const idx = updatedExams.findIndex(e => e.id === defEx.id);
+          if (idx >= 0) {
+            updatedExams[idx] = { ...defEx, ...updatedExams[idx] };
+          }
+        }
+      });
+      localStorage.setItem(STORAGE_KEYS.EXAMS, JSON.stringify(updatedExams));
+    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.EXAMS, JSON.stringify(defaultExams));
     }
+
     // Examen actual por defecto
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM)) {
-      localStorage.setItem(STORAGE_KEYS.CURRENT_EXAM, 'csa');
+      localStorage.setItem(STORAGE_KEYS.CURRENT_EXAM, 'csa-v2');
     }
     // Sincronizar banco de preguntas (añadir nuevas preguntas que no existan)
     try {
@@ -167,7 +183,11 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
-      return all.filter(n => n.examId === targetExamId);
+      const res = all.filter(n => n.examId === targetExamId);
+      if (res.length === 0 && targetExamId === 'csa-v2') {
+        return all.filter(n => n.examId === 'csa');
+      }
+      return res;
     } catch (e) {
       return [];
     }
@@ -197,7 +217,11 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.MINDMAPS)) || [];
-      return all.filter(m => m.examId === targetExamId);
+      const res = all.filter(m => m.examId === targetExamId);
+      if (res.length === 0 && targetExamId === 'csa-v2') {
+        return all.filter(m => m.examId === 'csa');
+      }
+      return res;
     } catch (e) {
       return [];
     }
@@ -207,7 +231,11 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.FLASHCARDS)) || [];
-      return all.filter(f => f.examId === targetExamId);
+      const res = all.filter(f => f.examId === targetExamId);
+      if (res.length === 0 && targetExamId === 'csa-v2') {
+        return all.filter(f => f.examId === 'csa');
+      }
+      return res;
     } catch (e) {
       return [];
     }
