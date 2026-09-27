@@ -1,411 +1,170 @@
-// Interactive Mindmaps and SOC Workflows (English)
+// Interactive Mindmaps and SOC Workflows for EC-Council CSA v2 (2026 Exam - 200 Qs Bank)
+// Each workflow directly models real scenarios, test objectives, and IR playbooks from the 200 Qs PDF bank.
+
 export const defaultMindmaps = [
   {
-    id: "map-soc-escalation",
-    examId: "csa",
-    title: "SOC Escalation Flow & Analyst Roles",
-    description: "End-to-end alert journey from ingestion to deep response and proactive hunting.",
+    id: "map-incident-escalation",
+    examId: "csa-v2",
+    title: "SOC Escalation, Triage & IRT Validation Flow",
+    description: "End-to-end incident lifecycle: from sensor alert ingestion to IRT escalation, validation, and post-mortem review.",
     steps: [
       {
         number: "1",
         title: "Alert Generation & Ingestion",
-        role: "SIEM / EDR / NIDS / Sensors",
-        badge: "Automated",
-        summary: "Collectors normalize logs; correlation rules trigger high-fidelity alerts.",
-        details: [
-          "Ingested sources: Windows Security, Syslog, Firewalls, Cloud (AWS CloudTrail, Entra ID).",
-          "Real-time correlation: Matched against threat intelligence feeds (known IoCs).",
-          "Initial priority assigned: Low, Medium, High, Critical."
-        ]
-      },
-      {
-        number: "2",
-        title: "Tier 1: Initial Triage & Validation",
-        role: "SOC Analyst Tier 1 (Triage)",
-        badge: "Tier 1",
-        summary: "Analyst investigates the alert within 15 minutes to rule out false positives.",
-        details: [
-          "Quick verification: Is this an authorized admin performing scheduled tasks?",
-          "Context enrichment: Query IPs/hashes on VirusTotal, AbuseIPDB, and WHOIS.",
-          "Decision: If False Positive -> Document and close. If True Positive -> Open ticket and escalate to Tier 2."
-        ]
-      },
-      {
-        number: "3",
-        title: "Tier 2: Deep Investigation & Containment",
-        role: "SOC Analyst Tier 2 (Incident Responder)",
-        badge: "Tier 2",
-        summary: "Determines blast radius, executes containment strategies, and eliminates threats.",
-        details: [
-          "Endpoint forensic triage: Inspect running volatile processes, active network sockets, and registry run keys.",
-          "Containment actions: Isolate host via EDR, block malicious domains on firewalls, and reset compromised credentials.",
-          "Eradication & Recovery: Remove malware artifacts and verify host integrity."
-        ]
-      },
-      {
-        number: "4",
-        title: "Tier 3: Threat Hunting & Advanced Forensics",
-        role: "SOC Analyst Tier 3 (Threat Hunter / Forensic Expert)",
-        badge: "Tier 3",
-        summary: "Proactive hypothesis-driven hunting for evasive threats and malware reverse engineering.",
-        details: [
-          "Hypothesis-based hunting: Searching for stealthy adversary techniques using MITRE ATT&CK.",
-          "Malware analysis: Static and dynamic sandboxing of unfamiliar binaries.",
-          "Feedback loop: Author new Sigma/YARA rules to prevent future blindspots."
-        ]
-      },
-      {
-        number: "5",
-        title: "Incident Management & Post-Mortem",
-        role: "SOC Lead / Incident Commander",
-        badge: "Management",
-        summary: "Formal documentation, executive reporting, and lessons learned review.",
-        details: [
-          "Incident timeline and root-cause analysis documentation.",
-          "Lessons learned meeting with key stakeholders.",
-          "Standard Operating Procedures (SOPs) and risk matrix updates."
-        ]
-      }
-    ]
-  },
-  {
-    id: "map-killchain-mitre",
-    examId: "csa",
-    title: "Cyber Kill Chain vs. MITRE ATT&CK",
-    description: "Mapping the 7 attack phases with corresponding defense and detection techniques.",
-    steps: [
-      {
-        number: "1",
-        title: "1. Reconnaissance",
-        role: "External Phase",
-        badge: "Kill Chain #1",
-        summary: "Adversary gathers intelligence on target (OSINT, active port scans, spear-phishing prep).",
-        details: [
-          "MITRE Tactic: Reconnaissance (TA0043).",
-          "Key Techniques: Active Scanning (T1595), Search Open Technical Databases (T1596).",
-          "SOC Detection: Inbound port scan alerts on perimeter firewalls and anomalous external DNS queries."
-        ]
-      },
-      {
-        number: "2",
-        title: "2. Weaponization & 3. Delivery",
-        role: "Vector Delivery",
-        badge: "Kill Chain #2-3",
-        summary: "Pairing exploit with payload (e.g., malicious Office macro) and transmitting to victim.",
-        details: [
-          "MITRE Tactics: Initial Access (TA0001) and Resource Development (TA0042).",
-          "Key Techniques: Spearphishing Attachment (T1566.001), Drive-by Compromise (T1189).",
-          "SOC Detection: Email gateway telemetry (SPF/DKIM/DMARC failures), sandboxing alerts."
-        ]
-      },
-      {
-        number: "3",
-        title: "4. Exploitation & 5. Installation",
-        role: "Endpoint Execution",
-        badge: "Kill Chain #4-5",
-        summary: "Malicious code execution on the endpoint and establishing local persistence.",
-        details: [
-          "MITRE Tactics: Execution (TA0002), Persistence (TA0003), Privilege Escalation (TA0004).",
-          "Key Techniques: PowerShell (T1059.001), Registry Run Keys (T1547.001), Scheduled Task (T1053).",
-          "SOC Detection: Sysmon Event ID 1 (Process Create), Event ID 7045 (Service Installed), Event ID 4688."
-        ]
-      },
-      {
-        number: "4",
-        title: "6. Command and Control (C2)",
-        role: "Communication Channel",
-        badge: "Kill Chain #6",
-        summary: "Malware opens encrypted/stealthy outbound channel to receive adversary commands.",
-        details: [
-          "MITRE Tactic: Command and Control (TA0011).",
-          "Key Techniques: Application Layer Protocol (T1071 - HTTP/HTTPS/DNS Tunneling), Dynamic Resolution (T1568).",
-          "SOC Detection: Regular interval beaconing traffic on proxy/firewall, unusually long DNS TXT queries (DGA)."
-        ]
-      },
-      {
-        number: "5",
-        title: "7. Actions on Objectives",
-        role: "Final Impact",
-        badge: "Kill Chain #7",
-        summary: "Adversary fulfills their mission: sensitive data exfiltration or ransomware encryption.",
-        details: [
-          "MITRE Tactics: Collection (TA0009), Exfiltration (TA0010), Impact (TA0040).",
-          "Key Techniques: Data Encrypted for Impact (T1486), Exfiltration Over C2 Channel (T1041).",
-          "SOC Detection: Massive spike in outbound bandwidth on NetFlow, burst of file rename events with ransomware extensions."
-        ]
-      }
-    ]
-  },
-  {
-    id: "map-cti-lifecycle",
-    examId: "csa",
-    title: "Threat Intelligence Lifecycle (CTI)",
-    description: "The 6 continuous stages of generating and operationalizing threat intelligence.",
-    steps: [
-      {
-        number: "1",
-        title: "1. Planning & Direction",
-        role: "Requirements Definition",
-        badge: "PIRs",
-        summary: "Establish Priority Intelligence Requirements (PIRs) based on business risks.",
-        details: ["Who are our most likely adversaries?", "Which critical crown jewel assets require protection?"]
-      },
-      {
-        number: "2",
-        title: "2. Collection",
-        role: "Data Ingestion",
+        role: "SIEM / EDR / Snort IDS / CASB",
         badge: "Ingestion",
-        summary: "Gather raw data from diverse sources: OSINT, commercial feeds, internal telemetry, and dark web.",
-        details: ["STIX/TAXII feeds, honeypots, underground forums, and historical incident artifacts."]
-      },
-      {
-        number: "3",
-        title: "3. Processing",
-        role: "Structuring",
-        badge: "Parsing",
-        summary: "Transform unstructured raw data into standardized formats (deduplication, IoC extraction).",
-        details: ["Normalization to STIX 2.1 schemas, IP reputation scoring calculations."]
-      },
-      {
-        number: "4",
-        title: "4. Analysis & Production",
-        role: "Value Creation",
-        badge: "Analysis",
-        summary: "Synthesize processed data into actionable, contextualized intelligence.",
-        details: ["Correlation with Diamond Model and mapping against MITRE ATT&CK techniques."]
-      },
-      {
-        number: "5",
-        title: "5. Dissemination",
-        role: "Distribution",
-        badge: "Delivery",
-        summary: "Deliver intelligence to the appropriate stakeholder in the right format (Strategic, Tactical, Operational, Technical).",
-        details: ["Update firewall/SIEM blocklists, deliver executive threat briefings to the CISO."]
-      },
-      {
-        number: "6",
-        title: "6. Feedback",
-        role: "Continuous Improvement",
-        badge: "Evaluation",
-        summary: "Assess if the delivered intelligence answered the original requirements effectively.",
-        details: ["Refine PIRs and optimize collection feeds for future iterations."]
-      }
-    ]
-  },
-  {
-    id: "map-ransomware-ir",
-    examId: "csa",
-    title: "Live Ransomware Incident Response Playbook",
-    description: "Step-by-step containment, forensic preservation, eradication, and lessons learned workflow.",
-    steps: [
-      {
-        number: "1",
-        title: "Detection & Escalation",
-        role: "Tier 1 SOC Analyst",
-        badge: "Triage",
-        summary: "Alert triggers from unusual network spikes, locked file extensions (.locked, .crypt), or high CPU utilization.",
+        summary: "Sensors normalize incoming telemetry and trigger automated alerts based on signatures, anomalies, or threat intelligence.",
         details: [
-          "Create incident ticket (#INC-xxx) and set high/critical severity.",
-          "Escalate immediately to Tier 2 and activate the Incident Response Team (IRT)."
+          "Ingested sources: Windows Security logs (4624/4625/4688), Syslog Relay streams, perimeter firewalls, and cloud audit trails.",
+          "Signature & Anomaly matching: Snort rules (e.g. ' OR T=T) and anomaly deviations (e.g. 500 MB outbound burst vs 5 MB baseline).",
+          "Initial priority assigned: Low, Medium, High, or Critical based on Risk Matrix (Likelihood + Impact)."
         ]
       },
       {
         number: "2",
-        title: "Rapid Network Containment",
-        role: "Network / Tier 2 IRT",
+        title: "Incident Triage (Tier 1 SOC Analyst)",
+        role: "Jennifer / Tier 1 SOC Analyst",
+        badge: "Triage",
+        summary: "Rapid initial assessment within 15 minutes to eliminate false positives and validate alert credibility.",
+        details: [
+          "Verification: Check EDR logs, network traffic patterns in SIEM, and email gateway logs for suspicious attachments.",
+          "False Positive Filter: Validate if activity is legitimate admin maintenance or benign software behavior.",
+          "Decision: If True Positive -> Open formal incident ticket (#INC-xxx) and escalate immediately to Tier 2 / IRT."
+        ]
+      },
+      {
+        number: "3",
+        title: "IRT Handover: Incident Analysis and Validation",
+        role: "Incident Response Team (IRT)",
+        badge: "IRT Step 1",
+        summary: "The very FIRST step performed by the IRT upon receiving an escalated ticket from the SOC.",
+        details: [
+          "Forensic indicator verification: Validate host artifacts (scheduled tasks, registry autoruns, hashes).",
+          "Scope confirmation: Identify all affected endpoints, user accounts, and compromised network segments.",
+          "Severity re-evaluation: Determine blast radius and activate emergency response protocols."
+        ]
+      },
+      {
+        number: "4",
+        title: "Containment & Active Threat Neutralization",
+        role: "Tier 2 Responder / IRT",
         badge: "Containment",
-        summary: "Cut off lateral movement paths before encryption spreads across the organization.",
+        summary: "Halt ongoing adversary propagation and sever attacker command-and-control channels.",
         details: [
-          "Isolate affected VLANs or endpoints via EDR network isolation.",
-          "Block outbound C2 IP addresses and suspicious domains on perimeter firewalls.",
-          "Revoke active remote access sessions and disable compromised accounts."
-        ]
-      },
-      {
-        number: "3",
-        title: "Volatile Evidence Acquisition",
-        role: "Forensic Analyst",
-        badge: "DFIR",
-        summary: "Capture volatile evidence in memory before rebooting or powering off hosts.",
-        details: [
-          "Acquire live RAM dumps (using WinPmem / FTK Imager / Volatility).",
-          "Collect active network connection sockets, process trees (Event ID 4688), and PCAPs.",
-          "Preserve Security Event Logs (4624, 4625, 4616, 7045)."
-        ]
-      },
-      {
-        number: "4",
-        title: "Eradication & Remediation",
-        role: "Security Engineers / SysAdmins",
-        badge: "Eradication",
-        summary: "Address the root cause vulnerability that allowed initial entry.",
-        details: [
-          "Deploy emergency patches (e.g. KB hotfixes for exploited server CVEs).",
-          "Update email filtering rules and WAF signatures to block malicious payloads.",
-          "Remove malicious scheduled tasks, registry run keys, and unauthorized services."
+          "Endpoint & Network Isolation: Isolate affected hosts via EDR and sever lateral movement paths.",
+          "Identity Containment: Execute Deprovisioning Users SOAR Playbooks, revoke active tokens, and enforce MFA.",
+          "C2 Severing: Neutralize botnet handlers and sinkhole malicious C2 IP/domain destinations."
         ]
       },
       {
         number: "5",
-        title: "Recovery & Return-to-Service",
-        role: "Operations & SOC",
-        badge: "Recovery",
-        summary: "Restore business operations safely from verified, immutable backups.",
-        details: [
-          "Restore data from clean, offline backup sets.",
-          "Validate server integrity and verify monitoring telemetry is active.",
-          "Re-enable network access under enhanced logging surveillance."
-        ]
-      },
-      {
-        number: "6",
-        title: "Post-Incident Review (Lessons Learned)",
-        role: "CISO / SOC Lead / Stakeholders",
+        title: "Post-Incident Review & Lessons Learned",
+        role: "Sarah / SOC Lead & CISO",
         badge: "Post-Mortem",
-        summary: "Evaluate financial and operational impact to prevent future recurrence.",
+        summary: "Formal review meeting one week post-incident to calculate business impact and harden defenses.",
         details: [
-          "Calculate downtime and financial loss (e.g. business impact report).",
-          "Identify defensive gaps and update incident playbooks.",
-          "Author new detection rules (Sigma/YARA) for threat behavior patterns."
+          "Financial & Operational Impact: Calculate downtime and data loss costs (e.g. Sarah's $157k review).",
+          "Gap Analysis: Identify detection weaknesses and implement critical process improvements.",
+          "Rule Tuning: Author new Sigma/YARA rules and update SOAR playbooks to prevent future recurrence."
         ]
       }
     ]
   },
   {
-    id: "map-dga-hunting",
-    examId: "csa",
-    title: "Proactive Threat Hunting: DGA & C2 Beaconing",
-    description: "Hunting workflow for stealthy Domain Generation Algorithms and command-and-control communication.",
+    id: "map-ransomware-dfir",
+    examId: "csa-v2",
+    title: "Ransomware Outbreak & Live Forensics Playbook",
+    description: "Standard operating procedure for containing ransomware, capturing volatile memory, root-cause eradication, and clean recovery.",
     steps: [
       {
         number: "1",
-        title: "Hypothesis & Anomaly Discovery",
-        role: "Threat Hunter",
-        badge: "Hypothesis",
-        summary: "Identify suspicious high-entropy DNS queries or periodic beaconing bursts to external IPs.",
-        details: [
-          "Observation: Multiple failed NXDOMAIN responses with pseudo-random domain strings.",
-          "Hypothesis: Active malware using Domain Generation Algorithms (DGA) for C2 fallback."
-        ]
-      },
-      {
-        number: "2",
-        title: "Requirement Analysis (CTI Planning)",
-        role: "Threat Intelligence Analyst",
-        badge: "CTI Direction",
-        summary: "Define intelligence requirements and required data sources.",
-        details: [
-          "Identify necessary telemetry: Passive DNS logs, proxy logs, EDR network sockets.",
-          "Specify query thresholds, time windows, and reputation scoring metrics."
-        ]
-      },
-      {
-        number: "3",
-        title: "Data Correlation & Process Attribution",
-        role: "Tier 3 Analyst",
-        badge: "Investigation",
-        summary: "Link network connections to parent processes on the originating endpoint.",
-        details: [
-          "Query Event ID 4688 / Sysmon Event ID 1 to locate the initiating process.",
-          "Inspect command line flags (e.g. `powershell.exe -ExecutionPolicy Bypass -NoProfile`).",
-          "Extract embedded scripts or payloads via static code analysis (base64 decoding)."
-        ]
-      },
-      {
-        number: "4",
-        title: "Containment & Rule Authoring",
-        role: "SOC Engineering",
-        badge: "Detection Ops",
-        summary: "Mitigate active risk and convert findings into permanent detection rules.",
-        details: [
-          "Blacklist malicious domain patterns at the DNS resolver level.",
-          "Author custom SIEM correlation rules and Sigma rules to detect similar executions automatically."
-        ]
-      }
-    ]
-  },
-  {
-    id: "map-web-app-ir",
-    examId: "csa",
-    title: "Web Application Intrusion & Tampering Playbook",
-    description: "End-to-end incident handling workflow for web attacks (SQLi, XSS, Path Traversal, Parameter Tampering).",
-    steps: [
-      {
-        number: "1",
-        title: "Alert Trigger & Regex Match",
-        role: "NIDS / WAF / SIEM",
+        title: "Detection & Immediate Alerting",
+        role: "Tier 1 SOC Analyst",
         badge: "Detection",
-        summary: "NIDS flags suspicious hex-encoded URI requests (%3Cimg, ' OR 1=1, %2E%2E%2F).",
+        summary: "SIEM triggers alert on mass file rename events, abnormal CPU spikes, or unusual outbound connections.",
         details: [
-          "Identify targeted server and client source IP.",
-          "Extract decoded HTTP query strings and POST payloads."
+          "Correlate EDR process creation events (Event ID 4688) with unauthorized PowerShell scripts.",
+          "Flag suspicious command line flags (e.g. `-ExecutionPolicy Bypass -NoProfile`).",
+          "Open emergency incident ticket and activate the Incident Response Team (IRT)."
         ]
       },
       {
         number: "2",
-        title: "Web Server Log Deep Dive",
-        role: "Tier 1 / Tier 2 Analyst",
-        badge: "Triage",
-        summary: "Correlate NIDS alerts with IIS / Apache access logs.",
+        title: "VLAN & Host Network Isolation",
+        role: "Network Engineer / Tier 2 IRT",
+        badge: "Containment",
+        summary: "Prevent lateral movement across the enterprise without powering down machines.",
         details: [
-          "Inspect IIS logs at `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVCN`.",
-          "Check HTTP status codes: 200 OK (potential exploit success) vs 403/404/500.",
-          "Verify User-Agent header to identify automated bot scanners."
+          "Execute network isolation at the EDR/switch level to keep infected machines running.",
+          "Block outbound C2 IP addresses and suspicious domains at perimeter firewalls.",
+          "IMPORTANT: Do NOT reboot or power off machines to prevent loss of volatile memory."
         ]
       },
       {
         number: "3",
-        title: "Forensic Evidence & Chain of Custody",
-        role: "Digital Forensic Analyst",
-        badge: "DFIR",
-        summary: "Preserve web application and backend database evidence.",
+        title: "Volatile RAM & Evidence Acquisition",
+        role: "Forensic Analyst (DFIR)",
+        badge: "Evidence",
+        summary: "Capture volatile live artifacts and preserve strict legal Chain of Custody.",
         details: [
-          "Generate cryptographic hashes (SHA-256) of web access logs.",
-          "Create and sign Chain of Custody forms immediately.",
-          "Analyze backend database query logs for unauthorized data exfiltration."
+          "Acquire live RAM dumps using forensic tools (WinPmem, FTK Imager, Volatility) to extract encryption keys and injected DLLs.",
+          "Collect Windows Security Event Logs (4624, 4625, 4616, 7045) and network PCAPs.",
+          "Document Chain of Custody forms with cryptographic hashes (SHA-256) for all collected evidence."
         ]
       },
       {
         number: "4",
-        title: "Eradication & Hardening",
-        role: "AppSec / Systems Engineer",
-        badge: "Remediation",
-        summary: "Close the vulnerability and block active attacker infrastructure.",
+        title: "Eradication: Fixing Devices & Root Cause",
+        role: "Security Engineers & SysAdmins",
+        badge: "Eradication",
+        summary: "Eliminate the underlying vulnerabilities that allowed initial adversary entry.",
         details: [
-          "Deploy UrlScan / WAF filtering rules to block payload signatures.",
-          "Enforce server-side parameter and price validation.",
-          "Sanitize inputs using parameterized queries and output encoding."
+          "Fixing Devices: Apply emergency security patches (KB hotfixes) for exploited software vulnerabilities.",
+          "Remove Persistence: Delete malicious scheduled tasks, rogue services (Event ID 7045), and registry Run keys.",
+          "Update email filtering rules, WAF signatures, and DNS blocklists."
+        ]
+      },
+      {
+        number: "5",
+        title: "Recovery from Clean Backups",
+        role: "IT Operations & SOC",
+        badge: "Recovery",
+        summary: "Safely restore operational capacity from validated immutable backup sets.",
+        details: [
+          "Restore systems from clean, verified offline/immutable backups.",
+          "Re-image severely compromised endpoints with verified golden OS images.",
+          "Re-introduce hosts to the network under heightened SIEM/EDR logging surveillance."
         ]
       }
     ]
   },
   {
-    id: "map-identity-compromise-soar",
-    examId: "csa",
-    title: "Compromised Account & Impossible Travel Playbook",
-    description: "Automated SOAR and analyst workflow for credential theft, impossible travel, and privilege escalation.",
+    id: "map-soar-identity",
+    examId: "csa-v2",
+    title: "Identity Compromise & Impossible Travel SOAR Playbook",
+    description: "Automated SOAR orchestration and analyst triage workflow for credential stuffing, impossible travel, and lateral movement.",
     steps: [
       {
         number: "1",
-        title: "Alert Trigger & Impossible Travel Flag",
+        title: "Alert Trigger: Anomalous Activity & Impossible Travel",
         role: "Microsoft Sentinel / SIEM",
         badge: "Detection",
-        summary: "SIEM correlates concurrent logins from two distant geographic locations or non-business hours.",
+        summary: "SIEM correlates concurrent logins from distant countries or unusual off-hours user access.",
         details: [
-          "Evaluate user risk score and anomalous IP reputation.",
+          "Evaluate user risk score, IP reputation, and anomalous authentication timestamps.",
           "Flag Event ID 4624 (Logon Type 3 / Type 10) and Entra ID Sign-in logs."
         ]
       },
       {
         number: "2",
         title: "Automated SOAR Deprovisioning",
-        role: "SOAR Playbook (Logic Apps)",
-        badge: "Automated",
-        summary: "Instant machine-speed containment to stop dwell time and data exfiltration.",
+        role: "Microsoft Sentinel Playbooks (Logic Apps)",
+        badge: "Automated SOAR",
+        summary: "Machine-speed containment to instantly eliminate attacker dwell time.",
         details: [
-          "Execute 'Deprovisioning Users' Playbook.",
-          "Revoke active OAuth refresh tokens and terminate web sessions.",
-          "Disable Active Directory / Cloud account temporarily and force password reset."
+          "Execute 'Deprovisioning Users SOAR Playbook' automatically via Logic Apps.",
+          "Revoke active OAuth refresh tokens and terminate all active web/VPN sessions.",
+          "Disable compromised Active Directory account and force administrative password reset."
         ]
       },
       {
@@ -413,23 +172,268 @@ export const defaultMindmaps = [
         title: "Blast Radius & Lateral Movement Triage",
         role: "Tier 2 SOC Analyst",
         badge: "Investigation",
-        summary: "Investigate whether the compromised account accessed restricted files or hopped to other servers.",
+        summary: "Investigate whether the compromised credentials were used to move laterally or access sensitive files.",
         details: [
-          "Check Event ID 4624 Type 3 logons across multiple servers (Pass-the-Hash check).",
-          "Inspect NetBIOS helper and SMB file share access (Event ID 5145).",
-          "Review cloud audit logs (AWS CloudTrail / Microsoft Graph) for unauthorized API calls."
+          "Check Event ID 4624 Logon Type 3 bursts across multiple machines + TCP/IP NetBIOS Helper service.",
+          "Inspect Windows Object Access logs (Event ID 4663) to verify if sensitive shared files were accessed.",
+          "Review cloud audit logs (AWS CloudTrail / Graph API) for unauthorized resource creation."
         ]
       },
       {
         number: "4",
-        title: "Remediation & Account Hardening",
+        title: "Hardening & Long-term MFA Enforcement",
         role: "Identity Team & SOC Lead",
-        badge: "Recovery",
-        summary: "Restore legitimate user access under strengthened authentication controls.",
+        badge: "Containment & Hardening",
+        summary: "Strengthen authentication controls to prevent future credential-based attacks.",
         details: [
-          "Enforce FIDO2 / Phishing-Resistant Multi-Factor Authentication (MFA).",
-          "Apply stricter Conditional Access policies (device compliance + trusted IP).",
+          "Enforce Phishing-Resistant Multi-Factor Authentication (MFA) across all corporate accounts.",
+          "Apply strict Conditional Access policies requiring compliant, managed devices and trusted IP ranges.",
           "Document incident root cause and update threat hunting baselines."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-web-intrusion-dfir",
+    examId: "csa-v2",
+    title: "Web Application Intrusion & Log Analysis Playbook",
+    description: "Investigation workflow for web exploits (Directory Traversal, SQLi, XSS) targeting DMZ web servers.",
+    steps: [
+      {
+        number: "1",
+        title: "Architecture & Perimeter Ingestion",
+        role: "DMZ Web Server / WAF / Snort IDS",
+        badge: "Ingestion",
+        summary: "Public-facing web servers in the DMZ buffer zone receive client requests monitored by Snort IDS & WAF.",
+        details: [
+          "DMZ Isolation: Isolates web servers from private internal networks containing customer data.",
+          "Snort Rule Alert: Triggers on payload patterns (e.g. `alert tcp any any -> any 80 content:\"' OR T=T\"`).",
+          "WAF alerts on dot-dot-slash sequences (`../` or `..\\`) and hex-encoded strings (`%2E%2E%2F`)."
+        ]
+      },
+      {
+        number: "2",
+        title: "Web Server Log Deep Dive (CLF vs ELF)",
+        role: "Tier 1 / Tier 2 SOC Analyst",
+        badge: "Log Analysis",
+        summary: "Correlate IDS/WAF alerts with Microsoft IIS and Apache web server access logs.",
+        details: [
+          "Log Location: Inspect IIS logs at `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>`.",
+          "Extended Log Format (ELF): Analyze Referer and User-Agent headers to identify automated scanners.",
+          "HTTP Status Codes: Correlate 200 OK (potential exploit success) vs 403 Forbidden / 500 Server Error (5XX)."
+        ]
+      },
+      {
+        number: "3",
+        title: "Exploit Classification & Database Correlation",
+        role: "Tier 2 SOC Analyst",
+        badge: "Classification",
+        summary: "Identify specific web application attack vector and check backend database logs.",
+        details: [
+          "Directory Traversal: Attacker accessed `/etc/passwd` or `boot.ini` via manipulated URL paths.",
+          "SQL Injection: Look for Blind/Time-based payloads (`WAITFOR DELAY`, `UNICODE(SUBSTRING(...))`).",
+          "Database Auditing: Verify PostgreSQL logs enabled via `log_collector = on` in `postgresql.conf`."
+        ]
+      },
+      {
+        number: "4",
+        title: "Eradication & Application Hardening",
+        role: "AppSec Team & Systems Engineer",
+        badge: "Remediation",
+        summary: "Close application vulnerabilities and deploy defense-in-depth filters.",
+        details: [
+          "XSS Mitigation: Convert all non-alphanumeric characters to HTML character entities (`&lt;`, `&gt;`).",
+          "SQLi Mitigation: Enforce parameterized queries (prepared statements) and deploy UrlScan filter on IIS.",
+          "Path Traversal Mitigation: Implement strict path canonicalization and least-privilege web root permissions."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-threat-hunting-apt",
+    examId: "csa-v2",
+    title: "Unstructured Threat Hunting & APT Lifecycle",
+    description: "Proactive threat hunting methodology to detect hidden APT persistence, C2 beaconing, and anti-forensic cleanup.",
+    steps: [
+      {
+        number: "1",
+        title: "Weak Signal Discovery (Unstructured Hunting)",
+        role: "Threat Hunter",
+        badge: "Hunting",
+        summary: "Analyst detects anomalous encrypted outbound bursts at irregular intervals without existing IoCs or alerts.",
+        details: [
+          "Observation: Periodic small outbound data bursts to an unfamiliar external IP address.",
+          "Approach: Launch unstructured hunting to discover Indicators of Attack (IoAs) and map adversary behavior."
+        ]
+      },
+      {
+        number: "2",
+        title: "Host & Network Telemetry Correlation",
+        role: "Threat Hunter / Tier 3 Analyst",
+        badge: "Correlation",
+        summary: "Aggregate threat intelligence with internal EDR telemetry and firewall logs (Data Integration).",
+        details: [
+          "Network Log Analysis: Inspect proxy/firewall logs to confirm active external C2 communication.",
+          "Endpoint Scoping: Query Event ID 4688 to trace parent processes launching PowerShell or script engines.",
+          "Static Analysis: Safely de-obfuscate embedded scripts and base64 payloads without executing them."
+        ]
+      },
+      {
+        number: "3",
+        title: "APT Persistence Phase Identification",
+        role: "Forensic Analyst",
+        badge: "Persistence",
+        summary: "Locate hidden mechanisms designed by the adversary to survive reboots and maintain access.",
+        details: [
+          "Inspect unauthorized scheduled tasks executing during off-peak hours.",
+          "Audit Windows Registry Run / RunOnce autorun keys and newly installed background services (Event ID 7045).",
+          "Collect host-based artifacts to map attacker dwell time."
+        ]
+      },
+      {
+        number: "4",
+        title: "Anti-Forensics & Cleanup Detection",
+        role: "Forensic Analyst",
+        badge: "Cleanup / Evasion",
+        summary: "Uncover attacker efforts to tamper with evidence and wipe audit logs.",
+        details: [
+          "Audit Time Tampering: Review Windows Security Event ID 4616 ('System time changed') and 4618.",
+          "Audit Log Clearing: Check for Event ID 1102 ('The audit log was cleared').",
+          "Host Integrity Monitoring: Diff before/after snapshots to uncover timestomped files and wiped artifacts."
+        ]
+      },
+      {
+        number: "5",
+        title: "Detection Engineering & Rule Deployment",
+        role: "SOC Engineering Team",
+        badge: "Detection Ops",
+        summary: "Convert threat hunting discoveries into automated detection and prevention rules.",
+        details: [
+          "Deploy DNS blocking rules (OpenDNS / Cisco Umbrella) and block C2 IPs on perimeter firewalls.",
+          "Author custom SIEM correlation rules and Sigma rules to detect similar execution patterns automatically."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-siem-architecture",
+    examId: "csa-v2",
+    title: "Enterprise SIEM & Centralized Logging Architecture",
+    description: "Phased deployment model for enterprise SIEM: from collection and normalization to AI dynamic rule optimization.",
+    steps: [
+      {
+        number: "1",
+        title: "Phase 1: Log Management Deployment",
+        role: "SIEM Architect & Engineers",
+        badge: "Phase 1",
+        summary: "Establish the foundational log management layer BEFORE deploying SIEM analytics or automation.",
+        details: [
+          "Deploy Syslog Relays in branch offices as intermediate proxies to buffer and forward logs over WAN.",
+          "Configure cloud storage with elastic scaling and encryption for long-term compliance retention.",
+          "Enable database auditing parameters (e.g. `log_collector = on` in `postgresql.conf`)."
+        ]
+      },
+      {
+        number: "2",
+        title: "Phase 2: Ingestion & Normalization",
+        role: "SIEM Integration Engineer",
+        badge: "Normalization",
+        summary: "Accept logs from heterogeneous sources and convert them into standardized, structured schemas.",
+        details: [
+          "Log Normalization: Convert disparate logs from firewalls, IDS, servers, and cloud into unified field formats.",
+          "Grok Filters: Use regex pattern matching to parse raw unstructured text into structured key-value pairs.",
+          "Regex Utilities: Apply standard patterns (e.g. `([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})` for hex codes)."
+        ]
+      },
+      {
+        number: "3",
+        title: "Phase 3: SIEM Use Case Development",
+        role: "SOC Detection Engineer",
+        badge: "Use Cases",
+        summary: "Define correlation logic, thresholds, and conditions after identifying and validating telemetry sources.",
+        details: [
+          "Define correlation rules: Link related events across multiple systems (user, source IP, time window).",
+          "Incorporate contextual data: Integrate HR user context to differentiate legitimate activity from insider threats.",
+          "Contextual enrichment: Correlate with threat intelligence reputation databases (AlienVault OSSIM)."
+        ]
+      },
+      {
+        number: "4",
+        title: "Phase 4: AI & Dynamic Rule Optimization",
+        role: "SOC Manager & AI SIEM",
+        badge: "AI Optimization",
+        summary: "Apply AI and machine learning to eliminate alert fatigue and detect genuine threats faster.",
+        details: [
+          "Dynamic Rule Optimization: Automatically adapt alert thresholds based on historical baseline behavior.",
+          "Noise Suppression: Suppress redundant non-malicious alerts and eliminate false positives.",
+          "Alert Triage Dashboard: Prioritize critical information and remove unnecessary visual clutter."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-cti-lifecycle-d3fend",
+    examId: "csa-v2",
+    title: "CTI Lifecycle & MITRE D3FEND Defensive Mapping",
+    description: "Operationalizing threat intelligence across the 6 CTI stages and systematically mapping defenses using MITRE D3FEND.",
+    steps: [
+      {
+        number: "1",
+        title: "1. Planning & Direction",
+        role: "Threat Intel Lead & CISO",
+        badge: "PIRs",
+        summary: "Establish Priority Intelligence Requirements (PIRs) aligned with business risks and critical crown jewels.",
+        details: [
+          "Identify critical assets: Financial transaction databases, customer PII, DMZ web applications.",
+          "Define threat intelligence scope: External adversary campaigns, industry-targeted APT groups."
+        ]
+      },
+      {
+        number: "2",
+        title: "2. Collection (HUMINT, OSINT & Telemetry)",
+        role: "CTI Collection Analyst",
+        badge: "Collection",
+        summary: "Gather raw intelligence from diverse external feeds, technical sensors, and human sources.",
+        details: [
+          "Technical Feeds: Commercial STIX/TAXII indicator feeds, honeypot telemetry, passive DNS.",
+          "Human Intelligence (HUMINT): Interpersonal interactions, psychological profiling, social engineering reports."
+        ]
+      },
+      {
+        number: "3",
+        title: "3. Processing & 4. Analysis (Data Integration)",
+        role: "Threat Intelligence Analyst",
+        badge: "Data Integration",
+        summary: "Aggregate, normalize, and correlate external threat intelligence with internal telemetry.",
+        details: [
+          "Data Integration: Correlate IoCs with EDR telemetry, firewall logs, and user activity.",
+          "Pyramid of Pain: Focus defense on top-tier adversary TTPs rather than easily changed IP/hash indicators.",
+          "Diamond Model: Map Adversary -> Capability -> Infrastructure -> Victim relationships."
+        ]
+      },
+      {
+        number: "4",
+        title: "5. Dissemination & MITRE D3FEND Mapping",
+        role: "SOC Engineer / AppSec",
+        badge: "D3FEND Mapping",
+        summary: "Systematically map defensive countermeasures to neutralized adversary tactics.",
+        details: [
+          "Model: System baseline profiling and Host Integrity Monitoring (diffing before/after snapshots).",
+          "Harden: Credential encryption, MFA enforcement, and input sanitization.",
+          "Isolate: DMZ network architecture and EDR host isolation.",
+          "Evict: User Deprovisioning SOAR playbooks and session invalidation.",
+          "DDoS Mitigation: Neutralizing C2 handlers to sever botnet control."
+        ]
+      },
+      {
+        number: "5",
+        title: "6. Feedback & Continuous Refinement",
+        role: "SOC Lead & CTI Team",
+        badge: "Feedback Loop",
+        summary: "Evaluate intelligence effectiveness, close detection gaps, and refine collection requirements.",
+        details: [
+          "Assess whether threat briefings and indicator feeds prevented active breaches.",
+          "Share tactical intelligence with trusted peer communities using TLP:GREEN protocols."
         ]
       }
     ]

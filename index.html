@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CiberEstudio | Centro de Preparación y Certificaciones en Ciberseguridad & SOC</title>
   <meta name="description" content="CiberEstudio - Plataforma interactiva de estudio para analistas SOC y certificaciones en ciberseguridad (EC-Council CSA, CySA+, BTL1).">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=2026.4">
 </head>
 <body>
 
@@ -235,7 +235,7 @@
               <span class="badge badge-emerald">Real Simulation</span>
               <h3>⏱️ Timed Mock Exam</h3>
               <p style="color: var(--text-muted); font-size: 0.88rem;">
-                Full 3-hour timed exam simulation with comprehensive score breakdown at the end.
+                Full timed exam simulation with immediate answer marking, correct solution highlight, and detailed technical rationale.
               </p>
             </div>
             <button id="start-mock-quiz" class="btn btn-emerald" style="margin-top: 1.25rem; width: 100%;">
@@ -280,10 +280,15 @@
           </div>
         </div>
 
-        <div class="quiz-footer-actions">
-          <button id="quiz-prev-btn" class="btn btn-secondary">⬅️ Previous</button>
-          <button id="quiz-next-btn" class="btn btn-primary">Next ➡️</button>
-          <button id="quiz-finish-btn" class="btn btn-emerald" style="display: none;">🏁 Finish Quiz</button>
+        <div class="quiz-footer-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="quiz-prev-btn" class="btn btn-secondary" type="button">⬅️ Previous</button>
+            <button id="quiz-reveal-btn" class="btn btn-secondary" type="button" title="Show the correct answer and detailed technical explanation">💡 Reveal Answer</button>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="quiz-next-btn" class="btn btn-primary" type="button">Next ➡️</button>
+            <button id="quiz-finish-btn" class="btn btn-emerald" type="button" style="display: none;">🏁 Finish Quiz</button>
+          </div>
         </div>
       </div>
 
@@ -589,6 +594,6 @@
   </div>
 
   <!-- Scripts -->
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=2026.4"></script>
 </body>
 </html>

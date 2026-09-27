@@ -12,7 +12,8 @@ export const QuizEngine = {
     score: 0,
     timerInterval: null,
     timeRemainingSeconds: 0,
-    instantFeedback: true
+    instantFeedback: true,
+    revealedQuestions: new Set() // Set of questionIds that have been revealed
   },
 
   init() {
@@ -43,15 +44,48 @@ export const QuizEngine = {
     const prevBtn = document.getElementById('quiz-prev-btn');
     const finishBtn = document.getElementById('quiz-finish-btn');
     const exitBtn = document.getElementById('quiz-exit-btn');
+    const revealBtn = document.getElementById('quiz-reveal-btn');
 
     if (nextBtn) nextBtn.addEventListener('click', () => this.nextQuestion());
     if (prevBtn) prevBtn.addEventListener('click', () => this.prevQuestion());
     if (finishBtn) finishBtn.addEventListener('click', () => this.finishQuiz());
     if (exitBtn) exitBtn.addEventListener('click', () => this.exitQuiz());
+    if (revealBtn) revealBtn.addEventListener('click', () => this.revealAnswer());
 
     // Results modal retry
     const retryBtn = document.getElementById('quiz-retry-btn');
     if (retryBtn) retryBtn.addEventListener('click', () => this.exitQuiz());
+
+    // Keyboard shortcuts (A, B, C, D / 1, 2, 3, 4 / Arrows)
+    window.addEventListener('keydown', (e) => {
+      if (!this.state.active) return;
+      if (['input', 'textarea', 'select'].includes(document.activeElement?.tagName?.toLowerCase())) return;
+
+      const q = this.state.questions[this.state.currentIndex];
+      if (!q) return;
+
+      const key = e.key.toUpperCase();
+      const keyMap = { 'A': 0, '1': 0, 'B': 1, '2': 1, 'C': 2, '3': 2, 'D': 3, '4': 3, 'E': 4, '5': 4 };
+
+      if (keyMap.hasOwnProperty(key)) {
+        const idx = keyMap[key];
+        if (idx < q.options.length) {
+          e.preventDefault();
+          this.selectAnswer(q, idx);
+        }
+      } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        e.preventDefault();
+        const isLast = this.state.currentIndex === this.state.questions.length - 1;
+        if (isLast) {
+          this.finishQuiz();
+        } else {
+          this.nextQuestion();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.prevQuestion();
+      }
+    });
   },
 
   renderModuleOptions() {
@@ -99,7 +133,7 @@ export const QuizEngine = {
       this.state.timeRemainingSeconds = selected.length * 90;
     } else if (mode === 'mock') {
       selected = selected.slice(0, Math.min(exam.totalQuestionsRealExam || 100, selected.length));
-      this.state.instantFeedback = false;
+      this.state.instantFeedback = true; // Feedback inmediato al responder en el examen real/simulador
       this.state.timeRemainingSeconds = (exam.durationMinutes || 180) * 60;
     } else {
       this.state.instantFeedback = true;
@@ -112,6 +146,7 @@ export const QuizEngine = {
     this.state.questions = selected;
     this.state.currentIndex = 0;
     this.state.userAnswers = {};
+    this.state.revealedQuestions = new Set();
     this.state.score = 0;
 
     // Toggle UI views
@@ -149,6 +184,8 @@ export const QuizEngine = {
     const q = this.state.questions[this.state.currentIndex];
     if (!q) return;
 
+    const correctIdx = parseInt(q.correctAnswer, 10);
+
     // Header info
     document.getElementById('quiz-progress-text').textContent = 
       `Question ${this.state.currentIndex + 1} of ${this.state.questions.length}`;
@@ -171,31 +208,38 @@ export const QuizEngine = {
 
     const letters = ['A', 'B', 'C', 'D', 'E'];
     const hasAnswered = this.state.userAnswers.hasOwnProperty(q.id);
-    const selectedAnswerIndex = this.state.userAnswers[q.id];
+    const selectedAnswerIndex = hasAnswered ? parseInt(this.state.userAnswers[q.id], 10) : null;
+    const isRevealed = this.state.revealedQuestions ? this.state.revealedQuestions.has(q.id) : false;
+    const showFeedback = hasAnswered || isRevealed;
 
     q.options.forEach((optText, index) => {
       const btn = document.createElement('button');
+      btn.type = 'button';
       btn.className = 'option-item';
-      if (hasAnswered && selectedAnswerIndex === index) {
-        btn.classList.add('selected');
-      }
 
-      if (this.state.instantFeedback && hasAnswered) {
-        btn.classList.add('disabled');
-        if (index === q.correctAnswer) {
+      let statusBadgeHtml = '';
+
+      if (showFeedback) {
+        if (index === correctIdx) {
           btn.classList.add('correct');
-        } else if (selectedAnswerIndex === index && index !== q.correctAnswer) {
+          statusBadgeHtml = `<span class="option-status-badge badge-emerald">✅ Correct Answer</span>`;
+        } else if (hasAnswered && selectedAnswerIndex === index && index !== correctIdx) {
           btn.classList.add('wrong');
+          statusBadgeHtml = `<span class="option-status-badge badge-rose">❌ Incorrect</span>`;
         }
+      } else if (hasAnswered && selectedAnswerIndex === index) {
+        btn.classList.add('selected');
+        statusBadgeHtml = `<span class="option-status-badge badge-cyan">Selected</span>`;
       }
 
       btn.innerHTML = `
         <span class="option-key">${letters[index] || index + 1}</span>
         <span class="option-content">${optText}</span>
+        ${statusBadgeHtml}
       `;
 
-      btn.addEventListener('click', () => {
-        if (this.state.instantFeedback && hasAnswered) return;
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         this.selectAnswer(q, index);
       });
 
@@ -204,13 +248,18 @@ export const QuizEngine = {
 
     // Explanation Box
     const explanationBox = document.getElementById('quiz-explanation-box');
-    if (this.state.instantFeedback && hasAnswered) {
-      const isCorrect = selectedAnswerIndex === q.correctAnswer;
+    if (showFeedback) {
+      const isCorrect = hasAnswered && selectedAnswerIndex === correctIdx;
       explanationBox.style.display = 'block';
-      explanationBox.className = `explanation-box ${isCorrect ? 'correct-box' : 'wrong-box'}`;
+      explanationBox.className = `explanation-box ${isCorrect ? 'correct-box' : isRevealed && !hasAnswered ? '' : 'wrong-box'}`;
       explanationBox.innerHTML = `
-        <strong>${isCorrect ? '✅ Correct Answer!' : '❌ Incorrect'}</strong>
-        <p style="margin-top: 0.5rem;">${q.explanation || 'No explanation provided.'}</p>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+          <span style="font-size: 1.1rem;">${isCorrect ? '✅' : '❌'}</span>
+          <strong style="font-size: 1.05rem; color: ${isCorrect ? 'var(--accent-emerald)' : '#fb7185'};">
+            ${isCorrect ? 'Correct Answer!' : `Incorrect (Correct is Option ${letters[correctIdx] || correctIdx + 1})`}
+          </strong>
+        </div>
+        <p style="margin-top: 0.5rem; line-height: 1.6; color: var(--text-main); font-size: 0.95rem;">${q.explanation || 'No detailed explanation provided.'}</p>
       `;
     } else {
       explanationBox.style.display = 'none';
@@ -224,8 +273,11 @@ export const QuizEngine = {
   },
 
   selectAnswer(question, selectedIndex) {
-    this.state.userAnswers[question.id] = selectedIndex;
-    const isCorrect = selectedIndex === question.correctAnswer;
+    const parsedIndex = parseInt(selectedIndex, 10);
+    const correctIdx = parseInt(question.correctAnswer, 10);
+    
+    this.state.userAnswers[question.id] = parsedIndex;
+    const isCorrect = parsedIndex === correctIdx;
 
     if (isCorrect) {
       StorageManager.removeMissedQuestion(question.id);
@@ -233,6 +285,14 @@ export const QuizEngine = {
       StorageManager.recordMissedQuestion(question.id);
     }
 
+    this.renderCurrentQuestion();
+  },
+
+  revealAnswer() {
+    const q = this.state.questions[this.state.currentIndex];
+    if (!q) return;
+
+    this.state.revealedQuestions.add(q.id);
     this.renderCurrentQuestion();
   },
 
@@ -256,14 +316,15 @@ export const QuizEngine = {
     // Calculate score
     let correctCount = 0;
     this.state.questions.forEach(q => {
-      if (this.state.userAnswers[q.id] === q.correctAnswer) {
+      const correctIdx = parseInt(q.correctAnswer, 10);
+      if (this.state.userAnswers[q.id] === correctIdx) {
         correctCount++;
       }
     });
 
     this.state.score = correctCount;
     const total = this.state.questions.length;
-    const percentage = Math.round((correctCount / total) * 100);
+    const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
     const exam = StorageManager.getCurrentExam();
     const passed = percentage >= (exam.passingScore || 70);
 

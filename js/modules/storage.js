@@ -1,9 +1,9 @@
 // Gestor central de almacenamiento y persistencia multi-examen
-import { defaultExams } from '../data/exams.js';
-import { initialQuestions } from '../data/questions.js';
-import { defaultNotes } from '../data/notes.js';
-import { defaultMindmaps } from '../data/mindmaps.js';
-import { defaultFlashcards } from '../data/flashcards.js';
+import { defaultExams } from '../data/exams.js?v=2026.4';
+import { initialQuestions } from '../data/questions.js?v=2026.4';
+import { defaultNotes } from '../data/notes.js?v=2026.4';
+import { defaultMindmaps } from '../data/mindmaps.js?v=2026.4';
+import { defaultFlashcards } from '../data/flashcards.js?v=2026.4';
 
 const STORAGE_KEYS = {
   CURRENT_EXAM: 'soc_hub_current_exam',
@@ -44,16 +44,19 @@ export const StorageManager = {
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM)) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_EXAM, 'csa-v2');
     }
-    // Sincronizar banco de preguntas (añadir nuevas preguntas que no existan)
+    // Sincronizar banco de preguntas (asegurar datos actualizados e íntegros)
     try {
       const existingQ = JSON.parse(localStorage.getItem(STORAGE_KEYS.QUESTIONS)) || [];
-      const existingIds = new Set(existingQ.map(q => q.id));
-      let updatedQ = [...existingQ];
-      initialQuestions.forEach(q => {
-        if (!existingIds.has(q.id)) {
-          updatedQ.push(q);
-        }
-      });
+      const initialMap = new Map(initialQuestions.map(q => [q.id, {
+        ...q,
+        correctAnswer: parseInt(q.correctAnswer, 10)
+      }]));
+
+      // Preservar preguntas personalizadas añadidas por el usuario
+      const customQuestions = existingQ.filter(q => !initialMap.has(q.id));
+
+      // Combinar las preguntas oficiales con las personalizadas del usuario
+      const updatedQ = [...Array.from(initialMap.values()), ...customQuestions];
       localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(updatedQ));
     } catch (e) {
       localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(initialQuestions));
@@ -61,57 +64,23 @@ export const StorageManager = {
 
     // Sincronizar apuntes / notes
     try {
-      const existingN = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
-      const existingNoteIds = new Set(existingN.map(n => n.id));
-      let updatedN = [...existingN];
-      defaultNotes.forEach(n => {
-        if (!existingNoteIds.has(n.id)) {
-          updatedN.push(n);
-        } else {
-          // Actualizar notas existentes por si se enriquecieron
-          const idx = updatedN.findIndex(item => item.id === n.id);
-          if (idx >= 0) updatedN[idx] = n;
-        }
-      });
-      localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(updatedN));
-    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(defaultNotes));
+    } catch (e) {
+      console.error(e);
     }
 
     // Sincronizar mapas mentales
     try {
-      const existingM = JSON.parse(localStorage.getItem(STORAGE_KEYS.MINDMAPS)) || [];
-      const existingMapIds = new Set(existingM.map(m => m.id));
-      let updatedM = [...existingM];
-      defaultMindmaps.forEach(m => {
-        if (!existingMapIds.has(m.id)) {
-          updatedM.push(m);
-        } else {
-          const idx = updatedM.findIndex(item => item.id === m.id);
-          if (idx >= 0) updatedM[idx] = m;
-        }
-      });
-      localStorage.setItem(STORAGE_KEYS.MINDMAPS, JSON.stringify(updatedM));
-    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.MINDMAPS, JSON.stringify(defaultMindmaps));
+    } catch (e) {
+      console.error(e);
     }
 
     // Sincronizar flashcards
     try {
-      const existingF = JSON.parse(localStorage.getItem(STORAGE_KEYS.FLASHCARDS)) || [];
-      const existingFcIds = new Set(existingF.map(f => f.id));
-      let updatedF = [...existingF];
-      defaultFlashcards.forEach(f => {
-        if (!existingFcIds.has(f.id)) {
-          updatedF.push(f);
-        } else {
-          const idx = updatedF.findIndex(item => item.id === f.id);
-          if (idx >= 0) updatedF[idx] = f;
-        }
-      });
-      localStorage.setItem(STORAGE_KEYS.FLASHCARDS, JSON.stringify(updatedF));
-    } catch (e) {
       localStorage.setItem(STORAGE_KEYS.FLASHCARDS, JSON.stringify(defaultFlashcards));
+    } catch (e) {
+      console.error(e);
     }
 
     // Stats iniciales

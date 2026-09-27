@@ -1,38 +1,40 @@
-// Technical Notes and Cheat Sheets for SOC & CSA Preparation (English)
+// Technical Notes and Cheat Sheets for EC-Council CSA v2 (2026 Exam - 200 Qs Bank)
+// Each note is directly tailored to cover all testable tables, formulas, event IDs, and concepts in the 200 Qs PDF bank.
+
 export const defaultNotes = [
   {
     id: "note-winevents",
-    examId: "csa",
+    examId: "csa-v2",
     category: "Windows Event Logs",
-    title: "Critical Windows Security Event IDs",
-    description: "Quick reference table of the most frequently tested Windows Security audit IDs for SOC analysts.",
+    title: "Critical Windows Security Event IDs & Audit Codes",
+    description: "Essential Windows Security and System audit event IDs tested across exam questions.",
     type: "table",
-    headers: ["Event ID", "Description", "SOC Relevance & Context", "Severity"],
+    headers: ["Event ID", "Description", "Exam Scenario & SOC Context", "Severity"],
     rows: [
-      ["4624", "Successful Logon", "Account logged on successfully. Analyze Logon Type and source IP.", "Informational"],
+      ["4616", "System Time Changed", "System clock modified (Timestomping / Defense Evasion to tamper with event chronology).", "Critical"],
+      ["4618", "Security Event Monitored", "Monitored security-sensitive event patterns and audit condition anomalies.", "High"],
+      ["4624", "Successful Logon", "Account logged on successfully. Examine Logon Type (Type 2 local, Type 3 network, Type 10 RDP).", "Informational"],
       ["4625", "Failed Logon", "Authentication failed. High burst indicates brute-force or password spraying.", "High"],
-      ["4672", "Special Privileges Assigned", "Admin privileges assigned during logon (e.g. SeDebugPrivilege).", "Medium"],
-      ["4720", "User Account Created", "New user account provisioned. Used to detect adversary persistence.", "High"],
-      ["4726", "User Account Deleted", "A user account was removed from the system.", "Medium"],
-      ["4738", "User Account Modified", "Attributes changed (e.g., password never expires, group changes).", "Medium"],
-      ["7045", "Service Installed (System)", "New Windows service created. Common malware persistence mechanism.", "Critical"],
-      ["4688", "New Process Created", "Process execution. If CommandLine auditing is enabled, shows executed arguments.", "High"],
-      ["1102", "Audit Log Cleared", "The Security audit log was cleared. Immediate critical defense evasion indicator.", "Critical"],
-      ["4719", "Audit Policy Changed", "Audit policy modified to disable logging of security events.", "Critical"]
+      ["4663", "Object Access Attempt", "Access to specific file, folder, or database on shared servers (audit who accessed/modified files).", "Medium"],
+      ["4688", "New Process Created", "Process execution. With CommandLine auditing, exposes arguments (e.g. `powershell -ExecutionPolicy Bypass`).", "High"],
+      ["7045", "Service Installed (System)", "New Windows service created. Frequently used for persistent adversary backdoors.", "Critical"],
+      ["1102", "Audit Log Cleared", "The Security audit log was cleared. Critical indicator of adversary Cleanup / anti-forensics.", "Critical"],
+      ["4719", "Audit Policy Changed", "Audit policy modified to disable logging of security events.", "Critical"],
+      ["4720", "User Account Created", "New user account provisioned. Used to detect rogue administrative persistence.", "High"]
     ]
   },
   {
     id: "note-logontypes",
-    examId: "csa",
+    examId: "csa-v2",
     category: "Windows Event Logs",
-    title: "Windows Logon Types (Event ID 4624)",
-    description: "Essential logon type breakdown for forensic and SOC investigations.",
+    title: "Windows Logon Types (Event ID 4624 Reference)",
+    description: "Detailed breakdown of logon type codes used to identify access vectors and lateral movement.",
     type: "table",
-    headers: ["Logon Type", "Name", "Real-world Scenario & Explanation"],
+    headers: ["Logon Type", "Name", "Real-world Scenario & Exam Relevance"],
     rows: [
-      ["Type 2", "Interactive", "Local console logon via direct keyboard and monitor."],
-      ["Type 3", "Network", "Remote connection to shared resources (SMB shares, IIS auth, RPC)."],
-      ["Type 4", "Batch", "Logon by Scheduled Tasks or batch scripts."],
+      ["Type 2", "Interactive", "Local console logon via direct physical keyboard and monitor."],
+      ["Type 3", "Network", "Remote connection to shared resources (SMB, IIS, RPC). Burst across machines indicates Lateral Movement (Pass-the-Hash / PsExec)."],
+      ["Type 4", "Batch", "Logon by Scheduled Tasks or batch scripts (frequently leveraged for APT persistence)."],
       ["Type 5", "Service", "Logon initiated by a Windows background service."],
       ["Type 7", "Unlock", "Workstation unlocked by an active user."],
       ["Type 8", "NetworkCleartext", "Network authentication with plaintext credentials (e.g., Basic Auth in IIS)."],
@@ -42,255 +44,190 @@ export const defaultNotes = [
     ]
   },
   {
-    id: "note-syslog",
-    examId: "csa",
+    id: "note-syslog-rfc",
+    examId: "csa-v2",
     category: "Linux & Network Logs",
-    title: "Syslog Severities & Standards (RFC 5424)",
-    description: "Numeric syslog severity codes ranging from 0 (Emergency) to 7 (Debug).",
+    title: "Syslog Standards (RFC 5424) & Architecture",
+    description: "Numeric syslog severity levels ranging from 0 (Emergency) to 7 (Debug) and deployment components.",
     type: "table",
-    headers: ["Level (Code)", "Severity", "Description and Example"],
+    headers: ["Level (Code)", "Severity", "Description & Operational Example"],
     rows: [
-      ["0", "Emergency (emerg)", "System is completely unusable (Panic)."],
-      ["1", "Alert (alert)", "Action must be taken immediately (e.g., primary database corrupted)."],
-      ["2", "Critical (crit)", "Critical conditions (e.g., vital subsystem failure)."],
+      ["0", "Emergency (emerg)", "System is completely unusable (Panic). Requires immediate enterprise intervention."],
+      ["1", "Alert (alert)", "Action must be taken immediately (e.g., primary transaction database corrupted)."],
+      ["2", "Critical (crit)", "Critical conditions (e.g., vital security subsystem or hardware failure)."],
       ["3", "Error (err)", "Error conditions within running applications."],
       ["4", "Warning (warning)", "Warning conditions indicating potential issues."],
       ["5", "Notice (notice)", "Normal but significant operational events."],
       ["6", "Informational (info)", "Standard operational informational messages."],
-      ["7", "Debug (debug)", "Detailed debugging information for developers."]
+      ["7", "Debug (debug)", "Detailed debugging information for developers and engineers."]
     ]
   },
   {
-    id: "note-splunk",
-    examId: "csa",
-    category: "SIEM & SPL",
-    title: "Splunk SPL (Search Processing Language) Cheatsheet",
-    description: "Core commands and operators used in SOC threat investigations.",
-    type: "cards",
-    items: [
-      {
-        title: "Basic Search & Filtering",
-        code: "index=security sourcetype=WinEventLog:Security EventCode=4625",
-        desc: "Filters events in the 'security' index matching failed Windows logon attempts."
-      },
-      {
-        title: "Aggregation & Statistics (stats)",
-        code: "index=firewall action=blocked | stats count by src_ip, dest_port | sort -count",
-        desc: "Aggregates and counts dropped packets grouped by source IP and destination port."
-      },
-      {
-        title: "Time Evolution (timechart)",
-        code: "index=web status>=400 | timechart span=1h count by status",
-        desc: "Plots the hourly trend of HTTP client/server errors over time."
-      },
-      {
-        title: "Dynamic Field Calculation (eval)",
-        code: "index=proxy | eval response_kb = bytes_out / 1024 | where response_kb > 5000",
-        desc: "Calculates outbound transfer size in KB and alerts on data exfiltration > 5MB."
-      },
-      {
-        title: "Deduplication (dedup)",
-        code: "index=antivirus signature=* | dedup signature, host | table _time, host, signature",
-        desc: "Removes repetitive alerts, keeping only the first unique detection per host."
-      }
-    ]
-  },
-  {
-    id: "note-ir",
-    examId: "csa",
-    category: "Incident Response",
-    title: "NIST SP 800-61 vs. SANS Incident Response Lifecycle",
-    description: "Direct comparison between the two main IR industry frameworks.",
+    id: "note-web-attack-master",
+    examId: "csa-v2",
+    category: "Web Security & Detection",
+    title: "Web Attack Signatures, HTTP Codes & Regex Master Table",
+    description: "Common payload signatures, regular expressions, and HTTP response codes tested in web intrusion scenarios.",
     type: "table",
-    headers: ["Phase #", "NIST SP 800-61 Rev 2 (4 Phases)", "SANS PICERL (6 Steps)"],
+    headers: ["Attack / Concept", "Payload / Regex Pattern", "Decoded Signature", "Mitigation / Control"],
     rows: [
-      ["1", "1. Preparation", "1. Preparation (Policies, tooling, IR jump kits)"],
-      ["2", "2. Detection and Analysis", "2. Identification / Detection (Triage, IoC validation)"],
-      ["3", "3. Containment, Eradication & Recovery", "3. Containment (Network isolation, firewall IP block)"],
-      ["4", "-", "4. Eradication (Malware removal, credential reset)"],
-      ["5", "-", "5. Recovery (Restoration from backups, monitoring)"],
-      ["6", "4. Post-Incident Activity (Lessons Learned)", "6. Lessons Learned (Incident documentation, defense improvements)"]
+      ["Directory / Path Traversal", "/(.|(%|%25)2E)(.|(%|%25)2E)(\\/|(%|%25)2F|\\\\|(%|%25)5C)/i", "%2E = . | %2F = / | %5C = \\ (Detects `../` and `..\\` sequences)", "Strict Path Canonicalization, Restricting Web Root Permissions"],
+      ["SQL Injection (Tautology)", "alert tcp any any -> any 80 content:\"' OR T=T\"", "' OR T=T / ' OR 1=1 (Always evaluates to true to bypass login)", "Parameterized Queries (Prepared Statements), UrlScan filter (IIS)"],
+      ["Blind / Time-based SQLi", "WAITFOR DELAY '0:0:5' / UNICODE(SUBSTRING(...))", "Forces DB server to delay response to extract data character-by-character", "Input Sanitization, Parameterized SQL Queries"],
+      ["Cross-Site Scripting (XSS)", "<img src=x onerror=alert(1)>", "Injects client-side executable script into web application context", "Convert all non-alphanumeric chars to HTML character entities (&lt;, &gt;), CSP"],
+      ["Hex Code Regex Pattern", "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})", "Matches 3-digit shorthand or 6-digit full hexadecimal codes in logs", "Used in regex filters for hexadecimal pattern extraction"],
+      ["HTTP 2XX (Success)", "200 OK / 201 Created", "Request succeeded (may indicate successful exploit payload execution)", "Log auditing & correlation with WAF alerts"],
+      ["HTTP 4XX (Client Error)", "401 Unauthorized / 403 Forbidden / 404 Not Found", "Client-side error or blocked resource access attempt", "Monitor for 403/404 bursts during web scanning/reconnaissance"],
+      ["HTTP 5XX (Server Error)", "500 Internal Server Error / 502 Bad Gateway / 503 Unavailable", "Server error (indicates unhandled backend exception or SQL syntax error)", "Investigate error stack traces to detect application exploitation"]
     ]
   },
   {
-    id: "note-cti",
-    examId: "csa",
+    id: "note-ir-frameworks",
+    examId: "csa-v2",
+    category: "Incident Response",
+    title: "Incident Response Lifecycle (NIST SP 800-61 vs. SANS)",
+    description: "Comprehensive mapping of IR phases, operational SOC tasks, and IRT escalation procedures.",
+    type: "table",
+    headers: ["Phase / Step", "Primary Objective", "Key SOC Actions & Exam Context"],
+    rows: [
+      ["1. Preparation", "Readiness & tool provisioning", "Deploying EDR/SIEM, establishing SOPs, training analysts, and configuring automated SOAR playbooks."],
+      ["2. Detection & Analysis (Triage)", "Alert validation & scoping", "Jennifer's triage: inspecting EDR, SIEM, and email logs; verifying false positives to confirm true attack."],
+      ["IRT Escalation Handover", "IRT First Step", "Incident Analysis and Validation: verifying forensic indicators and confirming incident scope before action."],
+      ["3. Containment", "Halt adversary spread & dwell time", "Executing Deprovisioning Users SOAR Playbooks, host network isolation, user action verification, and MFA enforcement."],
+      ["4. Eradication", "Eliminate root cause & persistence", "Fixing Devices (emergency CVE patching), neutralizing botnet C2 handlers, and deleting rogue scheduled tasks/services."],
+      ["5. Recovery", "Restore trusted business operations", "Rebuilding systems from clean golden images, restoring validated offline backups, and verifying monitoring telemetry."],
+      ["6. Post-Incident Review", "Lessons learned & defense hardening", "Sarah's review: calculating downtime & financial loss ($157k impact), identifying 7 improvements, updating detection rules."]
+    ]
+  },
+  {
+    id: "note-cti-frameworks",
+    examId: "csa-v2",
     category: "Threat Intelligence",
-    title: "Cyber Threat Intelligence Frameworks & Standards",
-    description: "Key CTI concepts: STIX, TAXII, TLP 2.0, Diamond Model, and the Pyramid of Pain.",
+    title: "Cyber Threat Intelligence (CTI) Frameworks & Hunting Models",
+    description: "Core CTI standards, sharing protocols, intelligence disciplines, and threat hunting classifications.",
     type: "cards",
     items: [
       {
-        title: "STIX (Structured Threat Information Expression)",
-        code: "JSON/XML Structured Language",
-        desc: "Standardized language to describe threat info: IoCs, Threat Actors, Campaigns, and Attack Patterns."
+        title: "Unstructured Threat Hunting",
+        code: "Weak Signal / Anomaly-Driven",
+        desc: "Initiated from weak signals or subtle anomalies (e.g. encrypted periodic traffic to unfamiliar IP without existing IoCs) where the analyst freely explores telemetry to identify Indicators of Attack (IoAs)."
       },
       {
-        title: "TAXII (Trusted Automated eXchange of Intel)",
-        code: "Application Protocol (HTTPS / REST API)",
-        desc: "Defines transport mechanisms and services (Collections & Channels) for sharing STIX intelligence."
+        title: "Human Intelligence (HUMINT) in CTI",
+        code: "Interpersonal & Psychological Profiling",
+        desc: "Leverages interpersonal communication, social engineering analysis, insider interviews, and deception detection to uncover adversary motives and planned campaigns."
+      },
+      {
+        title: "Data Integration in Threat Intelligence",
+        code: "Cross-Domain Telemetry Aggregation",
+        desc: "Ingests, normalizes, and correlates external threat intelligence feeds (STIX/TAXII) with internal EDR events, network flows, and authentication logs to maximize detection fidelity."
+      },
+      {
+        title: "STIX & TAXII Protocols",
+        code: "STIX = What (JSON Schema) | TAXII = How (HTTPS Protocol)",
+        desc: "STIX standardizes threat intelligence representation (IoCs, actors, TTPs). TAXII provides the secure transport protocol over HTTPS to automate feed sharing with SIEMs."
       },
       {
         title: "Traffic Light Protocol (TLP 2.0)",
-        code: "TLP:RED | TLP:AMBER | TLP:AMBER+STRICT | TLP:GREEN | TLP:CLEAR",
-        desc: "RED: Named individuals only. AMBER: Within organization (need-to-know). GREEN: Trusted community. CLEAR: Public."
+        code: "RED | AMBER | AMBER+STRICT | GREEN | CLEAR",
+        desc: "RED: Named recipients only. AMBER: Within the organization (need-to-know). GREEN: Trusted community peers. CLEAR: Publicly shareable."
       },
       {
-        title: "Diamond Model of Intrusion Analysis",
-        code: "4 Vertices: Adversary, Capability, Infrastructure, Victim",
-        desc: "Connects who attacked (Adversary), using what weapon (Capability), through where (Infrastructure), targeting whom (Victim)."
+        title: "Pyramid of Pain Hierarchy",
+        code: "Hashes -> IPs -> Domains -> Host Artifacts -> Tools -> TTPs",
+        desc: "Hashes & IPs are trivial for attackers to change (bottom). Adversary TTPs (Tactics, Techniques, and Procedures) are the most painful and costly to modify (top)."
       }
     ]
   },
   {
-    id: "note-ir-deep",
-    examId: "csa",
-    category: "Incident Response",
-    title: "Granular SOC Incident Response Actions Matrix",
-    description: "Operational classification of SOC actions across every stage of an active incident.",
+    id: "note-mitre-d3fend",
+    examId: "csa-v2",
+    category: "Defensive Frameworks",
+    title: "MITRE D3FEND Defensive Technique Matrix",
+    description: "Systematic mapping of defensive techniques to adversary tactics in MITRE ATT&CK.",
     type: "table",
-    headers: ["IR Phase", "Primary Goal", "Key SOC Actions & Artifacts", "Real-world Exam Scenario"],
+    headers: ["D3FEND Tactic", "Defensive Technique", "Adversary Threat Neutralized", "SOC Implementation"],
     rows: [
-      ["Recording & Assignment", "Formal logging & ownership", "Ticket generation (#INC-xxx), assigning to Tier 2/IRT, setting initial severity.", "Logging an encrypted spreadsheet ticket and escalating to Tier 2."],
-      ["Triage & Identification", "Verify and determine scope", "User action verification (who clicked/opened), hash lookup, event log review.", "Checking mail filter trace and sign-in logs to identify compromised users."],
-      ["Containment", "Stop the bleeding / limit spread", "VLAN isolation, network disconnection, credential revocation, blocking C2 IPs/domains.", "Isolating the Finance VLAN upon confirming LockBit ransomware."],
-      ["Evidence Gathering & DFIR", "Preserve volatile evidence", "RAM dump acquisition (Volatility), forensic disk imaging, PCAP network captures.", "Deploying forensic workstation to dump RAM and collect event logs."],
-      ["Eradication", "Eliminate root cause & threats", "Emergency CVE patching, mail filtering rules, removing persistence (services/tasks), fixing devices.", "Applying emergency patch KB5025941 for CVE-2024-0123 on mail server."],
-      ["Recovery", "Restore trusted operations", "Rebuilding systems from clean golden images, restoring backups, validating telemetry.", "Bringing patched mail server back online with enhanced monitoring."],
-      ["Post-Incident Activities", "Learn and harden defenses", "Post-mortem timeline review, calculating business/financial impact, updating playbooks.", "Holding review meeting 1 week later, calculating $157k impact, fixing gaps."]
+      ["Model", "System Baseline Profiling", "Anomalous execution & APT persistence", "Host Integrity Monitoring (diffing before/after system snapshots)."],
+      ["Harden", "Credential Encryption & MFA", "Brute-force / Credential Stuffing", "Enforcing Multi-Factor Authentication (MFA) during containment."],
+      ["Isolate", "Process & Network Isolation", "Lateral Movement & Worm propagation", "Demilitarized Zone (DMZ) buffer zone and EDR host network isolation."],
+      ["Deceive", "Decoy Environment / Honeypots", "Network Reconnaissance & Discovery", "Deploying honey-tokens and fake service listeners to trap attackers."],
+      ["Detect", "Dynamic Rule Optimization", "Signature evasion & Alert fatigue", "AI-driven machine learning baselines to tune alert thresholds dynamically."],
+      ["Evict", "User Deprovisioning & Token Revocation", "Account takeover / Impossible travel", "Executing 'Deprovisioning Users SOAR Playbooks' to terminate sessions."]
     ]
   },
   {
-    id: "note-cloud-soc",
-    examId: "csa",
-    category: "Cloud SOC & Advanced Tech",
-    title: "Cloud Security, AI & Automation Frameworks",
-    description: "Architecture breakdown of CASB, CSPM, CWPP, XDR, XSOAR, and AI-driven SIEM optimizations.",
+    id: "note-cloud-soar-tech",
+    examId: "csa-v2",
+    category: "Cloud SOC & Technologies",
+    title: "Enterprise SOC, Cloud & SOAR Technologies Matrix",
+    description: "Summary of defensive tools, cloud security services, and automation architectures tested in the exam.",
     type: "cards",
     items: [
       {
-        title: "CASB (Cloud Access Security Broker)",
+        title: "Cloud Access Security Broker (CASB)",
         code: "Policy Enforcement Point (SaaS / IaaS / PaaS)",
-        desc: "Governs cloud application access, enforces Data Loss Prevention (DLP), blocks unauthorized file sharing, and ensures regulatory compliance."
+        desc: "Governs cloud application access, enforces Data Loss Prevention (DLP), restricts unauthorized file sharing, and ensures regulatory compliance."
       },
       {
-        title: "CSPM vs CWPP",
-        code: "CSPM = Posture / Config | CWPP = Workload Runtime",
-        desc: "CSPM audits misconfigurations and compliance drift across cloud infrastructure. CWPP protects compute instances, containers, and serverless runtime."
+        title: "Microsoft Sentinel Playbooks",
+        code: "Azure Logic Apps Automated SOAR",
+        desc: "Automates routine SOC workflows: alert triage, incident enrichment, account deprovisioning, IP blocking on firewalls, and notifying stakeholders at machine speed."
       },
       {
-        title: "XDR + XSOAR Synergy",
-        code: "XDR (Detection) + XSOAR (Automated Orchestration)",
-        desc: "XDR correlates telemetry across endpoint, network, cloud, and email. XSOAR runs automated playbooks for immediate containment and response."
+        title: "XDR + XSOAR Integration",
+        code: "Cross-Domain Detection + Automated Remediation",
+        desc: "XDR provides unified correlation across endpoints, network, email, and cloud. XSOAR executes automated containment and remediation playbooks in real time."
       },
       {
         title: "AI SIEM: Dynamic Rule Optimization",
         code: "Machine Learning Adaptive Baselines",
-        desc: "Automatically tunes static thresholds and suppresses repetitive benign noise, drastically reducing analyst alert fatigue and false positives."
+        desc: "Automatically adjusts static thresholds based on historical behavior, eliminating repetitive benign alerts and reducing analyst alert fatigue."
       },
       {
-        title: "NLP in SOC Operations",
-        code: "Natural Language Processing for Textual Telemetry",
-        desc: "Extracts entities, evaluates intent, and detects threats in human-readable communications, phishing email bodies, and unstructured tickets."
+        title: "OpenDNS (Cisco Umbrella)",
+        code: "DNS-Layer Predictive Threat Protection",
+        desc: "Enforces domain-level phishing protection, malware C2 domain blocking, and acceptable use web content filtering at the DNS resolution layer."
+      },
+      {
+        title: "AlienVault OSSIM Reputation Database",
+        code: "Path: /etc/ossim/server/reputation.data",
+        desc: "Local database of known malicious IP reputations, threat scores, and threat intelligence indicators integrated with SIEM correlation rules."
       }
     ]
   },
   {
-    id: "note-logging-deep",
-    examId: "csa",
-    category: "Log Architecture & Auditing",
-    title: "Enterprise Log Architecture & Service Configuration",
-    description: "Essential configuration parameters, regex patterns, and logging roles for SOC monitoring.",
+    id: "note-os-paths-configs",
+    examId: "csa-v2",
+    category: "Paths & Configurations",
+    title: "Critical Operating System Log Paths & Service Configs",
+    description: "Direct reference for default log locations across Linux, Windows IIS, PostgreSQL, and Snort.",
     type: "table",
-    headers: ["Component / Technology", "Configuration / Syntax", "Function & SOC Relevance"],
+    headers: ["Platform / System", "Path / Configuration Parameter", "SOC Function & Forensic Utility"],
     rows: [
-      ["Syslog Relay", "Intermediate forwarder", "Collects logs from branch routers/servers and forwards upstream to central Syslog Server over WAN."],
-      ["PostgreSQL Auditing", "log_collector = on", "Enables writing stderr/CSV logs to files in postgresql.conf for SIEM log shipping and compliance."],
-      ["Grok Log Parsing", "%{IP:client} %{WORD:method}", "Pattern matching using regex to convert raw unstructured text logs into normalized structured fields."],
-      ["Hex Color Code Regex", "([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})", "Regex pattern to extract 3-digit shorthand or 6-digit full hexadecimal codes from logs."],
-      ["Windows Time Tampering", "Event ID 4616 & 4618", "Logs system time changes (timestomping) and monitored security condition anomalies in Windows Security log."],
-      ["Process Execution Scoping", "Event ID 4688", "Logs new process creation with command-line arguments (e.g. powershell.exe -ExecutionPolicy Bypass)."]
+      ["Microsoft IIS 7.0+", "%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>", "Default directory for W3C web server access and error logs (W3SVC1, W3SVC2)."],
+      ["Linux User Logins", "/var/log/wtmp", "Binary database recording all logins, logouts, reboots, and runlevels (read with `last`)."],
+      ["Linux Kernel Logs", "/var/log/kern.log", "Kernel logging destination for iptables firewall rules tagged with `-j LOG`."],
+      ["PostgreSQL Auditing", "log_collector = on (in postgresql.conf)", "Enables background collector to capture stderr/CSV logs to files for SIEM ingestion."],
+      ["Snort IDS Signature", "alert tcp any any -> any 80 content:\"' OR T=T\"", "Signature-based detection rule matching specific SQL injection string patterns in HTTP packets."],
+      ["Syslog Relay Proxy", "Intermediate forwarder on branch networks", "Collects logs locally, buffers them during outages, and forwards them to central Syslog Server."]
     ]
   },
   {
-    id: "note-web-attack-signatures",
-    examId: "csa",
-    category: "Web Security & Detection",
-    title: "Web Attack Signatures & Encoded Regex Master Table",
-    description: "Decoding URL hex encodings and regex detection rules frequently tested in SOC exams.",
+    id: "note-risk-metrics",
+    examId: "csa-v2",
+    category: "Risk & Metrics",
+    title: "Risk Assessment Matrix & SOC Performance Metrics",
+    description: "Formulas and scoring criteria for risk classification and operational SOC triage.",
     type: "table",
-    headers: ["Attack Type", "Signature Regex / Payload Pattern", "Hex Encodings Decoded", "Defensive Control"],
+    headers: ["Metric / Concept", "Formula / Criteria", "Classification & Operational Meaning"],
     rows: [
-      ["XSS (Cross-Site Scripting)", "/((%3C)|<).*((%69)|i).*((%6D)|m).*((%67)|g)[^\\n]+((%3E)|>)/i", "%3C = < | %69 = i | %6D = m | %67 = g | %3E = > (Detects <img> tag injections)", "WAF, Output Encoding, Content Security Policy (CSP)"],
-      ["SQL Injection (Tautology)", "/\\w*((%27)|('))((%6F)|o|(%4F))((%72)|r|(%52))/ix", "%27 = ' | %6F/%4F = o/O | %72/%52 = r/R (Detects ' OR authentication bypass)", "Parameterized Queries (Prepared Statements), UrlScan (IIS)"],
-      ["Directory / Path Traversal", "/(.|(%|%25)2E)(.|(%|%25)2E)(\\/|(%|%25)2F|\\\\|(%|%25)5C)/i", "%2E = . | %2F = / | %5C = \\ | %252E = double-encoded dot (Detects ../ and ..\\ traversal)", "Strict Path Normalization, Least-Privilege Web Root Permissions"],
-      ["Parameter / Price Tampering", "GET /buy.aspx?item=12&price=10 (Client modifies price/role)", "Tampering with query parameters or POST form fields directly in browser/proxy", "Server-side Price & Role Validation, HMAC token signing"]
-    ]
-  },
-  {
-    id: "note-paths-and-commands",
-    examId: "csa",
-    category: "System Paths & CLI Commands",
-    title: "Critical Operating System Log Paths & SOC CLI Commands",
-    description: "Direct reference for default log locations across Linux, Windows IIS, Cisco routers, and SIEM appliances.",
-    type: "table",
-    headers: ["Platform / System", "Path / Command", "Description & Forensic Utility"],
-    rows: [
-      ["Microsoft IIS 7.0+", "%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>", "Default directory for W3C web server access and error logs."],
-      ["Linux User Logins", "/var/log/wtmp", "Binary database of all logins, logouts, reboots, and runlevels (read via `last`)."],
-      ["Linux Kernel & iptables", "/var/log/kern.log", "Kernel logging destination for iptables rules tagged with `-j LOG`."],
-      ["Linux iptables Logging", "iptables -A INPUT -j LOG", "Appends rule to log all matching inbound packet headers to kernel log."],
-      ["AlienVault OSSIM SIEM", "/etc/ossim/server/reputation.data", "Local database of known malicious IP reputations and threat intelligence indicators."],
-      ["Cisco IOS Router Logs", "show logging | include <ACL_number>", "Pipes router log buffer output through an include filter (e.g. ACL 210 matches)."],
-      ["Incident Report Automation", "MagicTree", "Tree-based data management and automated report generation tool for incident handlers."],
-      ["Incident Remediation", "CrowdStrike Falcon Orchestrator", "Security automation and orchestration platform for recovering from endpoint/app compromises."]
-    ]
-  },
-  {
-    id: "note-mitre-d3fend-matrix",
-    examId: "csa",
-    category: "Defensive Frameworks",
-    title: "MITRE D3FEND: Defensive Technique Ontology",
-    description: "Systematic mapping of defensive techniques to adversary tactics defined in MITRE ATT&CK.",
-    type: "table",
-    headers: ["D3FEND Tactic", "Defensive Technique", "Offensive Threat Neutralized", "SOC Implementation"],
-    rows: [
-      ["Model", "System Baseline Profiling", "Anomalous execution & APT footholds", "Host Integrity Monitoring (diffing before/after snapshots)."],
-      ["Harden", "Credential Encryption & MFA", "Credential Stuffing / Brute-Force", "FIDO2, conditional access, and password rotation."],
-      ["Isolate", "Process & Network Isolation", "Lateral Movement & Worm propagation", "VLAN segmentation, EDR host isolation, container sandboxing."],
-      ["Deceive", "Decoy Environment / Honeypots", "Network Reconnaissance & Discovery", "Deploying honey-tokens and fake service listeners."],
-      ["Detect", "Dynamic Rule Optimization & Behavioral ML", "Signature evasion & Zero-days", "Machine learning baselines to tune alert thresholds."],
-      ["Evict", "User Deprovisioning & Session Invalidation", "Account takeover / Impossible travel", "SOAR playbooks revoking tokens and resetting AD passwords."]
-    ]
-  },
-  {
-    id: "note-cloud-threat-ops",
-    examId: "csa",
-    category: "Cloud SOC & SOAR",
-    title: "AWS Cloud Threat Monitoring & Sentinel SOAR Guide",
-    description: "Core cloud threat detection services and automated SOAR response workflows.",
-    type: "cards",
-    items: [
-      {
-        title: "Amazon GuardDuty",
-        code: "ML Threat Detection Engine",
-        desc: "Ingests CloudTrail, VPC Flow Logs, and DNS query logs to detect account compromise, Bitcoin mining, unauthorized API calls, and C2 communication."
-      },
-      {
-        title: "Amazon Macie vs AWS Config",
-        code: "Macie = S3 DLP | Config = Compliance",
-        desc: "Macie scans S3 buckets for exposed PII/PHI. AWS Config monitors configuration drift and compliance against governance rules."
-      },
-      {
-        title: "Microsoft Sentinel: TAXII Connector",
-        code: "Automated Threat Intel Sharing",
-        desc: "Ingests machine-readable STIX indicator feeds (IPs, domains, hashes) over standard HTTPS TAXII servers directly into Sentinel analytics."
-      },
-      {
-        title: "Sentinel Playbooks (Azure Logic Apps)",
-        code: "Automated SOAR Execution",
-        desc: "Executes automated workflows: isolate compromised endpoint, deprovision user account, block malicious IP on firewall, and alert incident commander."
-      }
+      ["Risk Matrix Rating", "Likely Probability + Significant Impact", "High Severity risk classification in standard enterprise risk assessment matrices."],
+      ["Highest Risk Scenario", "High Likelihood + High Impact + High Asset Value", "Maximum overall risk rating requiring immediate executive mitigation."],
+      ["False Negative (FN)", "Real attack occurs + NO alert generated", "Most dangerous alert classification representing a blind spot or detection gap in SIEM rules."],
+      ["False Positive (FP)", "Benign activity + Alert generated", "Generates noise and contributes to analyst alert fatigue; tuned via Dynamic Rule Optimization."],
+      ["True Positive (TP)", "Real attack + Alert generated", "Valid security incident requiring immediate triage and containment."],
+      ["True Negative (TN)", "Normal benign activity + NO alert", "Expected baseline state of secure system operations."]
     ]
   }
 ];
