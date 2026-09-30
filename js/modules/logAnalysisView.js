@@ -4,7 +4,7 @@
 // and real-world SOC investigation mini-labs.
 // =========================================================================
 
-import { StorageManager } from './storage.js';
+import { StorageManager } from './storage.js?v=2026.5';
 
 export const LogAnalysisView = {
   currentSubTab: 'decoder',

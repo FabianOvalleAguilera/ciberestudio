@@ -1,5 +1,5 @@
 // Notes, Cheat Sheets, and Personal Notebook View Module (English)
-import { StorageManager } from './storage.js';
+import { StorageManager } from './storage.js?v=2026.5';
 
 export const NotesView = {
   activeCategory: 'all',

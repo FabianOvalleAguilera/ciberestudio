@@ -1,5 +1,5 @@
 // Mindmaps and SOC Workflows Engine (English)
-import { StorageManager } from './storage.js';
+import { StorageManager } from './storage.js?v=2026.5';
 
 export const MindmapView = {
   activeMapId: null,

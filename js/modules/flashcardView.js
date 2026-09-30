@@ -1,5 +1,5 @@
 // 3D Flip Flashcards Active Recall Trainer (English)
-import { StorageManager } from './storage.js';
+import { StorageManager } from './storage.js?v=2026.5';
 
 export const FlashcardView = {
   currentIndex: 0,
