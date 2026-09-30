@@ -152,11 +152,10 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTES)) || [];
-      const res = all.filter(n => n.examId === targetExamId);
-      if (res.length === 0 && targetExamId === 'csa-v2') {
-        return all.filter(n => n.examId === 'csa');
+      if (targetExamId === 'csa' || targetExamId === 'csa-v2') {
+        return all.filter(n => n.examId === 'csa' || n.examId === 'csa-v2' || n.examId === 'all');
       }
-      return res;
+      return all.filter(n => n.examId === targetExamId || n.examId === 'all');
     } catch (e) {
       return [];
     }
@@ -186,11 +185,10 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.MINDMAPS)) || [];
-      const res = all.filter(m => m.examId === targetExamId);
-      if (res.length === 0 && targetExamId === 'csa-v2') {
-        return all.filter(m => m.examId === 'csa');
+      if (targetExamId === 'csa' || targetExamId === 'csa-v2') {
+        return all.filter(m => m.examId === 'csa' || m.examId === 'csa-v2' || m.examId === 'all');
       }
-      return res;
+      return all.filter(m => m.examId === targetExamId || m.examId === 'all');
     } catch (e) {
       return [];
     }
@@ -200,11 +198,10 @@ export const StorageManager = {
     const targetExamId = examId || this.getCurrentExamId();
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.FLASHCARDS)) || [];
-      const res = all.filter(f => f.examId === targetExamId);
-      if (res.length === 0 && targetExamId === 'csa-v2') {
-        return all.filter(f => f.examId === 'csa');
+      if (targetExamId === 'csa' || targetExamId === 'csa-v2') {
+        return all.filter(f => f.examId === 'csa' || f.examId === 'csa-v2' || f.examId === 'all');
       }
-      return res;
+      return all.filter(f => f.examId === targetExamId || f.examId === 'all');
     } catch (e) {
       return [];
     }

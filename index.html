@@ -67,6 +67,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M7 15h0M2 9.5h20"></path></svg>
       3D Flashcards
     </button>
+    <button class="nav-tab" data-tab="logs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+      Log Analysis Lab
+    </button>
   </nav>
 
   <!-- Main App Content Container -->
@@ -83,7 +87,8 @@
           <h2 id="dash-hero-title">EC-Council CSA - Certified SOC Analyst</h2>
           <p id="dash-hero-desc">SOC operations, log architecture, SIEM correlation, cyber threat intelligence, and incident response.</p>
           <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button id="dash-launch-quiz" class="btn btn-primary">⚡ Start Express Quiz</button>
+            <button id="dash-launch-logs" class="btn btn-primary">🔬 Log Analysis Lab</button>
+            <button id="dash-launch-quiz" class="btn btn-secondary">⚡ Start Express Quiz</button>
             <button id="dash-launch-notes" class="btn btn-secondary">📑 View Cheat Sheets</button>
             <button id="dash-launch-maps" class="btn btn-secondary">🗺️ Explore Workflows</button>
             <button id="dash-launch-cards" class="btn btn-secondary">🎴 Review Flashcards</button>
@@ -420,6 +425,181 @@
             <button id="fc-next-btn" class="btn btn-secondary">Next ➡️</button>
             <button id="fc-shuffle-btn" class="btn btn-secondary" title="Shuffle flashcards">🔀</button>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 6: LOG ANALYSIS & SIEM LAB            -->
+    <!-- ========================================== -->
+    <section id="view-logs" class="tab-view">
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="badge badge-cyan" style="margin-bottom: 0.35rem;">EC-Council CSA v2 Specialization</span>
+            <h2 style="font-size: 1.6rem; font-weight: 800;">🔬 Log Analysis & SIEM Investigation Lab</h2>
+            <p style="color: var(--text-muted);">
+              Deep-dive telemetry analysis: Windows EVTX, Sysmon, Syslog RFC 5424, IIS W3C, Snort IDS, and Hands-on SOC Case Studies.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-Tab Navigation Header -->
+      <div class="mindmap-selector" style="margin-bottom: 1.5rem;">
+        <button class="mindmap-tab-btn log-subtab-btn active" data-subtab="decoder">
+          <span>🧪 Live Log Decoder & Parser</span>
+          <span class="badge badge-cyan">Interactive</span>
+        </button>
+        <button class="mindmap-tab-btn log-subtab-btn" data-subtab="library">
+          <span>📑 Knowledge Library & Cheat Sheets</span>
+          <span class="badge badge-purple">Reference</span>
+        </button>
+        <button class="mindmap-tab-btn log-subtab-btn" data-subtab="regex">
+          <span>🔍 Regex & Signature Sandbox</span>
+          <span class="badge badge-amber">Patterns</span>
+        </button>
+        <button class="mindmap-tab-btn log-subtab-btn" data-subtab="cases">
+          <span>🎯 SOC Case Studies (Mini-Labs)</span>
+          <span class="badge badge-emerald">5 Cases</span>
+        </button>
+      </div>
+
+      <!-- SUBTAB 1: LIVE LOG DECODER -->
+      <div id="log-view-decoder" class="log-subtab-view active">
+        <div class="grid-2" style="margin-bottom: 1.5rem; align-items: stretch;">
+          <div class="card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700;">📡 Load Telemetry Sample</h3>
+              <span class="badge badge-cyan">Presets</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">
+              Choose a real attack or benign scenario from the catalog to load its raw log stream:
+            </p>
+            <select id="log-preset-select" class="form-select" style="margin-bottom: 1rem;">
+              <!-- Dynamically populated -->
+            </select>
+
+            <label class="form-label" style="display: flex; justify-content: space-between;">
+              <span>Raw Log Text (Editable):</span>
+              <button id="log-reset-btn" class="btn btn-secondary btn-sm" style="padding: 0.15rem 0.5rem; font-size: 0.75rem;">Reset Sample</button>
+            </label>
+            <textarea id="log-raw-input" class="form-textarea" style="height: 140px; font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 1rem;" placeholder="Paste any raw log string here to parse..."></textarea>
+
+            <button id="log-decode-btn" class="btn btn-primary" style="margin-top: auto; width: 100%;">
+              ⚡ Analyze & Decode Telemetry
+            </button>
+          </div>
+
+          <div class="card" style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border-color);">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">📖 Log Format Guide</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+              Instant parsing rules and field definitions across major log sources:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.82rem;">
+              <div style="padding: 0.6rem; background: var(--bg-tertiary); border-radius: var(--radius-sm);">
+                <strong style="color: var(--accent-cyan);">🪟 Windows EVTX:</strong>
+                <span style="color: var(--text-muted);">EventID, LogonType, SubStatus (0xC000006A wrong pwd, 0xC0000064 no user), ElevatedToken.</span>
+              </div>
+              <div style="padding: 0.6rem; background: var(--bg-tertiary); border-radius: var(--radius-sm);">
+                <strong style="color: var(--accent-purple);">🌐 IIS W3C Web:</strong>
+                <span style="color: var(--text-muted);"><code>s-ip</code> (Server), <code>c-ip</code> (Client), <code>cs-method</code>, <code>cs-uri-query</code>, <code>sc-status</code>, <code>sc-bytes</code>.</span>
+              </div>
+              <div style="padding: 0.6rem; background: var(--bg-tertiary); border-radius: var(--radius-sm);">
+                <strong style="color: var(--accent-emerald);">🐧 Linux Syslog (RFC 5424):</strong>
+                <span style="color: var(--text-muted);">Severities 0-7 (0=emerg, 1=alert, 2=crit, 3=err), <code>PRI = (Facility * 8) + Severity</code>.</span>
+              </div>
+              <div style="padding: 0.6rem; background: var(--bg-tertiary); border-radius: var(--radius-sm);">
+                <strong style="color: var(--accent-amber);">🛡️ Snort IDS:</strong>
+                <span style="color: var(--text-muted);"><code>alert proto src -> dst (msg; content; sid; rev;)</code> with classification and priority.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parsed Results Container -->
+        <div id="log-analysis-results">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <!-- SUBTAB 2: KNOWLEDGE LIBRARY -->
+      <div id="log-view-library" class="log-subtab-view">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+          <!-- Category Filter Bar -->
+          <div class="mindmap-selector" style="margin-bottom: 0;">
+            <button class="mindmap-tab-btn log-lib-cat-btn active" data-libcat="windows">🪟 Windows & Sysmon</button>
+            <button class="mindmap-tab-btn log-lib-cat-btn" data-libcat="linux">🐧 Linux & Syslog</button>
+            <button class="mindmap-tab-btn log-lib-cat-btn" data-libcat="web">🌐 Web Servers (IIS/Apache)</button>
+            <button class="mindmap-tab-btn log-lib-cat-btn" data-libcat="network">🛡️ Network & Snort</button>
+            <button class="mindmap-tab-btn log-lib-cat-btn" data-libcat="database">🗄️ Database & Cloud</button>
+            <button class="mindmap-tab-btn log-lib-cat-btn" data-libcat="siem">⚙️ SIEM Pipeline</button>
+          </div>
+          <div style="width: 260px;">
+            <input type="text" id="log-lib-search" class="form-input" placeholder="🔍 Search library...">
+          </div>
+        </div>
+
+        <div id="log-lib-content-area">
+          <!-- Dynamically populated from notes -->
+        </div>
+      </div>
+
+      <!-- SUBTAB 3: REGEX & SIGNATURE SANDBOX -->
+      <div id="log-view-regex" class="log-subtab-view">
+        <div class="card" style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff;">
+            🔍 SOC Regular Expression & Signature Evaluator
+          </h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+            Test and validate SIEM extraction regexes, traversal detection filters, and payload signatures against real log streams.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label">Select Pre-Configured SOC Regex Preset:</label>
+            <select id="regex-preset-select" class="form-select">
+              <!-- Injected -->
+            </select>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Regex Pattern (e.g. <code>\b(?:\d{1,3}\.){3}\d{1,3}\b</code>):</label>
+              <input type="text" id="regex-pattern-input" class="form-input" style="font-family: var(--font-mono); color: #38bdf8; font-weight: 600;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pattern Explanation / SOC Utility:</label>
+              <div id="regex-explanation-box" style="padding: 0.65rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-muted); min-height: 42px;">
+                Explanation
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+              <label class="form-label" style="margin-bottom: 0;">Test Telemetry / Sample Text:</label>
+              <span id="regex-match-count" class="badge badge-emerald">0 matches</span>
+            </div>
+            <textarea id="regex-test-area" class="form-textarea" style="height: 110px; font-family: var(--font-mono); font-size: 0.85rem;" placeholder="Type or paste text to test..."></textarea>
+          </div>
+
+          <div>
+            <label class="form-label">Live Match Highlighting:</label>
+            <div id="regex-highlight-display" style="background: #080c14; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: #e2e8f0; min-height: 80px; white-space: pre-wrap;">
+              Live matches will appear highlighted here...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBTAB 4: SOC CASE INVESTIGATIONS (MINI-LABS) -->
+      <div id="log-view-cases" class="log-subtab-view">
+        <div class="mindmap-selector" id="case-tabs-container" style="margin-bottom: 1.5rem;">
+          <!-- Case buttons injected -->
+        </div>
+
+        <div id="case-display-container">
+          <!-- Injected dynamically -->
         </div>
       </div>
     </section>

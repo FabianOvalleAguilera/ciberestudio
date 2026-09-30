@@ -949,3 +949,58 @@ body {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
+/* ========================================================================= */
+/* LOG ANALYSIS LAB & SIEM INVESTIGATION HUB STYLES                          */
+/* ========================================================================= */
+
+.log-subtab-view {
+  display: none;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.log-subtab-view.active {
+  display: block;
+}
+
+.log-terminal-view {
+  background: #070a12;
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: #e2e8f0;
+  overflow-x: auto;
+  user-select: text;
+}
+
+.log-terminal-view::-webkit-scrollbar {
+  height: 6px;
+}
+
+.log-terminal-view::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 3px;
+}
+
+.log-terminal-view mark {
+  background: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+  border-bottom: 2px solid #f59e0b;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.log-lib-cat-btn {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .log-terminal-view {
+    font-size: 0.75rem;
+  }
+}
+

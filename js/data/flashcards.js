@@ -424,5 +424,152 @@ export const defaultFlashcards = [
     front: "What activities occur in the Post-Incident Review phase (Lessons Learned)?",
     back: "• Reviewing incident timeline, calculating financial & business downtime impact (e.g. Sarah's $157k review), identifying gaps, and updating playbooks & detection rules.",
     module: 6
+  },
+  // =========================================================================
+  // MODULE 3 & 4: LOG ANALYSIS & SIEM DEEP-DIVE FLASHCARDS
+  // =========================================================================
+  {
+    id: "fc-v2-log-1",
+    examId: "csa-v2",
+    category: "Windows Event Logs",
+    front: "What does Windows Event ID 4624 indicate, and why is Logon Type critical?",
+    back: "• Event ID 4624: Successful Account Logon.\n• Logon Type identifies the connection vector: Type 2 = Local Interactive, Type 3 = Network (SMB/Lateral Movement), Type 10 = Remote Desktop (RDP).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-2",
+    examId: "csa-v2",
+    category: "Windows Event Logs",
+    front: "What does Windows Event ID 4625 represent, and what does Sub-Status 0xC000006A mean?",
+    back: "• Event ID 4625: Failed Account Logon.\n• Sub-Status 0xC000006A indicates 'Wrong Password' (user exists). High bursts on a single user indicate Brute-Force; across many users indicate Password Spray.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-3",
+    examId: "csa-v2",
+    category: "Windows Event Logs",
+    front: "What is the meaning of Windows Event ID 1102 versus Event ID 104?",
+    back: "• Event ID 1102: The Security Audit Log was cleared (Critical anti-forensics indicator).\n• Event ID 104: The System or Application Log was cleared.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-4",
+    examId: "csa-v2",
+    category: "Windows Event Logs",
+    front: "Which Windows Event ID records the installation of a new system service?",
+    back: "• Event ID 7045 (in System log) / Event ID 4697 (in Security log).\n• Critical indicator for adversary persistence and PsExec/lateral movement execution.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-5",
+    examId: "csa-v2",
+    category: "Windows Event Logs",
+    front: "What does Event ID 4688 with CommandLine auditing reveal to a SOC analyst?",
+    back: "• New Process Created.\n• CommandLine auditing captures exact process execution arguments (e.g. `powershell.exe -ExecutionPolicy Bypass -enc ...`).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-6",
+    examId: "csa-v2",
+    category: "Active Directory Logs",
+    front: "What do Kerberos Event IDs 4768, 4769, and 4771 signify?",
+    back: "• 4768: Kerberos TGT Ticket Request (AS-REQ/AS-REP).\n• 4769: Kerberos Service Ticket Request (TGS-REQ - Kerberoasting indicator when RC4/0x17).\n• 4771: Kerberos Pre-Authentication Failed (Failure Code 0x18 = bad password / AS-REP Roasting).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-7",
+    examId: "csa-v2",
+    category: "Sysmon Logs",
+    front: "What threat activities are detected by Sysmon Event ID 1, Event ID 8, and Event ID 10?",
+    back: "• Event 1: Process Creation (parent-child lineage, command line, hashes).\n• Event 8: CreateRemoteThread (Process Injection into explorer.exe/svchost.exe).\n• Event 10: ProcessAccess (Handle to lsass.exe for Mimikatz credential dumping).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-8",
+    examId: "csa-v2",
+    category: "Syslog Standards",
+    front: "What is the numeric range and meaning of Syslog Severity levels (RFC 5424)?",
+    back: "• Levels 0 to 7:\n0 = Emergency (Panic) | 1 = Alert | 2 = Critical | 3 = Error | 4 = Warning | 5 = Notice | 6 = Informational | 7 = Debug.\n• Mnemonic: 'Every Alien Can Easily Win New Intergalactic Dogfights'.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-9",
+    examId: "csa-v2",
+    category: "Syslog Standards",
+    front: "How is the Syslog Priority (PRI) value calculated in RFC 5424?",
+    back: "• Formula: PRI = (Facility * 8) + Severity.\n• Example: Facility `auth` (4) + Severity `crit` (2) = (4 * 8) + 2 = 34 -> Represented as `<34>` in the syslog header.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-10",
+    examId: "csa-v2",
+    category: "Linux Logs",
+    front: "What is recorded in /var/log/wtmp versus /var/log/btmp and /var/log/lastlog?",
+    back: "• /var/log/wtmp: Successful user logins, logouts, and reboots (read with `last`).\n• /var/log/btmp: Bad/failed login attempts (read with `lastb`).\n• /var/log/lastlog: Most recent login timestamp and IP for every user (read with `lastlog`).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-11",
+    examId: "csa-v2",
+    category: "Linux Logs",
+    front: "Where are Linux SSH authentication and sudo elevation logs stored on Ubuntu vs RHEL?",
+    back: "• Ubuntu / Debian: `/var/log/auth.log`\n• RHEL / CentOS: `/var/log/secure`\n• Both capture PAM authentication failures, accepted public keys, and sudo privilege executions.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-12",
+    examId: "csa-v2",
+    category: "Web Server Logs",
+    front: "What do the W3C log field prefixes `s-`, `c-`, `cs-`, and `sc-` mean in Microsoft IIS logs?",
+    back: "• `s-`: Server property (e.g. `s-ip`, `s-port`).\n• `c-`: Client property (e.g. `c-ip`).\n• `cs-`: Client-to-Server request (e.g. `cs-method`, `cs-uri-stem`, `cs-uri-query`, `cs(User-Agent)`).\n• `sc-`: Server-to-Client response (e.g. `sc-status`, `sc-substatus`, `sc-bytes`).",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-13",
+    examId: "csa-v2",
+    category: "Web Server Logs",
+    front: "What default directory contains Microsoft IIS 7.0+ W3C web access logs?",
+    back: "• `%SystemDrive%\\inetpub\\logs\\LogFiles\\W3SVC<SiteID>`\n• Site 1 logs to `W3SVC1`, Site 2 logs to `W3SVC2`, named `u_exYYMMDD.log`.",
+    module: 3
+  },
+  {
+    id: "fc-v2-log-14",
+    examId: "csa-v2",
+    category: "Web Attack Signatures",
+    front: "What regex pattern is used to detect Directory / Path Traversal in web server logs?",
+    back: "• `/(.|(%|%25)2E)(.|(%|%25)2E)(\\/|(%|%25)2F|\\\\|(%|%25)5C)/i`\n• Decodes hexadecimal and URL-encoded representations of `../` and `..\\` sequences.",
+    module: 4
+  },
+  {
+    id: "fc-v2-log-15",
+    examId: "csa-v2",
+    category: "Snort IDS Logs",
+    front: "What is the general syntax and action structure of a Snort IDS rule?",
+    back: "• `[Action] [Protocol] [Src_IP] [Src_Port] [Direction ->] [Dst_IP] [Dst_Port] ( [Rule Options] )`\n• Example: `alert tcp any any -> any 80 (msg:\"SQLi\"; content:\"' OR T=T\"; sid:1000001;)`",
+    module: 4
+  },
+  {
+    id: "fc-v2-log-16",
+    examId: "csa-v2",
+    category: "DNS Log Analysis",
+    front: "How do SOC analysts detect DNS Tunneling and data exfiltration from DNS query logs?",
+    back: "• Abnormally high query volume to single domain.\n• High entropy, long randomized subdomains (e.g. `aW5maWx0cmF0aW9u.attacker.com`).\n• High ratio of `TXT` or `NULL` record query types carrying encoded payloads.",
+    module: 4
+  },
+  {
+    id: "fc-v2-log-17",
+    examId: "csa-v2",
+    category: "SIEM Architecture",
+    front: "What are the 7 core stages of the SIEM Log Processing Pipeline?",
+    back: "1. Log Ingestion / Collection\n2. Parsing / Field Extraction\n3. Normalization (CEF/LEEF/CIM)\n4. Enrichment (GeoIP, Asset, CTI)\n5. Indexing & Storage\n6. Correlation & Alerting\n7. Visualization & Automated SOAR Response.",
+    module: 4
+  },
+  {
+    id: "fc-v2-log-18",
+    examId: "csa-v2",
+    category: "Database Logs",
+    front: "What parameter must be set to 'on' in `postgresql.conf` to enable background log collection?",
+    back: "• `log_collector = on`\n• Directs PostgreSQL to capture stderr and CSV log outputs to disk files for SIEM ingestion.",
+    module: 3
   }
 ];

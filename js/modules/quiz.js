@@ -69,6 +69,9 @@ export const QuizEngine = {
 
       if (keyMap.hasOwnProperty(key)) {
         const idx = keyMap[key];
+        const hasAnswered = this.state.userAnswers.hasOwnProperty(q.id);
+        if (hasAnswered) return; // Bloquear cambio si ya fue respondida
+
         if (idx < q.options.length) {
           e.preventDefault();
           this.selectAnswer(q, idx);
@@ -215,7 +218,7 @@ export const QuizEngine = {
     q.options.forEach((optText, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'option-item';
+      btn.className = `option-item ${hasAnswered ? 'locked' : ''}`;
 
       let statusBadgeHtml = '';
 
@@ -240,6 +243,7 @@ export const QuizEngine = {
 
       btn.addEventListener('click', (e) => {
         e.preventDefault();
+        if (hasAnswered) return; // Bloquear cambio si ya fue respondida
         this.selectAnswer(q, index);
       });
 
@@ -273,6 +277,8 @@ export const QuizEngine = {
   },
 
   selectAnswer(question, selectedIndex) {
+    if (this.state.userAnswers.hasOwnProperty(question.id)) return; // Bloqueado: no permite cambiar
+
     const parsedIndex = parseInt(selectedIndex, 10);
     const correctIdx = parseInt(question.correctAnswer, 10);
     

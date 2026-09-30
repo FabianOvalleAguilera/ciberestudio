@@ -437,5 +437,148 @@ export const defaultMindmaps = [
         ]
       }
     ]
+  },
+  {
+    id: "map-siem-pipeline",
+    examId: "csa-v2",
+    title: "End-to-End SIEM Log Pipeline & Normalization Lifecycle",
+    description: "Architectural stages of log collection, field extraction, taxonomic normalization (CEF/CIM), enrichment, and correlation.",
+    steps: [
+      {
+        number: "1",
+        title: "1. Log Collection & Transport",
+        role: "Log Collectors & Syslog Relays",
+        badge: "Ingestion",
+        summary: "Raw telemetry is pushed or pulled from heterogeneous enterprise endpoints and security appliances.",
+        details: [
+          "Sources: Windows Security EVTX (via WEC/Winlogbeat), Syslog relays (UDP/TCP 514, TLS 6514), Linux auditd, CloudTrail API connectors.",
+          "Syslog Relays buffer messages locally during network disruptions and forward them to central SIEM collector."
+        ]
+      },
+      {
+        number: "2",
+        title: "2. Parsing & Field Extraction",
+        role: "SIEM Parsing Engine (Grok / Regex)",
+        badge: "Parsing",
+        summary: "Dissects raw string streams into structured key-value attributes (timestamp, IP, username, process, payload).",
+        details: [
+          "Extracts headers according to RFC 5424 / RFC 3164 standards.",
+          "Extracts W3C web log prefixes (`s-ip`, `c-ip`, `cs-method`, `cs-uri-stem`, `sc-status`, `sc-bytes`)."
+        ]
+      },
+      {
+        number: "3",
+        title: "3. Taxonomic Normalization",
+        role: "Normalization Module (CEF / LEEF / CIM / ECS)",
+        badge: "Normalization",
+        summary: "Maps vendor-specific field names into universal, standardized schema definitions.",
+        details: [
+          "Standardizes IP fields: `c-ip` (IIS), `src` (CheckPoint), `SourceAddress` (Windows) -> `source_ip`.",
+          "Ensures cross-vendor correlation rules can match events across heterogeneous firewalls, EDRs, and proxies."
+        ]
+      },
+      {
+        number: "4",
+        title: "4. Contextual Enrichment",
+        role: "Enrichment Engine & Threat Feeds",
+        badge: "Enrichment",
+        summary: "Appends external threat intelligence, asset criticality, and identity context to parsed events.",
+        details: [
+          "GeoIP lookup and AlienVault OSSIM reputation scoring (`/etc/ossim/server/reputation.data`).",
+          "Active Directory LDAP mapping (attaching department, manager, and privilege level to usernames).",
+          "STIX/TAXII IoC feed tag matching."
+        ]
+      },
+      {
+        number: "5",
+        title: "5. Multi-Event Correlation & Detection",
+        role: "SIEM Correlation Engine (Rules + UEBA)",
+        badge: "Detection",
+        summary: "Evaluates real-time sliding time windows across millions of normalized events to trigger high-fidelity alerts.",
+        details: [
+          "Rule Correlation: 5x Failed Logons (4625) within 60s followed by 1x Success (4624) -> Brute Force Success Alert.",
+          "Dynamic Rule Optimization: Machine learning baselines to dynamically adjust thresholds and prevent alert fatigue."
+        ]
+      },
+      {
+        number: "6",
+        title: "6. Tiered Storage & Forensic Preservation",
+        role: "Data Management & Storage Tiers",
+        badge: "Archival",
+        summary: "Stores logs across tiered lifecycle architecture while ensuring tamper-proof legal admissibility.",
+        details: [
+          "Hot Tier (0-30 days): High-performance NVMe for active real-time queries and dashboard analytics.",
+          "Warm/Cold Tier (30-365+ days): Compressed object storage for compliance and historical threat hunting.",
+          "Tamper-Proofing: WORM storage, SHA-256 digital hashing, and strict NTP stratum-1 time synchronization."
+        ]
+      }
+    ]
+  },
+  {
+    id: "map-windows-auth-triage",
+    examId: "csa-v2",
+    title: "Windows Authentication & Lateral Movement Log Triage Flow",
+    description: "Step-by-step forensic analysis of Windows Security event streams to uncover unauthorized access and lateral movement.",
+    steps: [
+      {
+        number: "1",
+        title: "1. Authentication Event Ingestion",
+        role: "Domain Controller / Member Server",
+        badge: "Auth Logs",
+        summary: "Capture raw logon requests and pre-authentication status across Active Directory and endpoints.",
+        details: [
+          "Kerberos AS-REQ / AS-REP (Event 4768) and TGS-REQ (Event 4769).",
+          "Pre-auth failure (Event 4771 with Failure Code 0x18) indicates bad password / brute force.",
+          "NTLM validation on Domain Controller (Event 4776)."
+        ]
+      },
+      {
+        number: "2",
+        title: "2. Success vs Failure Assessment",
+        role: "Tier 1 SOC Analyst",
+        badge: "Logon Status",
+        summary: "Differentiate between benign user error, password spraying, and successful compromise.",
+        details: [
+          "Event 4625: Check Sub-Status code (`0xC0000064` no user, `0xC000006A` wrong password, `0xC0000234` locked out).",
+          "Event 4624: Examine Logon Type code (Type 2 Interactive, Type 3 Network, Type 10 RDP)."
+        ]
+      },
+      {
+        number: "3",
+        title: "3. Lateral Movement Correlation",
+        role: "Tier 2 SOC Investigator",
+        badge: "Lateral Movement",
+        summary: "Identify rapid hops across internal network workstations and servers.",
+        details: [
+          "Burst of Event 4624 Logon Type 3 (Network) across multiple servers from a single workstation IP.",
+          "Explicit credential usage (Event 4648) or Pass-the-Hash artifact indicators.",
+          "File share object access (Event 5140 / 5145) to administrative C$ or ADMIN$ shares."
+        ]
+      },
+      {
+        number: "4",
+        title: "4. Execution & Persistence Verification",
+        role: "Forensic Analyst (DFIR)",
+        badge: "Persistence",
+        summary: "Correlate authentication with host-level process execution and persistence artifacts.",
+        details: [
+          "Event 4672: Check if administrative privileges (SeDebugPrivilege) were assigned.",
+          "Event 7045 / 4697: Detect newly installed Windows service (e.g. PsExec service `PSEXESVC`).",
+          "Sysmon Event 1: Inspect CommandLine for encoded PowerShell execution or Lolbins usage."
+        ]
+      },
+      {
+        number: "5",
+        title: "5. Containment & Remediation",
+        role: "IRT / Automated SOAR",
+        badge: "Containment",
+        summary: "Execute immediate containment playbooks to isolate endpoints and revoke compromised credentials.",
+        details: [
+          "Execute 'Deprovisioning Users SOAR Playbook' to terminate active sessions and reset Kerberos TGT.",
+          "Isolate compromised source host via EDR network containment.",
+          "Enforce mandatory Multi-Factor Authentication (MFA) on all remote access points."
+        ]
+      }
+    ]
   }
 ];

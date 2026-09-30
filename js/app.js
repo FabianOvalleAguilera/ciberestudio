@@ -4,6 +4,7 @@ import { QuizEngine } from './modules/quiz.js?v=2026.4';
 import { NotesView } from './modules/notesView.js?v=2026.4';
 import { MindmapView } from './modules/mindmapView.js?v=2026.4';
 import { FlashcardView } from './modules/flashcardView.js?v=2026.4';
+import { LogAnalysisView } from './modules/logAnalysisView.js?v=2026.4';
 import { ExamManager } from './modules/examManager.js?v=2026.4';
 
 const App = {
@@ -18,6 +19,7 @@ const App = {
     NotesView.init();
     MindmapView.init();
     FlashcardView.init();
+    LogAnalysisView.init();
 
     this.bindNavigation();
     this.updateDashboard();
@@ -33,11 +35,13 @@ const App = {
     });
 
     // Dashboard quick launch buttons
+    const launchLogsBtn = document.getElementById('dash-launch-logs');
     const launchQuizBtn = document.getElementById('dash-launch-quiz');
     const launchNotesBtn = document.getElementById('dash-launch-notes');
     const launchMapsBtn = document.getElementById('dash-launch-maps');
     const launchCardsBtn = document.getElementById('dash-launch-cards');
 
+    if (launchLogsBtn) launchLogsBtn.addEventListener('click', () => this.switchTab('logs'));
     if (launchQuizBtn) launchQuizBtn.addEventListener('click', () => this.switchTab('quiz'));
     if (launchNotesBtn) launchNotesBtn.addEventListener('click', () => this.switchTab('notes'));
     if (launchMapsBtn) launchMapsBtn.addEventListener('click', () => this.switchTab('mindmaps'));
@@ -59,6 +63,7 @@ const App = {
     if (tabId === 'notes') NotesView.render();
     if (tabId === 'mindmaps') MindmapView.render();
     if (tabId === 'flashcards') FlashcardView.render();
+    if (tabId === 'logs') LogAnalysisView.render();
     if (tabId === 'quiz') QuizEngine.renderModuleOptions();
   },
 
@@ -68,6 +73,7 @@ const App = {
     NotesView.render();
     MindmapView.render();
     FlashcardView.render();
+    LogAnalysisView.render();
   },
 
   updateDashboard() {
