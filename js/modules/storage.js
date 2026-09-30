@@ -20,28 +20,21 @@ const STORAGE_KEYS = {
 
 export const StorageManager = {
   init() {
-    // Sincronizar exámenes por defecto (añadir o actualizar nuevos como csa-v2)
+    // Sincronizar exámenes por defecto (garantizando módulos completos)
     try {
       const existingExams = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXAMS)) || [];
-      const existingExamIds = new Set(existingExams.map(e => e.id));
-      let updatedExams = [...existingExams];
-      defaultExams.forEach(defEx => {
-        if (!existingExamIds.has(defEx.id)) {
-          updatedExams.push(defEx);
-        } else {
-          const idx = updatedExams.findIndex(e => e.id === defEx.id);
-          if (idx >= 0) {
-            updatedExams[idx] = { ...updatedExams[idx], ...defEx, modules: defEx.modules };
-          }
-        }
-      });
+      const defaultIds = new Set(defaultExams.map(e => e.id));
+      // Preservar exámenes personalizados creados por el usuario
+      const customExams = existingExams.filter(e => !defaultIds.has(e.id));
+      const updatedExams = [...defaultExams, ...customExams];
       localStorage.setItem(STORAGE_KEYS.EXAMS, JSON.stringify(updatedExams));
     } catch (e) {
       localStorage.setItem(STORAGE_KEYS.EXAMS, JSON.stringify(defaultExams));
     }
 
-    // Examen actual por defecto
-    if (!localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM)) {
+    // Examen actual por defecto (csa-v2 o csa)
+    const currentStored = localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM);
+    if (!currentStored || (currentStored !== 'csa-v2' && currentStored !== 'csa' && currentStored !== 'cysa' && currentStored !== 'btl1')) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_EXAM, 'csa-v2');
     }
     // Sincronizar banco de preguntas (asegurar datos actualizados e íntegros)
@@ -94,7 +87,7 @@ export const StorageManager = {
   },
 
   getCurrentExamId() {
-    return localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM) || 'csa';
+    return localStorage.getItem(STORAGE_KEYS.CURRENT_EXAM) || 'csa-v2';
   },
 
   setCurrentExamId(examId) {
@@ -103,7 +96,16 @@ export const StorageManager = {
 
   getExams() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEYS.EXAMS)) || defaultExams;
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXAMS));
+      if (!stored || stored.length === 0) return defaultExams;
+      return stored.map(s => {
+        const def = defaultExams.find(d => d.id === s.id);
+        return {
+          ...def,
+          ...s,
+          modules: (s.modules && s.modules.length > 0) ? s.modules : (def ? def.modules : [])
+        };
+      });
     } catch (e) {
       return defaultExams;
     }
@@ -112,7 +114,15 @@ export const StorageManager = {
   getCurrentExam() {
     const currentId = this.getCurrentExamId();
     const exams = this.getExams();
-    return exams.find(e => e.id === currentId) || exams[0] || defaultExams[0];
+    let found = exams.find(e => e.id === currentId);
+    if (!found) {
+      found = exams.find(e => e.id === 'csa-v2') || exams[0] || defaultExams[0];
+    }
+    if (!found.modules || found.modules.length === 0) {
+      const def = defaultExams.find(d => d.id === found.id) || defaultExams[0];
+      found.modules = def ? def.modules : [];
+    }
+    return found;
   },
 
   saveExam(newExam) {

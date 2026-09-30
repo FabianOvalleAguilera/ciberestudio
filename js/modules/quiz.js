@@ -97,7 +97,8 @@ export const QuizEngine = {
     if (!select || !currentExam) return;
 
     select.innerHTML = '';
-    currentExam.modules.forEach(mod => {
+    const mods = (currentExam && currentExam.modules && currentExam.modules.length > 0) ? currentExam.modules : [];
+    mods.forEach(mod => {
       const opt = document.createElement('option');
       opt.value = mod.id;
       opt.textContent = mod.name;

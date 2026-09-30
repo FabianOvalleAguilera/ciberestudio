@@ -11,15 +11,13 @@ const App = {
   currentTab: 'dashboard',
 
   init() {
-    StorageManager.init();
-
-    // Initialize modules
-    ExamManager.init(() => this.handleExamChanged());
-    QuizEngine.init();
-    NotesView.init();
-    MindmapView.init();
-    FlashcardView.init();
-    LogAnalysisView.init();
+    try { StorageManager.init(); } catch (e) { console.error("StorageManager init error:", e); }
+    try { ExamManager.init(() => this.handleExamChanged()); } catch (e) { console.error("ExamManager init error:", e); }
+    try { QuizEngine.init(); } catch (e) { console.error("QuizEngine init error:", e); }
+    try { NotesView.init(); } catch (e) { console.error("NotesView init error:", e); }
+    try { MindmapView.init(); } catch (e) { console.error("MindmapView init error:", e); }
+    try { FlashcardView.init(); } catch (e) { console.error("FlashcardView init error:", e); }
+    try { LogAnalysisView.init(); } catch (e) { console.error("LogAnalysisView init error:", e); }
 
     this.bindNavigation();
     this.updateDashboard();
@@ -69,27 +67,27 @@ const App = {
 
   handleExamChanged() {
     this.updateDashboard();
-    QuizEngine.exitQuiz();
-    NotesView.render();
-    MindmapView.render();
-    FlashcardView.render();
-    LogAnalysisView.render();
+    try { QuizEngine.exitQuiz(); } catch (e) { console.error(e); }
+    try { NotesView.render(); } catch (e) { console.error(e); }
+    try { MindmapView.render(); } catch (e) { console.error(e); }
+    try { FlashcardView.render(); } catch (e) { console.error(e); }
+    try { LogAnalysisView.render(); } catch (e) { console.error(e); }
   },
 
   updateDashboard() {
     const exam = StorageManager.getCurrentExam();
-    const questions = StorageManager.getQuestions(exam.id);
-    const stats = StorageManager.getExamStats(exam.id);
-    const missed = StorageManager.getMissedQuestions(exam.id);
+    const questions = StorageManager.getQuestions(exam ? exam.id : 'csa-v2');
+    const stats = StorageManager.getExamStats(exam ? exam.id : 'csa-v2');
+    const missed = StorageManager.getMissedQuestions(exam ? exam.id : 'csa-v2');
 
     // Hero details
     const heroTitle = document.getElementById('dash-hero-title');
     const heroDesc = document.getElementById('dash-hero-desc');
     const heroCodeBadge = document.getElementById('dash-hero-code');
 
-    if (heroTitle) heroTitle.textContent = `${exam.name} - ${exam.title}`;
-    if (heroDesc) heroDesc.textContent = exam.description;
-    if (heroCodeBadge) heroCodeBadge.textContent = `Exam Code: ${exam.code} | Passing Score: ${exam.passingScore}%`;
+    if (heroTitle && exam) heroTitle.textContent = `${exam.name} - ${exam.title}`;
+    if (heroDesc && exam) heroDesc.textContent = exam.description;
+    if (heroCodeBadge && exam) heroCodeBadge.textContent = `Exam Code: ${exam.code} | Passing Score: ${exam.passingScore}%`;
 
     // Stat Cards
     const totalQElem = document.getElementById('dash-stat-total-q');
@@ -98,11 +96,11 @@ const App = {
     const missedCountElem = document.getElementById('dash-stat-missed-count');
 
     if (totalQElem) totalQElem.textContent = questions.length;
-    if (quizzesTakenElem) quizzesTakenElem.textContent = stats.quizzesTaken;
+    if (quizzesTakenElem) quizzesTakenElem.textContent = stats ? (stats.quizzesTaken || 0) : 0;
     if (missedCountElem) missedCountElem.textContent = missed.length;
 
     let avgPercentage = 0;
-    if (stats.history && stats.history.length > 0) {
+    if (stats && stats.history && stats.history.length > 0) {
       const sum = stats.history.reduce((acc, curr) => acc + curr.percentage, 0);
       avgPercentage = Math.round(sum / stats.history.length);
     }
@@ -120,13 +118,15 @@ const App = {
     const moduleListContainer = document.getElementById('dash-module-breakdown');
     if (moduleListContainer) {
       moduleListContainer.innerHTML = '';
-      exam.modules.forEach(mod => {
+      const modules = (exam && exam.modules && exam.modules.length > 0) ? exam.modules : (StorageManager.getExams()[0].modules);
+      
+      modules.forEach(mod => {
         const modQuestions = questions.filter(q => q.moduleId === mod.id);
         const item = document.createElement('div');
         item.style.padding = '0.75rem 0';
         item.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
         item.innerHTML = `
-          <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.35rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; margin-bottom: 0.35rem;">
             <span><strong>${mod.name}</strong></span>
             <span class="badge badge-cyan">${modQuestions.length} Questions</span>
           </div>

@@ -96,7 +96,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 0.35rem 0.75rem;
@@ -106,23 +106,33 @@ body {
   font-size: 0.75rem;
   color: var(--text-dim);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .exam-select {
-  background: transparent;
+  background: var(--bg-secondary);
   color: var(--accent-cyan);
-  border: none;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
   font-family: var(--font-sans);
   font-size: 0.85rem;
   font-weight: 600;
   outline: none;
   cursor: pointer;
+  min-width: 250px;
+}
+
+.exam-select:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
 }
 
 .exam-select option {
-  background: var(--bg-secondary);
-  color: var(--text-main);
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.4rem;
 }
 
 /* Header Actions */
