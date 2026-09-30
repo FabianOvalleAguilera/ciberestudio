@@ -1,11 +1,11 @@
 // Main Application Controller and View Router (English)
-import { StorageManager } from './modules/storage.js?v=2026.5';
-import { QuizEngine } from './modules/quiz.js?v=2026.5';
-import { NotesView } from './modules/notesView.js?v=2026.5';
-import { MindmapView } from './modules/mindmapView.js?v=2026.5';
-import { FlashcardView } from './modules/flashcardView.js?v=2026.5';
-import { LogAnalysisView } from './modules/logAnalysisView.js?v=2026.5';
-import { ExamManager } from './modules/examManager.js?v=2026.5';
+import { StorageManager } from './modules/storage.js?v=2026.6';
+import { QuizEngine } from './modules/quiz.js?v=2026.6';
+import { NotesView } from './modules/notesView.js?v=2026.6';
+import { MindmapView } from './modules/mindmapView.js?v=2026.6';
+import { FlashcardView } from './modules/flashcardView.js?v=2026.6';
+import { LogAnalysisView } from './modules/logAnalysisView.js?v=2026.6';
+import { ExamManager } from './modules/examManager.js?v=2026.6';
 
 const App = {
   currentTab: 'dashboard',

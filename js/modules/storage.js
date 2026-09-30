@@ -1,9 +1,9 @@
 // Gestor central de almacenamiento y persistencia multi-examen
-import { defaultExams } from '../data/exams.js?v=2026.5';
-import { initialQuestions } from '../data/questions.js?v=2026.5';
-import { defaultNotes } from '../data/notes.js?v=2026.5';
-import { defaultMindmaps } from '../data/mindmaps.js?v=2026.5';
-import { defaultFlashcards } from '../data/flashcards.js?v=2026.5';
+import { defaultExams } from '../data/exams.js?v=2026.6';
+import { initialQuestions } from '../data/questions.js?v=2026.6';
+import { defaultNotes } from '../data/notes.js?v=2026.6';
+import { defaultMindmaps } from '../data/mindmaps.js?v=2026.6';
+import { defaultFlashcards } from '../data/flashcards.js?v=2026.6';
 
 const STORAGE_KEYS = {
   CURRENT_EXAM: 'soc_hub_current_exam',

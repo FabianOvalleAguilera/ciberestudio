@@ -1,5 +1,5 @@
 // Exam Manager, Import/Export, and Custom Question Builder (English)
-import { StorageManager } from './storage.js?v=2026.5';
+import { StorageManager } from './storage.js?v=2026.6';
 
 export const ExamManager = {
   init(onExamChanged) {

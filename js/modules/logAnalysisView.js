@@ -4,7 +4,7 @@
 // and real-world SOC investigation mini-labs.
 // =========================================================================
 
-import { StorageManager } from './storage.js?v=2026.5';
+import { StorageManager } from './storage.js?v=2026.6';
 
 export const LogAnalysisView = {
   currentSubTab: 'decoder',
@@ -426,7 +426,7 @@ export const LogAnalysisView = {
       title: "Case 3: Linux SSH Brute Force & Audit Log Tampering",
       difficulty: "High",
       badge: "Linux Syslog",
-      scenario: `A critical Linux server hosting sensitive intellectual property generated high-severity alerts. Review `/var/log/auth.log` and the audit system events to determine how the attacker gained access and what defense evasion techniques were employed.`,
+      scenario: `A critical Linux server hosting sensitive intellectual property generated high-severity alerts. Review '/var/log/auth.log' and the audit system events to determine how the attacker gained access and what defense evasion techniques were employed.`,
       rawLogs: `Sep 30 05:12:01 srv-core sshd[28101]: Failed password for invalid user root from 198.51.100.12 port 49102 ssh2
 Sep 30 05:12:03 srv-core sshd[28104]: Failed password for invalid user admin from 198.51.100.12 port 49106 ssh2
 Sep 30 05:12:05 srv-core sshd[28109]: Failed password for invalid user test from 198.51.100.12 port 49110 ssh2
